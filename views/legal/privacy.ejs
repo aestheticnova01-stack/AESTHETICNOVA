@@ -1,0 +1,328 @@
+<%- include('_legal-open', { legalTitle: 'Privacy Policy', legalLede: 'What we collect, why we collect it, how long we keep it, who we share it with, and how you get it back or get it deleted. Written to be read, not skimmed past.' }) %>
+        <nav class="legal-toc" aria-labelledby="toc-title">
+          <h2 id="toc-title">On this page</h2>
+          <ol>
+            <li><a href="#summary">The short version</a></li>
+            <li><a href="#who">Who is responsible</a></li>
+            <li><a href="#what">What we collect and why</a></li>
+            <li><a href="#minimisation">What we deliberately do not collect</a></li>
+            <li><a href="#legal-basis">Consent and legal grounds</a></li>
+            <li><a href="#cookies">Cookies and tracking</a></li>
+            <li><a href="#sharing">Who we share data with</a></li>
+            <li><a href="#security">How we protect data</a></li>
+            <li><a href="#retention">How long we keep it</a></li>
+            <li><a href="#rights">Your rights</a></li>
+            <li><a href="#withdraw">Withdrawing consent</a></li>
+            <li><a href="#children">Children's data</a></li>
+            <li><a href="#grievance">Complaints</a></li>
+            <li><a href="#changes">Changes to this policy</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#law">Which law applies</a></li>
+          </ol>
+        </nav>
+
+        <div class="prose">
+          <h2 id="summary">1. The short version</h2>
+          <ul>
+            <li>We collect what is needed to sell you jewellery and deliver it. Nothing is collected “just in case”.</li>
+            <li>We do not run advertising pixels, we do not build profiles, and we do not sell data to anyone.</li>
+            <li>Optional things — analytics counting, marketing email — are <strong>off until you turn them on</strong>.</li>
+            <li>You can ask for a copy of your data, correct it, or delete it, and we will tell you exactly what we
+              did and what we had to keep.</li>
+            <li>We keep invoice records for eight years because tax law requires it. Everything else has a shorter,
+              stated lifetime.</li>
+          </ul>
+
+          <h2 id="who">2. Who is responsible for your data</h2>
+          <p>
+            The entity responsible (the “data fiduciary” in Indian data-protection language) is
+            <strong><%= biz.legalEntity || 'not configured on this deployment' %></strong>, trading as
+            <strong><%= biz.tradingName %></strong>.
+            <% if (biz.address) { %>Registered / business address: <%= biz.address %>.<% } else { %>
+              <span class="env-flag">Registered address not configured</span> — this must be supplied before launch.
+            <% } %>
+          </p>
+          <p>
+            Privacy contact: <strong><%= biz.grievanceEmail || biz.email || 'not configured' %></strong>.
+            The person named as grievance officer is listed on the <a href="/business-details">business details page</a>.
+          </p>
+
+          <h2 id="what">3. What we collect, why, and on what basis</h2>
+          <p>
+            Each row below is a real field in this system. If a field appears here, it exists in the code; if it is not
+            here, we do not collect it.
+          </p>
+          <table>
+            <caption class="sr-only">Personal data collected, its purpose and retention</caption>
+            <thead>
+              <tr><th scope="col">Data</th><th scope="col">Why we have it</th><th scope="col">Necessary for</th><th scope="col">Kept for</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Name</td>
+                <td>To address the parcel and the invoice correctly, and to reply to you by name.</td>
+                <td>Order fulfilment</td>
+                <td>8 years on invoices; profile deleted on request</td>
+              </tr>
+              <tr>
+                <td>Email address</td>
+                <td>Order confirmation, delivery updates, replies to support messages, sign-in identity.</td>
+                <td>Order fulfilment and account access</td>
+                <td>Until account deletion (order records 8 years)</td>
+              </tr>
+              <tr>
+                <td>Mobile number</td>
+                <td>The courier calls you on delivery day. Nothing else.</td>
+                <td>Delivery</td>
+                <td>Redacted when the order completes; deleted on request</td>
+              </tr>
+              <tr>
+                <td>Delivery address</td>
+                <td>So the parcel reaches you, and to resolve delivery disputes.</td>
+                <td>Delivery</td>
+                <td>Redacted on deletion; retained on the invoice record</td>
+              </tr>
+              <tr>
+                <td>Order contents and amounts</td>
+                <td>Fulfilment, returns, warranty and statutory accounting.</td>
+                <td>Contract and tax law</td>
+                <td>8 years (tax requirement)</td>
+              </tr>
+              <tr>
+                <td>Payment reference and status</td>
+                <td>To match your payment to your order and handle refunds. The <em>provider’s</em> reference only —
+                  never your card number.</td>
+                <td>Contract and tax law</td>
+                <td>8 years with the order</td>
+              </tr>
+              <tr>
+                <td>Password (stored only as a one-way scrypt hash)</td>
+                <td>To let you sign in. We cannot read it.</td>
+                <td>Account security</td>
+                <td>Until you change it or delete the account</td>
+              </tr>
+              <tr>
+                <td>Support messages and your replies</td>
+                <td>To resolve the issue and keep a record of what was agreed.</td>
+                <td>Customer support</td>
+                <td>24 months after the last contact</td>
+              </tr>
+              <tr>
+                <td>Reviews you submit</td>
+                <td>Published on the product page with a verified-purchase label.</td>
+                <td>Consent (you choose to submit)</td>
+                <td>Until you ask us to remove it, or the product is delisted</td>
+              </tr>
+              <tr>
+                <td>Marketing opt-in (a yes/no flag and the date)</td>
+                <td>To know whether we may email you about new drops.</td>
+                <td>Consent — optional, off by default</td>
+                <td>Until you withdraw; withdrawal date retained as proof</td>
+              </tr>
+              <tr>
+                <td>Cookie-consent receipt (choices, time, policy version, hashed IP and browser string)</td>
+                <td>To prove what you agreed to and to honour it.</td>
+                <td>Legal obligation / legitimate need to evidence consent</td>
+                <td>180 days rolling, then purged</td>
+              </tr>
+              <tr>
+                <td>Anonymous page-visit counts</td>
+                <td>To know which pieces people look at — aggregated per day per page, with no identifier.</td>
+                <td>Consent — analytics, off by default</td>
+                <td>13 months, then deleted</td>
+              </tr>
+              <tr>
+                <td>Security events (failed sign-ins, rate-limit hits)</td>
+                <td>To detect and stop abuse of accounts and checkout.</td>
+                <td>Legitimate security need</td>
+                <td>90 days, with hashed connection identifiers only</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2 id="minimisation">4. What we deliberately do not collect</h2>
+          <ul>
+            <li><strong>No date of birth, gender or photo.</strong> None of it helps us deliver a ring.</li>
+            <li><strong>No precise location.</strong> We infer nothing from your IP beyond a one-way hash used to
+              rate-limit abuse.</li>
+            <li><strong>No ID document numbers.</strong> If you send one to support unprompted we will delete it.</li>
+            <li><strong>No full card numbers, CVV or UPI PIN.</strong> Those are entered on the payment provider’s own
+              page. Our database schema has no column for them, by design.</li>
+            <li><strong>No advertising identifiers</strong> and no cross-site tracking of any kind.</li>
+          </ul>
+
+          <h2 id="legal-basis">5. Consent and the grounds we rely on</h2>
+          <p>
+            Under India’s Digital Personal Data Protection Act, 2023 and the DPDP Rules, 2025, we process:
+          </p>
+          <ul>
+            <li><strong>Order and delivery data</strong> because it is necessary to perform the contract you enter
+              into when you buy. Without it we cannot ship anything.</li>
+            <li><strong>Invoice records</strong> because law requires us to keep them.</li>
+            <li><strong>Optional marketing and analytics</strong> only on the basis of your consent, which is
+              <strong>not bundled</strong> with any order and is <strong>off by default</strong>. You can withdraw at
+              any time, and withdrawal does not affect any order.</li>
+            <li><strong>Security logging</strong> because we have a legitimate need to protect accounts and payments
+              from abuse.</li>
+          </ul>
+          <p>
+            Where we rely on consent, we ask for it in plain language, in a separate control, and we record what you
+            agreed to, when, and against which policy version.
+          </p>
+
+          <h2 id="cookies">6. Cookies and tracking</h2>
+          <p>
+            This site sets <strong>three first-party cookies</strong>: a session cookie, a consent-record cookie, and
+            nothing else. There is no third-party script on any page except on the payment step, where the gateway is
+            loaded only because you chose to pay. The full list, with purposes and retention, is in the
+            <a href="/cookies">Cookie Policy</a>, and the live register is on the
+            <a href="/transparency">Transparency page</a>.
+          </p>
+
+          <h2 id="sharing">7. Who we share data with</h2>
+          <table>
+            <thead><tr><th scope="col">Recipient</th><th scope="col">What they get</th><th scope="col">Why</th><th scope="col">Status</th></tr></thead>
+            <tbody>
+              <tr><td>Courier partner</td><td>Name, address, phone, order contents</td><td>To deliver the parcel</td>
+                <td><span class="env-flag">Not yet integrated</span> — no partner is named until one is contracted</td></tr>
+              <tr><td>Payment provider (Razorpay)</td><td>Amount, order reference, your payment instrument handled on their page</td><td>To take and refund payment</td>
+                <td><span class="env-flag">Not connected in this build</span></td></tr>
+              <tr><td>Email provider</td><td>Email address and message content</td><td>Order confirmations and support replies</td>
+                <td><span class="env-flag">Not configured</span></td></tr>
+              <tr><td>Statutory authorities</td><td>Only what a lawful order compels</td><td>Legal obligation</td><td>On request only</td></tr>
+            </tbody>
+          </table>
+          <p>
+            We do <strong>not</strong> sell personal data, and we do not share it with advertising or data-broker
+            platforms. If we ever add a new processor, this table and the tracker register are updated first.
+          </p>
+
+          <h2 id="security">8. How we protect your data</h2>
+          <ul>
+            <li>HTTPS across the site, with HSTS once in production.</li>
+            <li>Passwords hashed with scrypt (memory-hard). Nobody at AESTHETICNOVA can read your password.</li>
+            <li>Server-side sessions with rotation on sign-in, HttpOnly and SameSite cookies, and CSRF protection on
+              every state-changing request.</li>
+            <li>Server-side validation of every field. Client-side checks are a convenience, never the control.</li>
+            <li>Rate limits on sign-in, registration, checkout, support and privacy requests.</li>
+            <li>Access control: customer data is visible only to the signed-in account, or in the admin console.
+              Delivery addresses are visible in the console only while an order is open.</li>
+            <li>Every privileged action is written to an audit log with the actor.</li>
+            <li>Security events are logged with hashed connection identifiers and no raw IP addresses.</li>
+          </ul>
+
+          <h2 id="retention">9. How long we keep data</h2>
+          <p>
+            Retention is enforced by documented rules rather than good intentions:
+          </p>
+          <ul>
+            <li><strong>Order and invoice records:</strong> 8 years from the end of the financial year, as tax law
+              requires. This is the one thing we cannot delete early, and we will always tell you so in writing.</li>
+            <li><strong>Account profile:</strong> until you ask us to close it, then erased within 30 days of a
+              verified request.</li>
+            <li><strong>Support tickets:</strong> 24 months after the last contact.</li>
+            <li><strong>Consent receipts:</strong> 180 days rolling.</li>
+            <li><strong>Anonymous visit counts:</strong> 13 months.</li>
+            <li><strong>Security events:</strong> 90 days.</li>
+            <li><strong>Abandoned bags:</strong> 90 days after last update, then deleted.</li>
+          </ul>
+          <p>
+            A scheduled retention job is described in <code>docs/SECURITY-OPERATIONS.md</code> and can be run
+            manually from the admin console; the launch-readiness report tells you whether it is enabled.
+          </p>
+
+          <h2 id="rights">10. Your rights</h2>
+          <p>You can, at any time and free of charge:</p>
+          <ul>
+            <li><strong>Ask for a copy</strong> of the personal data we hold about you, along with what it is used
+              for and who it has been shared with.</li>
+            <li><strong>Ask us to correct</strong> inaccurate or incomplete data.</li>
+            <li><strong>Ask us to delete</strong> data we no longer need — subject to lawful retention.</li>
+            <li><strong>Withdraw consent</strong> for marketing or analytics without affecting your ability to shop
+              or receive an order.</li>
+            <li><strong>Nominate someone</strong> to exercise your rights in the event of death or incapacity — write
+              to the grievance officer and we will record the nomination.</li>
+            <li><strong>Complain</strong> to us first, and then to the Data Protection Board of India if we do not
+              resolve it.</li>
+          </ul>
+          <p>
+            The fastest route is the <a href="/privacy-requests">Privacy &amp; Data Requests</a> page: it issues a
+            reference number and a status page. We verify your identity before releasing or erasing anything, and we
+            aim to respond within 30 days.
+          </p>
+
+          <h2 id="withdraw">11. Withdrawing consent</h2>
+          <ul>
+            <li><strong>Marketing email:</strong> untick the box in <a href="/account/profile">your account</a>, use
+              the unsubscribe link in any message, or file a withdrawal request. It takes effect immediately.</li>
+            <li><strong>Analytics and marketing cookies:</strong> open “Cookie settings” in the footer and switch them
+              off, or use the button on the <a href="/cookies">Cookie Policy</a> page. Withdrawal takes effect on your
+              next page load.</li>
+            <li><strong>Everything optional at once:</strong>
+              <form method="post" action="/consent/withdraw" style="display:inline;">
+                <input type="hidden" name="_csrf" value="<%= csrf %>">
+                <button class="link-quiet" type="submit">Withdraw all optional consent now</button>
+              </form>
+            </li>
+          </ul>
+
+          <h2 id="children">12. Children's data</h2>
+          <p>
+            This store is intended for adults. We do not knowingly collect personal data from anyone under 18. We do
+            not use tracking-based advertising, so we do not process children’s data for behavioural monitoring or
+            targeted advertising. If you believe a minor has created an account, contact us and we will delete it.
+          </p>
+
+          <h2 id="grievance">13. Complaints</h2>
+          <p>
+            Write to the grievance officer at
+            <strong><%= biz.grievanceEmail || biz.email || 'not configured' %></strong>
+            or use the <a href="/grievance">grievance form</a>, which records a reference and a resolution timeline.
+            We acknowledge within 48 hours and aim to resolve within 15 days.
+          </p>
+          <p>
+            If we cannot resolve it, you may complain to the <strong>Data Protection Board of India</strong>. The
+            Board was constituted on 13 November 2025 under the DPDP framework; its complaint procedure is set out in
+            the DPDP Rules, 2025.
+          </p>
+
+          <h2 id="changes">14. Changes to this policy</h2>
+          <p>
+            When we change this policy we update the version number and date at the top. If the change affects how we
+            use data you have already given us, we will tell you before the change takes effect and, where the law
+            requires it, ask for fresh consent rather than assuming it.
+          </p>
+
+          <h2 id="contact">15. Contact</h2>
+          <dl class="kv">
+            <dt>Privacy email</dt><dd><%= biz.grievanceEmail || biz.email || 'Not configured — see business details' %></dd>
+            <dt>Support email</dt><dd><%= biz.email || 'Not configured' %></dd>
+            <dt>Phone</dt><dd><%= biz.phone || 'Not configured' %></dd>
+            <dt>Address</dt><dd><%= biz.address || 'Not configured' %></dd>
+            <dt>Data requests</dt><dd><a href="/privacy-requests">Privacy &amp; Data Requests</a></dd>
+          </dl>
+
+          <h2 id="law">16. Which law applies, and the phase-in dates</h2>
+          <p>
+            This policy is written against India’s <strong>Digital Personal Data Protection Act, 2023</strong> and the
+            <strong>Digital Personal Data Protection Rules, 2025</strong>, which were notified on 13 November 2025 with
+            a phased commencement:
+          </p>
+          <ul>
+            <li><strong>13 November 2025:</strong> definitions and the Data Protection Board of India — in force.</li>
+            <li><strong>13 November 2026:</strong> the Consent Manager framework commences.</li>
+            <li><strong>13 May 2027:</strong> the substantive obligations commence — itemised notice, security
+              safeguards, breach notification, retention and erasure, grievance officer, and data-principal rights.</li>
+          </ul>
+          <p>
+            We have implemented the notice, consent, rights and retention mechanics ahead of the obligation date so
+            the practice is real rather than retrofitted. <strong>This does not make us “DPDP compliant” as a legal
+            conclusion</strong> — that determination needs a lawyer’s review against our actual data flows, and the
+            launch-readiness report records it as <strong>NEEDS HUMAN REVIEW</strong>.
+          </p>
+          <div class="callout callout--warn">
+            <strong>Not legal advice.</strong> This page describes what the system does. Whether that satisfies a
+            particular legal obligation is a question for qualified Indian counsel, and we have not had that review.
+          </div>
+        </div>
+<%- include('_legal-close') %>

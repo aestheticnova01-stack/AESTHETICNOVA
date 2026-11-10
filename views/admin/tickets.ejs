@@ -1,0 +1,24 @@
+<%- include('_layout') %>
+<p class="eyebrow">Support</p>
+<h1 class="display-m mb-3">Support &amp; grievance tickets</h1>
+<% if (!tickets.length) { %>
+  <p class="small muted">No tickets yet.</p>
+<% } else { %>
+<table class="admin-table">
+  <thead><tr><th>Ref</th><th>Kind</th><th>From</th><th>Subject</th><th>Priority</th><th>Status</th><th>Raised</th></tr></thead>
+  <tbody>
+    <% tickets.forEach(function (t) { %>
+      <tr>
+        <td><a href="/admin/tickets/<%= t.ref %>"><%= t.ref %></a></td>
+        <td><%= t.kind %></td>
+        <td><%= t.name %><br><span class="small muted"><%= t.email %></span></td>
+        <td><%= t.subject %></td>
+        <td><%= t.priority %></td>
+        <td><%= t.status.replace(/_/g, ' ') %></td>
+        <td><%= fmtDateTime(t.created_at) %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+<% } %>
+<%- include('_layout-end') %>

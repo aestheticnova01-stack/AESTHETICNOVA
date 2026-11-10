@@ -1,0 +1,50 @@
+<%- include('_layout') %>
+<p class="eyebrow"><a href="/admin/tickets">Support</a> / <%= ticket.ref %></p>
+<h1 class="display-m mb-2"><%= ticket.ref %> — <%= ticket.kind %></h1>
+
+<div class="two-col">
+  <div>
+    <dl class="kv">
+      <dt>From</dt><dd><%= ticket.name %> · <%= ticket.email %><%= ticket.phone ? ' · ' + ticket.phone : '' %></dd>
+      <dt>Order</dt><dd><%= ticket.order_ref || '—' %></dd>
+      <dt>Subject</dt><dd><%= ticket.subject %></dd>
+      <dt>Message</dt><dd style="white-space:pre-wrap;"><%= ticket.message %></dd>
+      <dt>Priority</dt><dd><%= ticket.priority %></dd>
+      <dt>Status</dt><dd><%= ticket.status.replace(/_/g, ' ') %></dd>
+      <dt>Marketing opt-in</dt><dd><%= ticket.marketing_consent ? 'Yes' : 'No' %></dd>
+      <dt>Raised</dt><dd><%= fmtDateTime(ticket.created_at) %></dd>
+      <% if (ticket.resolved_at) { %><dt>Resolved</dt><dd><%= fmtDateTime(ticket.resolved_at) %></dd><% } %>
+    </dl>
+
+    <h2 class="eyebrow mt-3">History</h2>
+    <ol class="small" style="padding-left:1.1rem;line-height:1.8;">
+      <% events.forEach(function (e) { %>
+        <li><strong><%= e.event.replace(/_/g, ' ') %></strong> — <%= fmtDateTime(e.at) %> <span class="muted">(<%= e.actor %>)</span>
+          <% if (e.detail) { %><br><span class="muted"><%= e.detail %></span><% } %></li>
+      <% }); %>
+    </ol>
+  </div>
+  <div>
+    <h2 class="eyebrow">Update</h2>
+    <form method="post" action="/admin/tickets/<%= ticket.ref %>/update">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <div class="field">
+        <label for="t-status">Status</label>
+        <select id="t-status" name="status">
+          <% statuses.forEach(function (s) { %><option value="<%= s %>" <%= ticket.status === s ? 'selected' : '' %>><%= s.replace(/_/g, ' ') %></option><% }); %>
+        </select>
+      </div>
+      <div class="field">
+        <label for="t-note">Note to the customer and the record</label>
+        <textarea id="t-note" name="note" placeholder="What you told them and what happens next."></textarea>
+      </div>
+      <button class="btn btn--small" type="submit">Save update</button>
+    </form>
+    <p class="small muted mt-2">
+      Marking a ticket resolved does not send anything by itself in this build — email delivery is
+      <strong>not configured</strong>, so the reply has to be sent manually from the support mailbox until a provider is connected.
+      That limitation is reported in the launch-readiness report.
+    </p>
+  </div>
+</div>
+<%- include('_layout-end') %>

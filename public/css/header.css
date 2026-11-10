@@ -1,0 +1,80 @@
+/* ======================================
+   HEADER & NAVIGATION
+====================================== */
+
+/* -------------------------------- header -------------------------------- */
+.topbar {
+  background: var(--ink); color: #fff;
+  font-family: var(--display); font-size: 0.6875rem; letter-spacing: 0.16em;
+  text-transform: uppercase; text-align: center; padding: 0.55rem 1rem;
+}
+.topbar a { color: #fff; }
+
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(247, 247, 245, 0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.header-inner {
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  gap: 1rem; min-height: 68px;
+}
+.brand {
+  font-family: var(--display); font-weight: 600; font-size: clamp(0.95rem, 1.1vw, 1.15rem);
+  letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; white-space: nowrap;
+}
+.brand span { font-weight: 300; letter-spacing: 0.24em; }
+.nav-primary { display: flex; justify-content: center; gap: clamp(0.9rem, 1.9vw, 2rem); }
+.nav-primary a {
+  font-family: var(--display); font-size: 0.7rem; letter-spacing: 0.15em;
+  text-transform: uppercase; text-decoration: none; padding: 0.5rem 0; position: relative;
+}
+.nav-primary a::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0.15rem; height: 1px;
+  background: currentColor; transform: scaleX(0); transform-origin: left;
+  transition: transform 0.28s var(--ease);
+}
+.nav-primary a:hover::after, .nav-primary a[aria-current='page']::after { transform: scaleX(1); }
+.header-utils { display: flex; justify-content: flex-end; align-items: center; gap: 0.4rem; }
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; padding: 0.4rem;
+  background: none; border: 0; color: var(--ink); cursor: pointer;
+  font-family: var(--display); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none; gap: 0.35rem;
+}
+.icon-btn:hover { background: #EDEDEA; }
+.icon-btn .count {
+  font-size: 0.625rem; background: var(--ink); color: #fff; border-radius: 999px;
+  min-width: 17px; height: 17px; display: inline-flex; align-items: center; justify-content: center;
+  padding: 0 4px; font-variant-numeric: tabular-nums;
+}
+.menu-toggle { display: none; }
+
+/* mobile nav */
+.mobile-nav { display: none; }
+@media (max-width: 960px) {
+  .header-inner { grid-template-columns: auto 1fr auto; min-height: 60px; }
+  .nav-primary { display: none; }
+  .menu-toggle { display: inline-flex; }
+  .mobile-nav[data-open='true'] {
+    display: block; border-top: 1px solid var(--line); background: var(--bg); padding: 1rem var(--gutter) 1.5rem;
+  }
+  .mobile-nav ul { list-style: none; padding: 0; margin: 0; }
+  .mobile-nav li { border-bottom: 1px solid var(--line); }
+  .mobile-nav a {
+    display: flex; justify-content: space-between; align-items: center; padding: 0.95rem 0;
+    font-family: var(--display); text-transform: uppercase; letter-spacing: 0.12em;
+    font-size: 0.8rem; text-decoration: none; min-height: 48px;
+  }
+}
+
+/* -------------------------------- search -------------------------------- */
+.search-panel { border-bottom: 1px solid var(--line); background: var(--surface); }
+.search-panel form { display: flex; gap: 0.6rem; padding-block: 1rem; }
+.search-panel input[type='search'] {
+  flex: 1; min-height: 48px; padding: 0 1rem; border: 1px solid var(--ink);
+  background: #fff; font-family: var(--text); font-size: 0.95rem; color: var(--ink);
+}
+

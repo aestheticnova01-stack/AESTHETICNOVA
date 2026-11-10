@@ -1,0 +1,28 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="wrap section">
+    <p class="eyebrow">Account</p>
+    <h1 class="display-m mb-3">Your wishlist</h1>
+
+    <% if (!products.length) { %>
+      <div class="empty-state" style="max-width:640px;">
+        <h2 style="font-size:1rem;text-transform:none;">Nothing saved yet</h2>
+        <p>Tap the heart on any piece to keep it here. We will not email you about saved items unless you ask.</p>
+        <p class="mt-2"><a class="btn btn--small" href="/shop">Browse the catalogue</a></p>
+      </div>
+    <% } else { %>
+      <div class="product-grid">
+        <% products.forEach(function (p) { %>
+          <%- include('../partials/product-card', { p, wishlistIds }) %>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

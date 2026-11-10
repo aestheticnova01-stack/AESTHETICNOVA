@@ -1,0 +1,148 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="wrap section">
+    <div style="max-width:860px;">
+      <nav aria-label="Breadcrumb">
+        <ol class="breadcrumb">
+          <li><a href="/">Home</a></li>
+          <% if (accountView) { %><li><a href="/account">Account</a></li><% } %>
+          <li aria-current="page">Order <%= order.ref %></li>
+        </ol>
+      </nav>
+
+      <% if (typeof justPaid !== 'undefined' && justPaid) { %>
+        <div class="alert alert--success" role="status">
+          <h2>Payment recorded</h2>
+          <p>
+            <% if (order.payment_method === 'cod') { %>
+              Your order is confirmed. Cash on delivery means you pay the courier when it arrives.
+            <% } else { %>
+              Your payment has been recorded against this order. A confirmation is queued for <%= order.email %>.
+            <% } %>
+          </p>
+        </div>
+      <% } %>
+
+      <p class="eyebrow">Order <%= order.ref %> · <%= fmtDate(order.created_at) %></p>
+      <h1 class="display-m" style="margin-bottom:.75rem;">
+        <%= order.order_status === 'cancelled' ? 'Order cancelled' : 'Thank you — your order is in' %>
+      </h1>
+      <p class="lede" style="max-width:60ch;">
+        We have sent the details to <strong><%= order.email %></strong>.
+        Keep this page or the link in that message: it is the private reference for this order.
+      </p>
+
+      <div class="summary" style="position:static;margin-top:2rem;">
+        <div class="flex-between mb-2">
+          <span class="status-pill" data-s="<%= order.order_status %>">Status: <%= order.order_status %></span>
+          <span class="status-pill" data-s="<%= order.payment_status === 'paid' ? 'delivered' : '' %>">
+            Payment: <%= order.payment_status.replace('_', ' ') %>
+          </span>
+        </div>
+
+        <% items.forEach(function (i) { %>
+          <div class="summary-row" style="align-items:flex-start;">
+            <span style="flex:1;">
+              <a href="/product/<%= i.product_name.toLowerCase().replace(/[^a-z0-9]+/g, '-') %>"><%= i.product_name %></a><br>
+              <span class="small muted"><%= i.variant_label %> · SKU <%= i.sku %> · Qty <%= i.qty %></span>
+            </span>
+            <span><%= inr(i.line_total_paise) %></span>
+          </div>
+        <% }); %>
+
+        <hr style="margin:.9rem 0;">
+        <div class="summary-row"><span>Subtotal</span><span><%= inr(order.subtotal_paise) %></span></div>
+        <div class="summary-row"><span>Shipping</span><span><%= order.shipping_paise === 0 ? 'Free' : inr(order.shipping_paise) %></span></div>
+        <% if (order.cod_fee_paise) { %>
+          <div class="summary-row"><span>COD fee</span><span><%= inr(order.cod_fee_paise) %></span></div>
+        <% } %>
+        <div class="summary-row summary-row--total"><span>Total <%= order.payment_method === 'cod' ? 'payable on delivery' : 'paid' %></span><span><%= inr(order.total_paise) %></span></div>
+        <p class="tax-note">
+          Includes GST 18% (<%= inr(order.gst_paise) %> tax).
+          <% if (order.invoice_number) { %>Invoice <strong><%= order.invoice_number %></strong> is issued to <%= order.full_name %>. <% } %>
+        </p>
+      </div>
+
+      <div class="two-col mt-3">
+        <div>
+          <h2 class="eyebrow">Delivering to</h2>
+          <address style="font-style:normal;font-size:.9rem;line-height:1.7;">
+            <%= order.full_name %><br>
+            <%= order.address_line1 %><br>
+            <% if (order.address_line2) { %><%= order.address_line2 %><br><% } %>
+            <%= order.city %>, <%= order.state %> <%= order.pincode %><br>
+            <%= order.phone %>
+          </address>
+        </div>
+        <div>
+          <h2 class="eyebrow">What happens next</h2>
+          <ol class="small" style="padding-left:1.1rem;line-height:1.8;">
+            <li>We confirm stock and pack your piece — usually within 2 working days.</li>
+            <li>You get a dispatch message with the courier and tracking reference.</li>
+            <li>Delivery in 2–4 working days for metros, 4–7 for other serviceable PIN codes.</li>
+            <li>Changed your mind? You can cancel before dispatch, or return within <%= returnWindow %> days of delivery.</li>
+          </ol>
+        </div>
+      </div>
+
+      <% if (order.payment_status !== 'paid' && order.payment_method !== 'cod' && !accountView) { %>
+        <p class="mt-3">
+          <a class="btn" href="/order/<%= order.ref %>/pay?key=<%= order.access_key %>">Complete payment</a>
+        </p>
+      <% } %>
+
+      <% if (payments && payments.length) { %>
+        <details class="mt-3">
+          <summary class="link-quiet" style="cursor:pointer;">Payment records for this order</summary>
+          <table class="admin-table mt-1">
+            <caption class="sr-only">Payment attempts</caption>
+            <thead><tr><th scope="col">Provider</th><th scope="col">Reference</th><th scope="col">Amount</th><th scope="col">Status</th><th scope="col">Mode</th></tr></thead>
+            <tbody>
+              <% payments.forEach(function (p) { %>
+                <tr>
+                  <td><%= p.provider %></td>
+                  <td><%= p.provider_ref || '—' %></td>
+                  <td><%= inr(p.amount_paise) %></td>
+                  <td><%= p.status %></td>
+                  <td>
+                    <% if (p.mode === 'simulated') { %>
+                      <span class="env-flag">Simulated — no money moved</span>
+                    <% } else { %><%= p.mode %><% } %>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </details>
+      <% } %>
+
+      <div class="mt-3 flex" style="gap:.5rem;flex-wrap:wrap;">
+        <a class="btn btn--ghost btn--small" href="/shop">Continue shopping</a>
+        <% if (order.order_status === 'placed' || order.order_status === 'processing') { %>
+          <% if (accountView) { %>
+            <form method="post" action="/order/<%= order.ref %>/cancel" data-confirm="Cancel this order? Stock will be released and any payment refunded to the original method.">
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <button class="btn btn--ghost btn--small" type="submit">Cancel this order</button>
+            </form>
+          <% } %>
+        <% } %>
+        <a class="btn btn--ghost btn--small" href="/contact?order=<%= order.ref %>">Ask about this order</a>
+        <a class="btn btn--ghost btn--small" href="/returns">Start a return</a>
+      </div>
+
+      <p class="small muted mt-3">
+        <strong>Privacy note.</strong> This order record is kept for eight years because tax law requires us to
+        retain invoices. Everything else linked to the order — your phone number in our notification log —
+        is deleted or anonymised earlier. You can
+        <a href="/privacy-requests">request access, correction or deletion</a> at any time.
+      </p>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

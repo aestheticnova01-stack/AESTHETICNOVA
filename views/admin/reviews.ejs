@@ -1,0 +1,42 @@
+<%- include('_layout') %>
+<p class="eyebrow">Trust</p>
+<h1 class="display-m mb-1">Review moderation</h1>
+<p class="lede mb-3" style="max-width:70ch;">
+  Every review here is tied to a verified order — there is no way to add one manually. Rejections require a written
+  reason, and negative reviews are not grounds for rejection.
+</p>
+<% if (!reviews.length) { %>
+  <div class="empty-state">
+    <h2 style="font-size:1rem;text-transform:none;">No reviews in the system</h2>
+    <p>That is the honest state of a new store. Nothing has been seeded to look established.</p>
+  </div>
+<% } else { %>
+<table class="admin-table">
+  <thead><tr><th>Product</th><th>Rating</th><th>Review</th><th>Verified</th><th>Status</th><th>Actions</th></tr></thead>
+  <tbody>
+    <% reviews.forEach(function (r) { %>
+      <tr>
+        <td><%= r.product_name %></td>
+        <td><%= r.rating %>/5</td>
+        <td><strong><%= r.title || '' %></strong><br><span class="small"><%= r.body %></span>
+          <% if (r.moderation_note) { %><br><span class="small muted">Note: <%= r.moderation_note %></span><% } %></td>
+        <td><%= r.verified_purchase ? 'Yes' : 'No' %></td>
+        <td><%= r.status %></td>
+        <td>
+          <form method="post" action="/admin/reviews/<%= r.id %>/approve" style="display:inline;">
+            <input type="hidden" name="_csrf" value="<%= csrf %>">
+            <button class="link-quiet" type="submit">Approve</button>
+          </form>
+          <form method="post" action="/admin/reviews/<%= r.id %>/reject" style="margin-top:.4rem;">
+            <input type="hidden" name="_csrf" value="<%= csrf %>">
+            <label class="sr-only" for="note-<%= r.id %>">Rejection reason</label>
+            <input id="note-<%= r.id %>" name="note" type="text" placeholder="Reason (required)">
+            <button class="link-quiet" type="submit" style="margin-top:.3rem;">Reject</button>
+          </form>
+        </td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+<% } %>
+<%- include('_layout-end') %>

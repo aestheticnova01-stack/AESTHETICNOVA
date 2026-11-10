@@ -1,0 +1,215 @@
+<%- include('_legal-open', { legalTitle: 'Terms of Service', legalLede: 'The rules that apply when you browse or buy from this website — written so you can actually understand what you are agreeing to.' }) %>
+        <nav class="legal-toc" aria-labelledby="toc-title">
+          <h2 id="toc-title">On this page</h2>
+          <ol>
+            <li><a href="#who">Who you are dealing with</a></li>
+            <li><a href="#use">Using this website</a></li>
+            <li><a href="#accounts">Your account</a></li>
+            <li><a href="#orders">Orders and acceptance</a></li>
+            <li><a href="#pricing">Prices, taxes and fees</a></li>
+            <li><a href="#payment">Payment</a></li>
+            <li><a href="#delivery">Delivery</a></li>
+            <li><a href="#returns">Returns, refunds and exchanges</a></li>
+            <li><a href="#cancellation">Cancellation</a></li>
+            <li><a href="#your-responsibilities">Your responsibilities</a></li>
+            <li><a href="#ip">Intellectual property</a></li>
+            <li><a href="#reviews">Reviews and user content</a></li>
+            <li><a href="#liability">Limitation of liability</a></li>
+            <li><a href="#disputes">Disputes and governing law</a></li>
+            <li><a href="#changes">Changes</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ol>
+        </nav>
+
+        <div class="prose">
+          <h2 id="who">1. Who you are dealing with</h2>
+          <p>
+            This website is operated by <strong><%= biz.tradingName %></strong><% if (biz.legalEntity) { %>, the trading
+            name of <strong><%= biz.legalEntity %></strong><% } %>.
+          </p>
+          <% if (!biz.legalEntity || !biz.address) { %>
+            <div class="callout callout--warn">
+              <strong>Business identity is incomplete on this deployment.</strong>
+              Legal entity, registered address, GSTIN and grievance officer are supplied through configuration.
+              Until they are filled in, this Terms page is <strong>not ready for publication</strong> and the store must
+              not take real orders. See <a href="/business-details">business details</a>.
+            </div>
+          <% } %>
+          <p>
+            Address: <strong><%= biz.address || 'not configured' %></strong> ·
+            Email: <strong><%= biz.email || 'not configured' %></strong> ·
+            Phone: <strong><%= biz.phone || 'not configured' %></strong>
+          </p>
+
+          <h2 id="use">2. Using this website</h2>
+          <p>By browsing or buying, you agree to these terms. If you do not agree, simply stop using the site.</p>
+          <p>You agree not to:</p>
+          <ul>
+            <li>use the site for anything unlawful, or in a way that interferes with other customers;</li>
+            <li>attempt to access accounts, data or systems you are not authorised to access;</li>
+            <li>scrape, copy or resell our content, product data or images;</li>
+            <li>submit false orders, false reviews, or abuse the support and returns processes;</li>
+            <li>attempt to circumvent security measures, rate limits or payment verification.</li>
+          </ul>
+
+          <h2 id="accounts">3. Your account</h2>
+          <ul>
+            <li>You are responsible for keeping your password confidential. Tell us immediately if you think someone
+              else has access.</li>
+            <li>You must give accurate information. Orders ship to the address you provide.</li>
+            <li>You must be 18 or over to create an account or place an order.</li>
+            <li>We may suspend an account we reasonably believe is being used for fraud, abuse or to harm others, and
+              we will tell you why.</li>
+          </ul>
+
+          <h2 id="orders">4. Orders and acceptance</h2>
+          <p>
+            Placing an order is an offer to buy. A contract forms when we confirm the order — you will see a
+            confirmation page with an order reference, and a confirmation message is queued to your email address.
+          </p>
+          <p>We may decline or cancel an order if:</p>
+          <ul>
+            <li>the item is out of stock (stock is checked again at the moment you place the order);</li>
+            <li>a price or product description was clearly wrong and the error is obvious to a reasonable person;</li>
+            <li>we cannot deliver to the address because the PIN code is not serviceable;</li>
+            <li>we suspect fraud, or a payment is reversed or declined;</li>
+            <li>the order was placed by someone under 18.</li>
+          </ul>
+          <p>
+            If we cancel, we tell you why and refund any amount charged in full within 5–7 working days. We do not
+            silently substitute products.
+          </p>
+
+          <h2 id="pricing">5. Prices, taxes and fees</h2>
+          <ul>
+            <li>All prices are in Indian Rupees and <strong>include GST at 18%</strong>. The tax component is itemised
+              on your order summary and invoice.</li>
+            <li>Shipping is ₹79, free over ₹1,499. It is displayed in your bag and at checkout before you pay.</li>
+            <li>Cash on delivery, where enabled, carries a ₹49 fee that appears in the total the moment you select it.</li>
+            <li>We do not add handling, packaging, platform or “convenience” fees at any point.</li>
+            <li>If we reduce a price, and we show a crossed-out comparison price, it is the lowest price at which that
+              item was offered in the 30 days before the reduction — in line with the Consumer Protection
+              (E-Commerce) (Amendment) Rules, 2026. At present we run no discounts, so no comparison prices are shown.</li>
+          </ul>
+
+          <h2 id="payment">6. Payment</h2>
+          <p>
+            Payments are processed by a payment gateway. Your card number, CVV, UPI PIN and net-banking credentials are
+            entered on the provider’s secure page and are never received or stored by us. We store the provider’s
+            payment reference, the amount and the status so we can match and refund a payment.
+          </p>
+          <p>
+            Orders are only marked paid after the gateway’s cryptographic signature has been verified. If a payment is
+            debited but the order shows unpaid, contact support with the reference and we will reconcile it.
+          </p>
+
+          <h2 id="delivery">7. Delivery</h2>
+          <p>
+            Delivery timelines are estimates, not guarantees: dispatch within 2 working days, typically 2–4 working
+            days for metro addresses and 4–7 working days elsewhere. The risk of loss passes to you on delivery. If a
+            parcel is lost in transit, we replace or refund it — see <a href="/shipping">Shipping</a>.
+          </p>
+
+          <h2 id="returns">8. Returns, refunds and exchanges</h2>
+          <p>
+            The <a href="/returns">Refund and Return Policy</a> is part of these terms and sets out eligibility, the
+            <%= returnWindow %>-day window, who pays return shipping and how long refunds take. Nothing in these terms
+            reduces your statutory consumer rights.
+          </p>
+
+          <h2 id="cancellation">9. Cancellation</h2>
+          <p>
+            You can cancel free of charge any time before dispatch, from your account page or by contacting support
+            with your order reference. Once dispatched, please use the returns process instead. We do not charge a
+            cancellation fee and we do not make you call a number that does not answer to cancel.
+          </p>
+
+          <h2 id="your-responsibilities">10. Your responsibilities</h2>
+          <ul>
+            <li>Give an accurate delivery address and a reachable phone number.</li>
+            <li>Check the item and report damage or an incorrect item within 48 hours of delivery, with photographs
+              where possible.</li>
+            <li>Follow the care guidance on the product page.</li>
+            <li>Do not send us identity documents or card details through forms or email — we do not need them.</li>
+          </ul>
+
+          <h2 id="ip">11. Intellectual property</h2>
+          <p>
+            The AESTHETICNOVA name, site design, product photography and copy belong to us or are licensed to us (see
+            the <a href="/licences">licence register</a>). You may not reuse them commercially without written
+            permission. Nothing on this site uses third-party brand logos or claimed association with any other brand.
+          </p>
+
+          <h2 id="reviews">12. Reviews and other content you submit</h2>
+          <ul>
+            <li>Reviews may only be submitted by customers with a verified order for the product.</li>
+            <li>You keep ownership of your review text and grant us a non-exclusive licence to publish it on the site.</li>
+            <li>We moderate for spam, abuse, personal data and unlawful content. We do not remove a review solely
+              because it is negative.</li>
+            <li>We will not edit the substance of your review. If we remove it, we tell you why.</li>
+          </ul>
+
+          <h2 id="liability">13. Limitation of liability</h2>
+          <p>
+            We do not exclude or limit liability where the law does not allow it, including for death or personal
+            injury caused by our negligence, for fraud, or for your statutory rights under the Consumer Protection
+            Act, 2019.
+          </p>
+          <p>
+            Subject to that: we are not liable for indirect or consequential losses (for example lost opportunity),
+            and our total liability for a claim connected to an order is limited to the amount you paid for that order.
+          </p>
+          <div class="callout callout--info">
+            This clause is a standard commercial allocation of risk. Whether a particular limitation is enforceable in
+            India is a legal question we have <strong>not</strong> had reviewed, so it is flagged for
+            <strong>NEEDS HUMAN REVIEW</strong> in the launch-readiness report.
+          </div>
+
+          <h2 id="disputes">14. Disputes and governing law</h2>
+          <p>
+            These terms are governed by the laws of India. Before any formal step, please contact us — most problems
+            are quicker to fix directly.
+          </p>
+          <ol>
+            <li><strong>Contact support</strong> with your order reference and what you want us to do.</li>
+            <li><strong>Escalate to the grievance officer</strong> through the <a href="/grievance">grievance route</a>
+              if the response does not resolve it. We acknowledge within 48 hours and aim to resolve within 15 days.</li>
+            <li><strong>Consumer commission</strong> — as a consumer in India you may approach the District, State or
+              National Consumer Disputes Redressal Commission under the Consumer Protection Act, 2019, depending on
+              the value of the claim. You do not need our permission and these terms do not require arbitration
+              instead.</li>
+            <li><strong>Data Protection Board of India</strong> — for complaints specifically about the handling of
+              your personal data.</li>
+            <li><strong>National Consumer Helpline</strong> — the Department of Consumer Affairs helpline, which we
+              intend to be a convergence partner of as required by the Consumer Protection (E-Commerce) (Amendment)
+              Rules, 2026 from 1 January 2027.</li>
+          </ol>
+          <p>
+            Jurisdiction for civil proceedings is subject to the courts that would otherwise have jurisdiction over
+            your consumer complaint; we do not attempt to force you into a distant venue.
+          </p>
+
+          <h2 id="changes">15. Changes to these terms</h2>
+          <p>
+            We may update these terms. The version and date at the top of the page change with each update, and the
+            terms that applied to your order are the ones in force when you placed it.
+          </p>
+
+          <h2 id="contact">16. Contact</h2>
+          <p>
+            <strong><%= biz.email || 'Email not configured' %></strong>
+            <% if (biz.phone) { %> · <strong><%= biz.phone %></strong><% } %>
+            <% if (biz.supportHours) { %> · <%= biz.supportHours %><% } %>
+          </p>
+          <p>Grievance officer: <strong><%= biz.grievanceOfficer || 'not yet appointed' %></strong>
+             — <a href="/grievance">submit a grievance</a>.</p>
+
+          <div class="callout callout--warn">
+            <strong>Owner review required before publication.</strong> These terms were drafted for this build. They
+            contain no invented company details, registrations or certifications, but they must be reviewed by a
+            qualified Indian lawyer against the actual business entity, its GST registration and its
+            seller obligations before they go live. That review has not happened, and the launch-readiness report
+            records this requirement as <strong>NEEDS HUMAN REVIEW</strong>.
+          </div>
+        </div>
+<%- include('_legal-close') %>

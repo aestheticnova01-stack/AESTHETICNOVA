@@ -1,0 +1,26 @@
+{
+  "name": "aestheticnova",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AESTHETICNOVA — premium minimal streetwear jewellery e-commerce (India)",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "build": "node scripts/build.js",
+    "backup": "node scripts/backup.js",
+    "seed": "node src/seed.js",
+    "test:contrast": "node tests/contrast.js",
+    "test:e2e": "node tests/e2e.js",
+    "test:a11y": "node tests/a11y.js",
+    "audit": "node tests/run-all.js && node export-report.js",
+    "report": "node export-report.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.11.1",
+    "ejs": "^7.0.2",
+    "express": "^4.22.3",
+    "multer": "^2.5.0"
+  }
+}

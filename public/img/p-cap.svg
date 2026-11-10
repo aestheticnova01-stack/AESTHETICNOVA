@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="t d">
+  <title id="t">Illustration of the AESTHETICNOVA Field Cap</title>
+  <desc id="d">Line illustration of a six-panel cotton twill cap with a curved brim and metal buckle strap, drawn in graphite grey on an off-white background. This is an illustration, not a photograph of the product.</desc>
+  <rect width="800" height="1000" fill="#F2F2EF"/>
+  <g fill="none" stroke="#2A2A2A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- crown -->
+    <path d="M258 566c0-104 64-186 142-186s142 82 142 186"/>
+    <path d="M400 380v186"/>
+    <path d="M330 396c-14 44-18 108-14 170"/>
+    <path d="M470 396c14 44 18 108 14 170"/>
+    <!-- brim -->
+    <path d="M258 566c-46 6-84 26-96 54-9 21 6 38 44 42 66 7 152 10 194 10s128-3 194-10c38-4 53-21 44-42-12-28-50-48-96-54"/>
+    <!-- top button -->
+    <circle cx="400" cy="376" r="7"/>
+    <!-- strap -->
+    <path d="M470 592c30 10 52 24 62 40"/>
+    <path d="M258 592c-30 10-52 24-62 40"/>
+    <rect x="496" y="620" width="34" height="24" rx="4" transform="rotate(18 496 620)"/>
+  </g>
+  <text x="400" y="712" font-family="Helvetica,Arial,sans-serif" font-size="15" letter-spacing="4" fill="#6B6B68" text-anchor="middle">FIELD CAP — ILLUSTRATION</text>
+  <text x="400" y="740" font-family="Helvetica,Arial,sans-serif" font-size="12" letter-spacing="2" fill="#8A8A86" text-anchor="middle">PRODUCT PHOTOGRAPHY PENDING</text>
+</svg>

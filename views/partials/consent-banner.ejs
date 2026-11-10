@@ -1,0 +1,96 @@
+<!-- Requirement 5: accessible consent banner. Non-essential categories default OFF.
+     Accept-all and reject-non-essential are the same size, same weight, same step. -->
+<section class="consent-banner" id="consent-banner" aria-labelledby="consent-title"
+         data-csrf="<%= typeof csrf !== 'undefined' ? csrf : '' %>" hidden>
+  <div class="consent-inner">
+    <div class="consent-copy">
+      <h2 id="consent-title">Your choice about cookies</h2>
+      <p>
+        We use two strictly necessary cookies to run your bag, sign-in and checkout, and to remember
+        the choice you make here. Anything else — anonymous visit counting, optional conveniences and
+        advertising — stays off until you switch it on.
+        <a href="/cookies">Read the cookie policy</a> or
+        <a href="/privacy">our privacy notice</a>.
+      </p>
+    </div>
+    <div class="consent-actions">
+      <button class="btn" type="button" data-consent-action="accept-all">Accept all</button>
+      <button class="btn btn--ghost" type="button" data-consent-action="reject-non-essential">Reject non-essential</button>
+      <button class="btn btn--ghost" type="button" data-consent-action="customize" aria-expanded="false" aria-controls="consent-prefs">
+        Customise preferences
+      </button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="consent-prefs" id="consent-prefs" hidden>
+      <form id="consent-form" method="post" action="/consent">
+        <input type="hidden" name="_csrf" value="<%= typeof csrf !== 'undefined' ? csrf : '' %>">
+        <input type="hidden" name="source" value="banner-custom">
+
+        <div class="pref-row">
+          <div>
+            <h3 id="pref-necessary">Strictly necessary <span class="badge badge--neutral">Always on</span></h3>
+            <p>Bag, sign-in, checkout and the record of your choices. The shop does not work without these, so they cannot be switched off.</p>
+          </div>
+          <div class="switch">
+            <input type="checkbox" id="pref-necessary-toggle" aria-labelledby="pref-necessary" checked disabled aria-describedby="pref-necessary">
+            <span class="track" aria-hidden="true"></span><span class="thumb" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <div class="pref-row">
+          <div>
+            <h3 id="pref-functional">Functional</h3>
+            <p>Remembers optional conveniences such as your preferred sort order. Nothing is shared with anyone. Off by default.</p>
+          </div>
+          <div>
+            <div class="switch">
+              <input type="checkbox" id="pref-functional-toggle" aria-labelledby="pref-functional" name="functional" value="1" <%= (typeof consent !== 'undefined' && consent.functional) ? 'checked' : '' %> aria-describedby="pref-functional">
+              <span class="track" aria-hidden="true"></span><span class="thumb" aria-hidden="true"></span>
+            </div>
+            <span class="pref-state" data-state-for="pref-functional-toggle"><%= (typeof consent !== 'undefined' && consent.functional) ? 'On' : 'Off' %></span>
+          </div>
+        </div>
+
+        <div class="pref-row">
+          <div>
+            <h3 id="pref-analytics">Analytics</h3>
+            <p>Counts anonymous page visits on our own server so we know which pieces people look at. No cookies, no fingerprinting, no third party. Off by default.</p>
+          </div>
+          <div>
+            <div class="switch">
+              <input type="checkbox" id="pref-analytics-toggle" aria-labelledby="pref-analytics" name="analytics" value="1" <%= (typeof consent !== 'undefined' && consent.analytics) ? 'checked' : '' %> aria-describedby="pref-analytics">
+              <span class="track" aria-hidden="true"></span><span class="thumb" aria-hidden="true"></span>
+            </div>
+            <span class="pref-state" data-state-for="pref-analytics-toggle"><%= (typeof consent !== 'undefined' && consent.analytics) ? 'On' : 'Off' %></span>
+          </div>
+        </div>
+
+        <div class="pref-row">
+          <div>
+            <h3 id="pref-marketing">Marketing</h3>
+            <p>Would let advertising platforms measure or retarget campaigns. No advertising pixel is installed on this site right now. Off by default.</p>
+          </div>
+          <div>
+            <div class="switch">
+              <input type="checkbox" id="pref-marketing-toggle" aria-labelledby="pref-marketing" name="marketing" value="1" <%= (typeof consent !== 'undefined' && consent.marketing) ? 'checked' : '' %> aria-describedby="pref-marketing">
+              <span class="track" aria-hidden="true"></span><span class="thumb" aria-hidden="true"></span>
+            </div>
+            <span class="pref-state" data-state-for="pref-marketing-toggle"><%= (typeof consent !== 'undefined' && consent.marketing) ? 'On' : 'Off' %></span>
+          </div>
+        </div>
+
+        <div class="flex-between mt-2">
+          <p class="small muted mb-0">You can change or withdraw this at any time from the footer link “Cookie settings”.</p>
+          <div class="flex" style="gap:.5rem;flex-wrap:wrap;">
+            <button class="btn btn--small" type="submit">Save my choices</button>
+            <button class="btn btn--ghost btn--small" type="button" data-consent-action="reject-non-essential">Reject non-essential</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="consent-toast" id="consent-toast" role="status" aria-live="polite" hidden></div>

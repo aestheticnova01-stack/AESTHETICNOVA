@@ -1,0 +1,68 @@
+/* ======================================
+   DESIGN SYSTEM & VARIABLES
+====================================== */
+
+/* ==========================================================================
+   AESTHETICNOVA — Design system
+   Palette is fixed by the brand brief. Every text/background pairing used
+   below is verified by tests/contrast.js (WCAG 2.2 AA).
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('/fonts/space-grotesk.woff2') format('woff2');
+  font-weight: 300 700;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+:root {
+  --bg: #F7F7F5;
+  --surface: #FFFFFF;
+  --ink: #111111;
+  --body: #595959;
+  --dark: #191919;
+  --silver: #B8BCC2;
+
+  --line: #DEDEDA;
+  --line-strong: #111111;
+  --line-dark: #333333;
+
+  /* contrast-safe muted text: 6.2:1 on --bg, 7.0:1 on white */
+  --muted: #595959;
+  --muted-on-dark: #C9C9C6;
+  --focus: #0B5CD5;
+  --focus-on-dark: #8FC1FF;
+  --danger: #A32020;
+  --danger-bg: #FBEDED;
+  --success: #1D5B33;
+  --success-bg: #EDF6F0;
+  --warn-bg: #FDF6E7;
+  --warn: #6E4B00;
+  --info-bg: #EEF3FA;
+  --info: #1B4B87;
+
+  --display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --text: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+
+  --step--1: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --step-0: clamp(0.9375rem, 0.9rem + 0.2vw, 1rem);
+  --step-1: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
+  --step-2: clamp(1.375rem, 1.2rem + 0.9vw, 1.875rem);
+  --step-3: clamp(1.75rem, 1.4rem + 1.8vw, 2.75rem);
+  --step-4: clamp(2.25rem, 1.5rem + 3.6vw, 4.25rem);
+  --step-5: clamp(2.75rem, 1.2rem + 7vw, 7rem);
+
+  --gutter: clamp(1.125rem, 4vw, 3.5rem);
+  --max: 1480px;
+  --radius: 2px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+

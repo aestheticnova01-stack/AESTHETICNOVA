@@ -1,0 +1,25 @@
+<%- include('_layout') %>
+<p class="eyebrow">Privacy</p>
+<h1 class="display-m mb-1">Consent receipts</h1>
+<p class="lede mb-3" style="max-width:70ch;">
+  Every accept, reject, custom save and withdrawal produces an immutable receipt. IP addresses are stored only as a
+  one-way hash, so this log proves consent without retaining a visitor’s network address.
+</p>
+<table class="admin-table">
+  <thead><tr><th>Receipt</th><th>Received</th><th>Policy</th><th>Functional</th><th>Analytics</th><th>Marketing</th><th>Source</th><th>Withdrawn</th></tr></thead>
+  <tbody>
+    <% receipts.forEach(function (r) { %>
+      <tr>
+        <td class="small"><%= r.id %></td>
+        <td><%= fmtDateTime(r.received_at) %></td>
+        <td><%= r.policy_version %></td>
+        <td><%= r.functional ? 'on' : 'off' %></td>
+        <td><%= r.analytics ? 'on' : 'off' %></td>
+        <td><%= r.marketing ? 'on' : 'off' %></td>
+        <td><%= r.source %><%= r.gpc ? ' (GPC)' : '' %></td>
+        <td><%= r.withdrawn_at ? fmtDateTime(r.withdrawn_at) : '—' %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+<%- include('_layout-end') %>

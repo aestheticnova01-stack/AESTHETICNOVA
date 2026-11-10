@@ -1,0 +1,51 @@
+<%- include('_layout') %>
+<p class="eyebrow">Governance</p>
+<h1 class="display-m mb-1">Retention &amp; erasure job</h1>
+<p class="lede mb-3" style="max-width:75ch;">
+  The Privacy Policy says retention is enforced by a documented job. This is that job, and this page is the
+  dry run. Every rule below maps to a row in <a href="/privacy#retention" target="_blank" rel="noopener">§9 of the Privacy Policy</a>.
+</p>
+
+<% if (applied) { %><div class="alert alert--success" role="status">Retention job applied. Changes are recorded in the audit log.</div><% } %>
+
+<table class="admin-table mb-3">
+  <caption class="sr-only">Retention rules and the number of records each would affect</caption>
+  <thead><tr><th scope="col">Rule</th><th scope="col">What it removes</th><th scope="col">Records affected now</th></tr></thead>
+  <tbody>
+    <% report.forEach(function (r) { %>
+      <tr>
+        <td><code><%= r.rule %></code></td>
+        <td><%= r.description %></td>
+        <td><%= r.affected === -1 ? 'could not count' : r.affected %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+
+<div class="btn-row">
+  <form method="post" action="/admin/retention/run">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <input type="hidden" name="dry_run" value="1">
+    <button class="btn btn--ghost btn--small" type="submit">Re-run dry run</button>
+  </form>
+  <form method="post" action="/admin/retention/run" data-confirm="Apply the retention job now? Matching records are permanently deleted.">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <button class="btn btn--small" type="submit">Apply now</button>
+  </form>
+</div>
+
+<h2 class="eyebrow mt-3">Last applied run</h2>
+<% if (!lastRun) { %>
+  <p class="small muted">
+    <strong>This job has never been applied on this deployment.</strong> It is not scheduled automatically here —
+    the host must run <code>node src/retention.js</code> on a timer (documented in
+    <code>docs/SECURITY-OPERATIONS.md</code>). The launch-readiness report records scheduling as NOT CONFIGURED until
+    that timer exists.
+  </p>
+<% } else { %>
+  <dl class="kv">
+    <dt>Run at</dt><dd><%= fmtDateTime(lastRun.at) %></dd>
+    <dt>Detail</dt><dd><%= lastRun.detail %></dd>
+  </dl>
+<% } %>
+<%- include('_layout-end') %>

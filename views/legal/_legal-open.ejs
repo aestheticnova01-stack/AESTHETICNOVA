@@ -1,0 +1,23 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath }) %>
+<%- include('../partials/header') %>
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <nav aria-label="Breadcrumb"><ol class="breadcrumb"><li><a href="/">Home</a></li><li aria-current="page"><%= legalTitle %></li></ol></nav>
+      <h1><%= legalTitle %></h1>
+      <p class="lede mt-1" style="max-width:70ch;"><%= legalLede %></p>
+      <p class="small muted mt-2">Version <%= policyVersion %> · Last updated 3 November 2026 · Plain-English summary first, detail after</p>
+    </div>
+  </div>
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="alert alert--warn no-print" style="max-width:96ch;">
+        <h2>Review status — please read</h2>
+        <p>
+          This document was drafted for this build and has <strong>not been reviewed by an Indian lawyer</strong>.
+          It is marked <strong>NEEDS HUMAN REVIEW</strong> in our launch-readiness report. Do not treat it as legal
+          advice or as evidence of compliance. Business-specific blanks (legal entity, address, GSTIN, grievance
+          officer) are filled from configuration and show as “not configured” until the business supplies them.
+        </p>
+      </div>
+      <div class="legal-layout">

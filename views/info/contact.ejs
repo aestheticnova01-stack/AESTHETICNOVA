@@ -1,0 +1,173 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <nav aria-label="Breadcrumb">
+        <ol class="breadcrumb"><li><a href="/">Home</a></li><li aria-current="page"><%= kind === 'grievance' ? 'Grievance' : 'Contact' %></li></ol>
+      </nav>
+      <h1><%= kind === 'grievance' ? 'File a grievance' : 'Contact & support' %></h1>
+      <p class="lede mt-1">
+        <%= kind === 'grievance'
+          ? 'A formal complaint goes straight to the grievance officer, with a written acknowledgement and a recorded resolution timeline.'
+          : 'Real people read these. Every message gets a reference number you can use to check status.' %>
+      </p>
+    </div>
+  </div>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="two-col" style="align-items:start;">
+        <div>
+          <% if (submitted) { %>
+            <div class="alert alert--success" role="status">
+              <h2>Message received</h2>
+              <p>Your reference is <strong><%= submitted.ref %></strong>. Keep this page open or
+                <a href="/support/status?ref=<%= submitted.ref %>&key=<%= submitted.key %>">check its status</a>.</p>
+            </div>
+          <% } %>
+
+          <% if (errors.form) { %><div class="alert alert--error" role="alert"><%= errors.form %></div><% } %>
+
+          <nav class="account-nav" aria-label="Message type">
+            <a class="chip <%= kind === 'contact' ? 'is-active' : '' %>" href="/contact">General question</a>
+            <a class="chip <%= kind === 'support' ? 'is-active' : '' %>" href="/contact?kind=support">Order issue</a>
+            <a class="chip <%= kind === 'returns' ? 'is-active' : '' %>" href="/contact?kind=returns">Return or refund</a>
+            <a class="chip <%= kind === 'grievance' ? 'is-active' : '' %>" href="/grievance">Formal grievance</a>
+          </nav>
+
+          <form method="post" action="/contact" novalidate>
+            <input type="hidden" name="_csrf" value="<%= csrf %>">
+            <input type="hidden" name="form_ts" value="<%= Date.now() %>">
+            <input type="hidden" name="kind" value="<%= kind %>">
+            <div class="hp-field" aria-hidden="true">
+              <label for="c-company">Company</label>
+              <input id="c-company" type="text" name="company_website" tabindex="-1" autocomplete="off">
+            </div>
+
+            <p class="form-note">
+              <strong>What this form collects and why.</strong> Your name, email and message so we can reply and
+              keep a record of what was agreed. The mobile number and order reference are optional — they help us act
+              faster if the issue is about a specific order. We delete support records
+              <strong>24 months</strong> after the last contact, unless the issue is tied to an order record we must
+              keep for tax purposes. <a href="/privacy#retention">Retention detail</a>.
+            </p>
+
+            <div class="field <%= errors.name ? 'has-error' : '' %>">
+              <label for="c-name">Your name</label>
+              <input id="c-name" name="name" type="text" autocomplete="name" required
+                     value="<%= values.name || '' %>" <%= errors.name ? 'aria-invalid="true" aria-describedby="c-name-error"' : '' %>>
+              <% if (errors.name) { %><p class="error-text" id="c-name-error"><%= errors.name %></p><% } %>
+            </div>
+
+            <div class="field <%= errors.email ? 'has-error' : '' %>">
+              <label for="c-email">Email for our reply</label>
+              <input id="c-email" name="email" type="email" autocomplete="email" required
+                     value="<%= values.email || user && user.email || '' %>"
+                     <%= errors.email ? 'aria-invalid="true" aria-describedby="c-email-error"' : '' %>>
+              <% if (errors.email) { %><p class="error-text" id="c-email-error"><%= errors.email %></p><% } %>
+            </div>
+
+            <div class="field-row">
+              <div class="field <%= errors.phone ? 'has-error' : '' %>">
+                <label for="c-phone">Mobile <span class="muted">(optional)</span></label>
+                <input id="c-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national"
+                       value="<%= values.phone || '' %>">
+                <% if (errors.phone) { %><p class="error-text"><%= errors.phone %></p><% } %>
+              </div>
+              <div class="field <%= errors.order_ref ? 'has-error' : '' %>">
+                <label for="c-order">Order reference <span class="muted">(optional)</span></label>
+                <input id="c-order" name="order_ref" type="text" value="<%= values.order_ref || prefill.order_ref || '' %>"
+                       placeholder="AN-261103-A1B2C3"
+                       <%= errors.order_ref ? 'aria-invalid="true" aria-describedby="c-order-error"' : '' %>>
+                <% if (errors.order_ref) { %><p class="error-text" id="c-order-error"><%= errors.order_ref %></p><% } %>
+              </div>
+            </div>
+
+            <div class="field <%= errors.subject ? 'has-error' : '' %>">
+              <label for="c-subject"><%= kind === 'grievance' ? 'Summary of the complaint' : 'Subject' %></label>
+              <input id="c-subject" name="subject" type="text" required maxlength="140"
+                     value="<%= values.subject || '' %>" <%= errors.subject ? 'aria-invalid="true" aria-describedby="c-subject-error"' : '' %>>
+              <% if (errors.subject) { %><p class="error-text" id="c-subject-error"><%= errors.subject %></p><% } %>
+            </div>
+
+            <div class="field <%= errors.message ? 'has-error' : '' %>">
+              <label for="c-message">Message</label>
+              <textarea id="c-message" name="message" required minlength="20" maxlength="3000"
+                        aria-describedby="c-message-hint <%= errors.message ? 'c-message-error' : '' %>"><%= values.message || '' %></textarea>
+              <p class="hint" id="c-message-hint">
+                Include dates, what you expected and what happened. Please do not paste card numbers, UPI PINs or
+                identity document numbers — we never need them.
+              </p>
+              <% if (errors.message) { %><p class="error-text" id="c-message-error"><%= errors.message %></p><% } %>
+            </div>
+
+            <label class="check">
+              <input type="checkbox" name="marketing_consent" value="1" <%= values.marketing_consent ? 'checked' : '' %>>
+              <span class="check-text">
+                <strong>Email me about new drops</strong>
+                <span class="small">Optional and unrelated to your support request. Unticked by default, and your
+                  message gets the same priority either way.</span>
+              </span>
+            </label>
+
+            <button class="btn" type="submit">
+              <%= kind === 'grievance' ? 'Submit grievance' : 'Send message' %>
+            </button>
+            <p class="small muted mt-1">
+              You will get a reference number immediately, even though email delivery is
+              <strong><%= biz.email ? 'handled by the support team' : 'not configured on this deployment' %></strong>.
+            </p>
+          </form>
+        </div>
+
+        <aside>
+          <h2 class="eyebrow">Support details</h2>
+          <dl class="kv">
+            <dt>Email</dt>
+            <dd><%= biz.email ? '<a href="mailto:' + biz.email + '">' + biz.email + '</a>' : '<span class="env-flag">Not configured</span>' %></dd>
+            <dt>Phone</dt>
+            <dd><%= biz.phone ? '<a href="tel:' + biz.phone.replace(/[^\d+]/g, '') + '">' + biz.phone + '</a>' : '<span class="env-flag">Not configured</span>' %></dd>
+            <dt>Hours</dt>
+            <dd><%= biz.supportHours || '<span class="env-flag">Not configured</span>' %></dd>
+            <dt>Grievance officer</dt>
+            <dd><%= biz.grievanceOfficer || '<span class="env-flag">Not appointed</span>' %></dd>
+            <dt>Grievance email</dt>
+            <dd><%= biz.grievanceEmail ? '<a href="mailto:' + biz.grievanceEmail + '">' + biz.grievanceEmail + '</a>' : '<span class="env-flag">Not configured</span>' %></dd>
+          </dl>
+
+          <h2 class="eyebrow mt-3">Response targets</h2>
+          <ul class="small">
+            <li><strong>General question:</strong> within 2 working days.</li>
+            <li><strong>Order or product issue:</strong> within 1 working day.</li>
+            <li><strong>Formal grievance:</strong> acknowledged within 48 hours, resolved within 15 days. If we
+              cannot resolve it, we will say so in writing and explain the next step.</li>
+          </ul>
+          <p class="small muted">
+            These are our targets as a business, and they sit inside the statutory complaint handling expected of
+            e-commerce sellers in India. The grievance route is your right either way.
+          </p>
+
+          <h2 class="eyebrow mt-3">Check an existing message</h2>
+          <p class="small">
+            Use the reference and private link you received.
+            <a href="/support/status">Open the status page</a>.
+          </p>
+
+          <h2 class="eyebrow mt-3">Data requests</h2>
+          <p class="small">
+            For access, correction or deletion of your data, use
+            <a href="/privacy-requests">Privacy &amp; Data Requests</a> — it creates a tracked request
+            rather than an email in an inbox.
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

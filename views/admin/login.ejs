@@ -1,0 +1,44 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<%- include('../partials/header') %>
+<main id="main" tabindex="-1">
+  <div class="wrap section">
+    <div style="max-width:440px;">
+      <p class="eyebrow">Restricted</p>
+      <h1 class="display-m" style="margin-bottom:1.25rem;">Admin sign in</h1>
+
+      <% if (defaultPassword) { %>
+        <div class="alert alert--warn" role="alert">
+          <h2>Default credentials in use</h2>
+          <p>
+            This server is running with the built-in fallback admin password because
+            <code>ADMIN_PASSWORD</code> is not set. That is a launch blocker and is reported as such in
+            <a href="/launch-readiness">the launch-readiness report</a>. Set the environment variable before going live.
+          </p>
+        </div>
+      <% } %>
+
+      <% if (errors.form) { %><div class="alert alert--error" role="alert"><%= errors.form %></div><% } %>
+
+      <form method="post" action="/admin/login" novalidate>
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <input type="hidden" name="next" value="<%= next %>">
+        <div class="field">
+          <label for="a-email">Admin email</label>
+          <input id="a-email" name="email" type="email" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="a-pass">Password</label>
+          <input id="a-pass" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button class="btn btn--block" type="submit">Sign in</button>
+      </form>
+      <p class="small muted mt-2">
+        Rate limited to 6 attempts per 15 minutes per connection. Sign-in failures are logged as security events.
+      </p>
+    </div>
+  </div>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

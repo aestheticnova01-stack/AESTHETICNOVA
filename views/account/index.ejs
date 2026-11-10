@@ -1,0 +1,110 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="wrap section">
+    <% if (welcome) { %>
+      <div class="alert alert--success" role="status">
+        <h2>Account created</h2>
+        <p>You are signed in as <%= user.email %>. Nothing has been added to any mailing list unless you ticked the box.</p>
+      </div>
+    <% } %>
+
+    <div class="flex-between mb-3">
+      <div>
+        <p class="eyebrow">Account</p>
+        <h1 class="display-m">Hello, <%= user.full_name.split(' ')[0] %></h1>
+      </div>
+      <form method="post" action="/account/logout">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <button class="btn btn--ghost btn--small" type="submit">Sign out</button>
+      </form>
+    </div>
+
+    <nav class="account-nav" aria-label="Account sections">
+      <a class="chip is-active" href="/account" aria-current="page">Orders</a>
+      <a class="chip" href="/account/wishlist">Wishlist</a>
+      <a class="chip" href="/account/profile">Your details</a>
+      <a class="chip" href="/privacy-requests">Privacy &amp; data requests</a>
+    </nav>
+
+    <div class="two-col" style="align-items:start;">
+      <section aria-labelledby="orders-title">
+        <h2 id="orders-title" class="eyebrow">Your orders</h2>
+        <% if (!orders.length) { %>
+          <div class="empty-state">
+            <h3>No orders yet</h3>
+            <p>When you place an order it will appear here, with a link to cancel before dispatch.</p>
+            <p class="mt-2"><a class="btn btn--small" href="/shop">Shop all pieces</a></p>
+          </div>
+        <% } else { %>
+          <% orders.forEach(function (o) { %>
+            <article class="order-card">
+              <div class="oc-head">
+                <div>
+                  <strong><%= o.ref %></strong><br>
+                  <span class="small muted"><%= fmtDate(o.created_at) %> · <%= o.items %> item<%= o.items === 1 ? '' : 's' %> · <%= inr(o.total_paise) %></span>
+                </div>
+                <span class="status-pill" data-s="<%= o.order_status %>"><%= o.order_status %></span>
+              </div>
+              <div class="flex-between">
+                <span class="small muted">
+                  <%= o.payment_method === 'cod' ? 'Cash on delivery' : o.payment_method.toUpperCase() %> ·
+                  payment <%= o.payment_status.replace('_', ' ') %>
+                </span>
+                <a class="link-quiet" href="/account/orders/<%= o.ref %>">View order</a>
+              </div>
+              <% if (['placed', 'processing'].includes(o.order_status)) { %>
+                <form method="post" action="/order/<%= o.ref %>/cancel" class="mt-1"
+                      data-confirm="Cancel order <%= o.ref %>? Any payment is refunded to the original method.">
+                  <input type="hidden" name="_csrf" value="<%= csrf %>">
+                  <button class="remove-btn" type="submit">Cancel this order</button>
+                </form>
+              <% } %>
+            </article>
+          <% }); %>
+        <% } %>
+      </section>
+
+      <aside>
+        <section aria-labelledby="privacy-title">
+          <h2 id="privacy-title" class="eyebrow">Your privacy requests</h2>
+          <% if (!requests.length) { %>
+            <p class="small muted">
+              No requests raised. You can ask for a copy of your data, a correction, or deletion at any time from
+              <a href="/privacy-requests">Privacy &amp; Data Requests</a>.
+            </p>
+          <% } else { %>
+            <ul class="small" style="padding-left:1.1rem;">
+              <% requests.forEach(function (r) { %>
+                <li>
+                  <strong><%= r.ref %></strong> — <%= r.request_type.replace('_', ' ') %> ·
+                  <%= r.status %> · raised <%= fmtDate(r.created_at) %>
+                </li>
+              <% }); %>
+            </ul>
+          <% } %>
+        </section>
+
+        <section class="mt-3" aria-labelledby="pref-title">
+          <h2 id="pref-title" class="eyebrow">Current preferences</h2>
+          <dl class="kv">
+            <dt>Marketing email</dt>
+            <dd><%= user.marketing_consent ? 'On — you opted in' : 'Off — not subscribed' %></dd>
+            <dt>Analytics cookies</dt>
+            <dd><%= consent.analytics ? 'On' : 'Off' %></dd>
+            <dt>Marketing cookies</dt>
+            <dd><%= consent.marketing ? 'On' : 'Off' %></dd>
+          </dl>
+          <p class="small mt-1"><a href="/account/profile">Change details or marketing preference</a></p>
+          <p class="small"><button class="link-quiet" type="button" data-consent-open="account">Open cookie settings</button></p>
+        </section>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

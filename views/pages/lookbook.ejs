@@ -1,0 +1,51 @@
+<%- include('partials/head', { pageTitle, metaDescription, canonicalPath }) %>
+<%- include('partials/header') %>
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <nav aria-label="Breadcrumb"><ol class="breadcrumb"><li><a href="/">Home</a></li><li aria-current="page">Lookbook</li></ol></nav>
+      <h1>Wear it your way</h1>
+      <p class="lede mt-1">Four ways we style the current pieces. No borrowed campaign imagery, no logos that are not ours.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="look-grid mb-3">
+        <figure class="look-tile" style="margin:0;">
+          <img src="/img/lookbook-01.jpg" alt="Adult model in a grey oversized blazer and white tank wearing a chunky stainless steel chain necklace, a heavy signet ring and small silver-toned hoops." width="1000" height="1250" decoding="async">
+          <figcaption><strong>Look 01 — Layered minimal</strong>Heavy Curb Chain + Monolith Signet. Styled over tailoring to keep the metal the loudest thing in the frame.</figcaption>
+        </figure>
+        <figure class="look-tile" style="margin:0;">
+          <img src="/img/lookbook-02.jpg" alt="Close crop of a wrist and hand wearing a flat-link stainless steel bracelet and two silver-toned rings against a black denim sleeve." width="1000" height="1250" decoding="async">
+          <figcaption><strong>Look 02 — Wrist detail</strong>Flat Link Bracelet stacked with the Line Band. Both solid steel, no plating layer to wear through.</figcaption>
+        </figure>
+      </div>
+
+      <div class="look-grid">
+        <figure class="look-tile" style="margin:0;aspect-ratio:4/3;">
+          <img src="/img/hero-editorial.jpg" alt="Two adult models in charcoal and grey streetwear wearing stainless steel chains, a signet ring and hoop earrings against a warm off-white wall." width="1200" height="900" loading="lazy" decoding="async">
+          <figcaption><strong>Look 03 — Same chain, two people</strong>Straight and layered. The 50 cm Heavy Curb reads differently on a shorter neckline, which is why we make three lengths.</figcaption>
+        </figure>
+        <figure class="look-tile" style="margin:0;aspect-ratio:4/3;">
+          <img src="/img/cat-earrings.jpg" alt="Three pairs of small polished stainless steel earrings arranged on a warm off-white surface." width="1000" height="750" loading="lazy" decoding="async">
+          <figcaption><strong>Look 04 — Ear stack</strong>Small Hoop, Square Stud and Huggie. Buy them separately and build the stack as you like — we do not bundle them into a set you cannot break.</figcaption>
+        </figure>
+      </div>
+
+      <div class="alert alert--info mt-3" style="max-width:820px;">
+        <h2>About these images</h2>
+        <p>
+          Every image on this site was created for AESTHETICNOVA for this build and is recorded in our
+          <a href="/licences">asset licence register</a>. They are styling references generated for the brand — they are
+          not photographs of real customers, and we do not present them as customer photos or as unretouched
+          assessments of how a piece looks on you.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('partials/footer') %>
+<%- include('partials/consent-banner') %>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<%- include('_layout') %>
+<p class="eyebrow">Configuration</p>
+<h1 class="display-m mb-2">Store settings</h1>
+<% if (saved) { %><div class="alert alert--success" role="status">Settings saved.</div><% } %>
+
+<p class="form-note">
+  Business identity details (legal entity, address, GSTIN, grievance officer) come from environment variables
+  on purpose, so they are reviewed in one place and never typed into a web form by mistake. Amounts here are
+  in paise (₹1 = 100).
+</p>
+
+<form method="post" action="/admin/settings" style="max-width:560px;">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <% rows.forEach(function (r) {
+       var isDate = /_at$/.test(r.key) && /^\d{4}-\d{2}-\d{2}T/.test(String(r.value || ''));
+       var label = r.key.replace(/_/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+  %>
+    <div class="field">
+      <label for="s-<%= r.key %>">
+        <%= label %>
+        <% if (isDate) { %><span class="small muted"> — recorded <%= fmtDateTime(r.value) %></span><% } %>
+      </label>
+      <input id="s-<%= r.key %>" name="<%= r.key %>" type="text" value="<%= r.value %>"
+             <% if (isDate) { %>aria-describedby="d-<%= r.key %>"<% } %>>
+      <% if (isDate) { %>
+        <p class="small muted" id="d-<%= r.key %>" style="margin:.3rem 0 0;">
+          Stored as an ISO-8601 timestamp in UTC. Edit only to correct the record; the audit log keeps the original.
+        </p>
+      <% } %>
+    </div>
+  <% }); %>
+  <button class="btn" type="submit">Save settings</button>
+</form>
+
+<h2 class="eyebrow mt-3">Values that are not editable here</h2>
+<dl class="kv">
+  <dt>Payment mode</dt><dd><%= paymentMode %><%= paymentsLive ? ' (live keys present)' : ' (simulator — no money moves)' %></dd>
+  <dt>COD enabled</dt><dd><%= codEnabled ? 'Yes' : 'No' %></dd>
+  <dt>Return window</dt><dd><%= returnWindow %> days</dd>
+  <dt>GST rate</dt><dd>18% inclusive (statutory — set in code, not here)</dd>
+  <dt>Email/SMS provider</dt><dd><span class="env-flag">Not configured</span> — notifications are logged to the outbox only</dd>
+</dl>
+<%- include('_layout-end') %>

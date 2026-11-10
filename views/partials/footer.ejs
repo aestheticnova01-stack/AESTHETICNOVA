@@ -1,0 +1,92 @@
+<footer class="site-footer on-dark" id="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="/">AESTHETIC<span>NOVA</span></a>
+        <p>Stainless steel jewellery and streetwear essentials, made for everyday wear. Designed and assembled in India.</p>
+        <div class="pay-badges" aria-label="Payment methods accepted">
+          <span class="pay-badge">UPI</span>
+          <span class="pay-badge">Cards</span>
+          <span class="pay-badge">Net banking</span>
+          <% if (codEnabled) { %><span class="pay-badge">COD</span><% } %>
+        </div>
+      </div>
+
+      <nav class="footer-col" aria-labelledby="f-shop">
+        <h2 id="f-shop">Shop</h2>
+        <ul>
+          <li><a href="/shop?category=rings">Rings</a></li>
+          <li><a href="/shop?category=chains">Chains</a></li>
+          <li><a href="/shop?category=pendants">Pendants</a></li>
+          <li><a href="/shop?category=bracelets">Bracelets</a></li>
+          <li><a href="/shop?category=earrings">Earrings</a></li>
+          <li><a href="/shop?category=accessories">Accessories</a></li>
+          <li><a href="/shop?sort=new">New arrivals</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-labelledby="f-help">
+        <h2 id="f-help">Help</h2>
+        <ul>
+          <li><a href="/track-order">Track your order</a></li>
+          <li><a href="/returns">Returns &amp; refunds</a></li>
+          <li><a href="/shipping">Shipping &amp; delivery</a></li>
+          <li><a href="/contact">Contact &amp; support</a></li>
+          <li><a href="/grievance">File a grievance</a></li>
+          <li><a href="/size-guide">Size guide</a></li>
+          <li><a href="/faq">FAQs</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-labelledby="f-legal">
+        <h2 id="f-legal">Privacy &amp; legal</h2>
+        <ul>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms of Service</a></li>
+          <li><a href="/returns">Refund &amp; Return Policy</a></li>
+          <li><a href="/cookies">Cookie Policy</a></li>
+          <li><a href="/privacy-requests">Privacy &amp; Data Requests</a></li>
+          <li><a href="/accessibility">Accessibility statement</a></li>
+          <li><a href="/transparency">Transparency &amp; audits</a></li>
+          <li><a href="/business-details">Business details</a></li>
+          <li><a href="/licences">Font &amp; image licences</a></li>
+          <li>
+            <button class="linklike" type="button" data-consent-open="footer">
+              Cookie settings
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="footer-col">
+        <h2 id="f-contact">Contact</h2>
+        <address>
+          <% if (biz.address) { %><%= biz.address %><br><% } %>
+          <% if (biz.email) { %><a href="mailto:<%= biz.email %>"><%= biz.email %></a><br><% } %>
+          <% if (biz.phone) { %><a href="tel:<%= biz.phone.replace(/[^\d+]/g, '') %>"><%= biz.phone %></a><br><% } %>
+          <% if (biz.supportHours) { %><%= biz.supportHours %><% } %>
+        </address>
+        <% if (!businessConfigured) { %>
+          <p class="small" style="color:#E8D6A8;margin-top:.6rem;">
+            Business contact details are not yet configured on this deployment.
+            <a href="/business-details" style="color:#fff;text-decoration:underline;">See what is missing</a>.
+          </p>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="footer-base">
+      <p class="mb-0">&copy; <%= new Date().getFullYear() %> <%= biz.tradingName %>. All rights reserved.</p>
+      <p class="mb-0">
+        Prices in INR, inclusive of GST. Grievance officer:
+        <%= typeof biz !== 'undefined' && biz.grievanceOfficer ? biz.grievanceOfficer : 'not yet appointed' %>
+      </p>
+    </div>
+    <p class="footer-legal-note">
+      <%= typeof biz !== 'undefined' ? biz.tradingName : 'AESTHETICNOVA' %> sells directly to consumers in India. This site is built for the
+      Consumer Protection Act, 2019 and the Digital Personal Data Protection Act, 2023 framework.
+      Policy version <%= typeof policyVersion !== 'undefined' ? policyVersion : '2026-11-03' %>. Nothing on this site is legal advice, and the legal
+      pages are marked for professional review before publication.
+    </p>
+  </div>
+</footer>

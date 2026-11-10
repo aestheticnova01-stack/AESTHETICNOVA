@@ -1,0 +1,237 @@
+<%- include('partials/head', { pageTitle, metaDescription, canonicalPath, structuredData }) %>
+<%- include('partials/header') %>
+
+<main id="main" tabindex="-1">
+
+  <!-- ============================== HERO ============================== -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Est. India · Stainless steel jewellery</p>
+          <h1 id="hero-title">
+            <span class="line">Your style.</span>
+            <span class="line">Your signature.</span>
+          </h1>
+          <p class="hero-sub">Everyday essentials. Unordinary details.</p>
+          <div class="hero-actions">
+            <a class="btn" href="/shop">Shop now</a>
+            <a class="btn btn--ghost" href="/shop?sort=new">Explore new drops</a>
+          </div>
+        </div>
+        <div class="hero-media">
+          <img src="/img/hero-editorial.jpg" width="1200" height="1500"
+               alt="Two adult models in minimal charcoal and grey streetwear, wearing a chunky silver-tone stainless steel curb chain, a heavy signet ring and small hoop earrings, photographed against a warm off-white studio wall."
+               fetchpriority="high" decoding="async">
+          <div class="hero-meta" aria-hidden="true">
+            <span>01 — Editorial</span><span>Steel · 100%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-inner">
+      <span>Free shipping over ₹1,499</span><span>·</span>
+      <span>7-day returns on unused items</span><span>·</span>
+      <span>GST included, always</span><span>·</span>
+      <span>No surprise fees at checkout</span><span>·</span>
+      <span>Made in India</span><span>·</span>
+      <span>Free shipping over ₹1,499</span><span>·</span>
+      <span>7-day returns on unused items</span><span>·</span>
+      <span>GST included, always</span><span>·</span>
+      <span>No surprise fees at checkout</span><span>·</span>
+      <span>Made in India</span><span>·</span>
+    </div>
+  </div>
+
+  <!-- ============================ CATEGORIES ========================== -->
+  <section class="section" aria-labelledby="cat-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">01 — Shop by category</p>
+          <h2 id="cat-title">Find your form</h2>
+        </div>
+        <a class="section-link" href="/shop">View all pieces</a>
+      </div>
+      <div class="cat-grid">
+        <% categories.forEach(function (c) { %>
+          <a class="cat-card" href="/shop?category=<%= c.slug %>">
+            <img src="<%= c.image %>" alt="<%= c.alt %>" width="600" height="800" loading="lazy" decoding="async">
+            <span class="cat-label">
+              <strong><%= c.name %></strong>
+              <span><%= c.tagline %></span>
+            </span>
+          </a>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= TRENDING =========================== -->
+  <section class="section section--tight" aria-labelledby="trend-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">02 — Current rotation</p>
+          <h2 id="trend-title">What people are wearing</h2>
+        </div>
+        <a class="section-link" href="/shop">Shop all</a>
+      </div>
+      <div class="product-grid">
+        <% trending.forEach(function (p) { %>
+          <%- include('partials/product-card', { p, wishlistIds }) %>
+        <% }); %>
+      </div>
+      <p class="small muted mt-2 measure">
+        “Current rotation” is our own merchandising selection, not a sales ranking or a paid placement.
+        Stock counts shown on each card are the real numbers in our inventory.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================== LATEST DROP =========================== -->
+  <section class="section" aria-labelledby="drop-title" style="background:var(--surface);border-block:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">03 — The latest drop</p>
+          <h2 id="drop-title">New in</h2>
+        </div>
+        <a class="section-link" href="/shop?sort=new">See everything new</a>
+      </div>
+      <div class="product-grid">
+        <% (latest.length ? latest : trending).forEach(function (p) { %>
+          <%- include('partials/product-card', { p, wishlistIds }) %>
+        <% }); %>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ LOOKBOOK ============================ -->
+  <section class="section" aria-labelledby="look-title">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">04 — Wear it your way</p>
+          <h2 id="look-title">Styled, not staged</h2>
+        </div>
+        <a class="section-link" href="/lookbook">Open the lookbook</a>
+      </div>
+      <div class="look-grid">
+        <figure class="look-tile" style="margin:0;">
+          <img src="/img/lookbook-01.jpg" alt="Adult model in a grey oversized blazer and white tank wearing a chunky stainless steel chain necklace, a heavy signet ring and small silver-toned hoops." width="1000" height="1250" loading="lazy" decoding="async">
+          <figcaption>
+            <strong>Look 01 — Layered minimal</strong>
+            Heavy Curb Chain with the Monolith Signet Ring. Worn over a blazer for the contrast.
+          </figcaption>
+        </figure>
+        <figure class="look-tile" style="margin:0;">
+          <img src="/img/lookbook-02.jpg" alt="Close crop of a wrist and hand wearing a flat-link stainless steel chain bracelet and two silver-toned rings, resting against a black denim sleeve." width="1000" height="1250" loading="lazy" decoding="async">
+          <figcaption>
+            <strong>Look 02 — Wrist detail</strong>
+            Flat Link Bracelet stacked against the Line Band. Both are solid steel, not plated.
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== ABOUT ============================= -->
+  <section class="section on-dark" aria-labelledby="about-title">
+    <div class="wrap">
+      <div class="about-grid">
+        <div>
+          <p class="eyebrow">05 — About AESTHETICNOVA</p>
+          <h2 id="about-title" class="display-l">Heavy metal.<br>Quiet design.</h2>
+        </div>
+        <div>
+          <p class="lede" style="color:var(--muted-on-dark);max-width:56ch;">
+            AESTHETICNOVA started with one frustration: streetwear jewellery that either looked cheap
+            or fell apart. We build in stainless steel because it is honest — you can feel the weight,
+            and it does not depend on a plating layer that wears off in a month.
+          </p>
+          <p style="color:var(--muted-on-dark);max-width:56ch;">
+            Every piece is designed in-house and finished by hand in small runs. We publish the exact
+            metal, the measurements in millimetres and the real stock count, because those are the
+            things you actually need to decide. What we do not do is claim a piece is hypoallergenic,
+            waterproof or lifetime guaranteed unless we can show you the evidence — and right now,
+            we cannot, so we do not.
+          </p>
+          <dl class="about-facts">
+            <div>
+              <dt>Material</dt>
+              <dd>Stainless steel</dd>
+            </div>
+            <div>
+              <dt>Made in</dt>
+              <dd>India</dd>
+            </div>
+            <div>
+              <dt>Finishing</dt>
+              <dd>Hand-polished, small runs</dd>
+            </div>
+            <div>
+              <dt>Claims policy</dt>
+              <dd>Only what we can document</dd>
+            </div>
+          </dl>
+          <p class="mt-2"><a class="btn btn--light btn--small" href="/about">Read our product claims policy</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== NEWSLETTER =========================== -->
+  <section class="section newsletter on-dark" aria-labelledby="news-title">
+    <div class="wrap">
+      <div class="two-col">
+        <div>
+          <p class="eyebrow">06 — Newsletter</p>
+          <h2 id="news-title" class="display-m">First look at<br>every drop</h2>
+          <p class="lede mt-2" style="max-width:44ch;">
+            One email when a new piece lands, and nothing else. No countdown timers, no “last chance”
+            theatre. Unsubscribe in one click, any time.
+          </p>
+        </div>
+        <div>
+          <form class="newsletter-form" method="post" action="/newsletter" novalidate>
+            <input type="hidden" name="_csrf" value="<%= csrf %>">
+            <input type="hidden" name="form_ts" value="<%= Date.now() %>">
+            <label class="sr-only" for="nl-email">Email address</label>
+            <input id="nl-email" type="email" name="email" autocomplete="email" required
+                   placeholder="you@example.com" aria-describedby="nl-privacy">
+            <button class="btn btn--light" type="submit">Sign up</button>
+            <div class="hp-field" aria-hidden="true">
+              <label for="nl-company">Company</label>
+              <input id="nl-company" type="text" name="company_website" tabindex="-1" autocomplete="off">
+            </div>
+            <label class="newsletter-consent" for="nl-consent">
+              <input type="checkbox" id="nl-consent" name="marketing_consent" value="1">
+              <span>
+                Yes, email me about new drops. This is optional — you can browse and buy without it,
+                and it is not a condition of any order.
+              </span>
+            </label>
+            <p class="small" id="nl-privacy" style="color:var(--muted-on-dark);margin-top:.75rem;max-width:52ch;">
+              We store your email address and the time you opted in. Nothing else. Read the
+              <a href="/privacy" style="color:#fff;">privacy notice</a>.
+              <% if (!consent.marketing) { %>
+                <strong style="color:#fff;">Marketing email is currently switched off in your cookie settings,
+                so we will record your request but not send until you enable marketing cookies.</strong>
+              <% } %>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<%- include('partials/footer') %>
+<%- include('partials/consent-banner') %>
+</body>
+</html>

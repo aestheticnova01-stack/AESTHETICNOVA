@@ -1,0 +1,114 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <nav aria-label="Breadcrumb">
+        <ol class="breadcrumb"><li><a href="/">Home</a></li><li aria-current="page">Bag</li></ol>
+      </nav>
+      <h1>Your bag</h1>
+      <p class="lede mt-1"><%= lines.reduce(function (s, l) { return s + l.qty; }, 0) %> item<%= lines.reduce(function (s, l) { return s + l.qty; }, 0) === 1 ? '' : 's' %> · every charge is itemised below</p>
+    </div>
+  </div>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <% if (!lines.length) { %>
+        <div class="empty-state">
+          <h2 style="font-size:1rem;text-transform:none;">Your bag is empty</h2>
+          <p>Nothing in it yet. The current pieces are all here — take your time, nothing expires and nothing is reserved by a timer.</p>
+          <p class="mt-2"><a class="btn" href="/shop">Shop all pieces</a></p>
+        </div>
+      <% } else { %>
+        <div class="cart-wrap">
+          <div>
+            <% lines.forEach(function (l) { %>
+              <div class="line-item">
+                <img src="<%= l.image %>" alt="<%= l.image_alt %>" width="108" height="135" loading="lazy">
+                <div>
+                  <h3><a href="/product/<%= l.slug %>"><%= l.name %></a></h3>
+                  <p class="variant-note"><%= l.variant_label %> · SKU <%= l.sku %></p>
+                  <p class="small muted"><%= l.unit_price_label %> each · GST included</p>
+
+                  <div class="li-actions">
+                    <form method="post" action="/cart/update" class="flex" style="gap:.4rem;align-items:center;">
+                      <input type="hidden" name="_csrf" value="<%= csrf %>">
+                      <input type="hidden" name="variant_id" value="<%= l.variant_id %>">
+                      <label class="sr-only" for="qty-<%= l.variant_id %>">Quantity for <%= l.name %>, <%= l.variant_label %></label>
+                      <div class="qty">
+                        <button type="button" data-qty="-" aria-label="Decrease quantity for <%= l.name %>">−</button>
+                        <input id="qty-<%= l.variant_id %>" name="qty" type="number" value="<%= l.qty %>" min="1" max="<%= Math.min(l.stock, 10) %>" inputmode="numeric">
+                        <button type="button" data-qty="+" aria-label="Increase quantity for <%= l.name %>">+</button>
+                      </div>
+                      <button class="btn btn--ghost btn--small" type="submit">Update</button>
+                    </form>
+                    <form method="post" action="/cart/remove">
+                      <input type="hidden" name="_csrf" value="<%= csrf %>">
+                      <input type="hidden" name="variant_id" value="<%= l.variant_id %>">
+                      <button class="remove-btn" type="submit">Remove</button>
+                    </form>
+                  </div>
+
+                  <% if (l.stock_issue !== null) { %>
+                    <p class="error-text" role="alert">
+                      Only <%= l.stock_issue %> left in this option — please reduce the quantity or choose another size.
+                    </p>
+                  <% } else if (l.stock <= 3) { %>
+                    <p class="small muted"><%= l.stock %> left in this option, as of right now.</p>
+                  <% } %>
+                </div>
+                <div class="li-price">
+                  <span class="price"><%= l.line_total_label %></span>
+                </div>
+              </div>
+            <% }); %>
+
+            <div class="flex-between mt-3">
+              <a class="link-quiet" href="/shop">Continue shopping</a>
+              <a class="small" href="/returns">Returns policy</a>
+            </div>
+          </div>
+
+          <aside class="summary" aria-labelledby="summary-title">
+            <h2 id="summary-title">Order summary</h2>
+
+            <% if (totals.freeShippingRemainingPaise > 0) { %>
+              <p class="free-ship-note">
+                Add <%= inr(totals.freeShippingRemainingPaise) %> more for free shipping.
+                Shipping below is already included in the total — not added later.
+              </p>
+            <% } %>
+
+            <div class="summary-row"><span>Subtotal (<%= lines.reduce(function (s, l) { return s + l.qty; }, 0) %> items)</span><span><%= inr(totals.subtotalPaise) %></span></div>
+            <% if (totals.discountPaise) { %>
+              <div class="summary-row"><span>Discount</span><span>−<%= inr(totals.discountPaise) %></span></div>
+            <% } %>
+            <div class="summary-row">
+              <span>Shipping</span>
+              <span><%= totals.shippingPaise === 0 ? 'Free' : inr(totals.shippingPaise) %></span>
+            </div>
+            <% if (codEnabled) { %>
+              <div class="summary-row"><span>COD fee</span><span>₹49, only if you choose cash on delivery</span></div>
+            <% } %>
+            <div class="summary-row summary-row--total"><span>Total payable</span><span><%= inr(totals.totalPaise) %></span></div>
+            <p class="tax-note">
+              GST 18% is included in these prices — <%= inr(totals.gstPaise) %> of this order is tax.
+              Shipping is calculated above and does not change at checkout.
+            </p>
+
+            <a class="btn btn--block mt-2" href="/checkout">Proceed to checkout</a>
+            <p class="small muted mt-1" style="text-align:center;">
+              You will see the full final amount, including any COD fee, before you pay.
+            </p>
+          </aside>
+        </div>
+      <% } %>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

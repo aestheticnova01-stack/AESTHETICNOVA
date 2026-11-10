@@ -1,0 +1,72 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath }) %>
+<%- include('../partials/header') %>
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <h1>Shipping &amp; delivery</h1>
+      <p class="lede mt-1">What it costs, how long it takes, and what happens if something goes wrong.</p>
+    </div>
+  </div>
+  <section class="section">
+    <div class="wrap wrap--narrow">
+      <div class="prose">
+        <h2>Charges — the full list</h2>
+        <table>
+          <thead><tr><th scope="col">Charge</th><th scope="col">Amount</th><th scope="col">When it applies</th></tr></thead>
+          <tbody>
+            <tr><td>Standard shipping</td><td>₹79</td><td>Orders below ₹1,499</td></tr>
+            <tr><td>Free shipping</td><td>₹0</td><td>Orders of ₹1,499 and above</td></tr>
+            <tr><td>Cash on delivery fee</td><td>₹49</td><td>Only if COD is enabled and you choose it. Shown the moment you select it.</td></tr>
+            <tr><td>GST</td><td>Included</td><td>18%, embedded in every listed price</td></tr>
+            <tr><td>Packaging fee</td><td>None</td><td>We do not charge separately for packaging</td></tr>
+            <tr><td>Platform / handling fee</td><td>None</td><td>We do not charge a platform fee</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Timelines</h2>
+        <ul>
+          <li><strong>Dispatch:</strong> within 2 working days of payment confirmation.</li>
+          <li><strong>Metro delivery:</strong> 2–4 working days after dispatch.</li>
+          <li><strong>Other serviceable PIN codes:</strong> 4–7 working days after dispatch.</li>
+          <li><strong>Remote or non-serviceable PIN codes:</strong> we will contact you before accepting the order rather than take payment and then cancel it.</li>
+        </ul>
+        <p class="small">
+          These are the ranges we aim for based on courier performance. They are not guarantees, and if a delay is on
+          us we will say so and tell you the new expectation.
+        </p>
+
+        <h2>Packaging</h2>
+        <p>
+          Pieces ship in a recycled board box with a cotton pouch and a care card. Nothing is in sealed branded
+          plastic. If an order is a gift, say so in the delivery notes and we will leave the invoice out of the box
+          and email it to you instead.
+        </p>
+
+        <h2>Delivery attempts and address changes</h2>
+        <p>
+          The courier attempts delivery up to three times. If a change of address is needed before dispatch, contact
+          support with your order reference and we will update it. Once dispatched, the address cannot be changed —
+          in that case we will help you arrange a return and re-order instead of leaving you stuck.
+        </p>
+
+        <h2>If your parcel does not arrive</h2>
+        <ol>
+          <li>Check the tracking status if you were sent one.</li>
+          <li>Contact support with your order reference within <strong>10 days</strong> of the expected delivery date.</li>
+          <li>We open an investigation with the courier. If the parcel is confirmed lost, we replace or refund it —
+            you are not asked to chase the courier yourself.</li>
+        </ol>
+        <p class="small muted">
+          Courier integration is not connected in this build, so tracking references are created manually by the
+          support team. We do not display tracking numbers that do not exist.
+        </p>
+
+        <p><a href="/returns">Refund and return policy</a> · <a href="/contact">Contact support</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

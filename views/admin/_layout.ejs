@@ -1,0 +1,30 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<div class="topbar"><p class="mb-0">Store administration — restricted access. Every action here is written to the audit log.</p></div>
+<header class="site-header">
+  <div class="wrap">
+    <div class="header-inner" style="grid-template-columns:auto 1fr auto;">
+      <a class="brand" href="/admin">AESTHETIC<span>NOVA</span> <span style="font-size:.6rem;letter-spacing:.2em;">ADMIN</span></a>
+      <nav class="nav-primary" aria-label="Admin">
+        <a href="/admin">Overview</a>
+        <a href="/admin/orders">Orders</a>
+        <a href="/admin/data-requests">Privacy requests</a>
+        <a href="/admin/tickets">Support</a>
+        <a href="/admin/reviews">Reviews</a>
+        <a href="/admin/inventory">Inventory</a>
+        <a href="/admin/settings">Settings</a>
+        <a href="/admin/consent-log">Consent</a>
+        <a href="/admin/retention">Retention</a>
+        <a href="/admin/audit-log">Audit</a>
+      </nav>
+      <div class="header-utils">
+        <a class="icon-btn" href="/" target="_blank" rel="noopener">View site</a>
+        <form method="post" action="/admin/logout">
+          <input type="hidden" name="_csrf" value="<%= csrf %>">
+          <button class="icon-btn" type="submit">Sign out</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+<main id="main" tabindex="-1" class="section section--tight">
+  <div class="wrap">

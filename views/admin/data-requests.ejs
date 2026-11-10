@@ -1,0 +1,34 @@
+<%- include('_layout') %>
+<p class="eyebrow">Privacy</p>
+<h1 class="display-m mb-2">Privacy &amp; data requests</h1>
+<p class="lede mb-3" style="max-width:70ch;">
+  Each request must be identity-verified before anything is released or erased. A request cannot be marked
+  completed without a written outcome note. Deletion is executed by the system, not described by hand.
+</p>
+
+<% if (!requests.length) { %>
+  <p class="small muted">No requests yet.</p>
+<% } else { %>
+<table class="admin-table">
+  <thead>
+    <tr><th>Ref</th><th>Type</th><th>Requester</th><th>Raised</th><th>Due</th><th>Identity</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    <% requests.forEach(function (r) { %>
+      <tr>
+        <td><a href="/admin/data-requests/<%= r.ref %>"><%= r.ref %></a></td>
+        <td><%= r.request_type.replace(/_/g, ' ') %></td>
+        <td><%= r.name %><br><span class="small muted"><%= r.email %></span></td>
+        <td><%= fmtDate(r.created_at) %></td>
+        <td><%= fmtDate(r.due_by) %></td>
+        <td>
+          <% if (r.verification_state === 'verified') { %><span class="badge">verified</span>
+          <% } else { %><span class="badge badge--pend">pending</span><% } %>
+        </td>
+        <td><%= r.status.replace(/_/g, ' ') %></td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+<% } %>
+<%- include('_layout-end') %>

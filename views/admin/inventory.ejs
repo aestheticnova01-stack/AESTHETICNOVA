@@ -1,0 +1,30 @@
+<%- include('_layout') %>
+<p class="eyebrow">Catalogue</p>
+<h1 class="display-m mb-1">Inventory</h1>
+<p class="lede mb-3" style="max-width:70ch;">
+  These numbers are what the storefront shows. If a variant is at zero it says “sold out” on the product page —
+  nothing is displayed as available that is not in stock.
+</p>
+<table class="admin-table">
+  <thead><tr><th>Product</th><th>Variant</th><th>SKU</th><th>Price</th><th>Stock</th><th>Update</th></tr></thead>
+  <tbody>
+    <% rows.forEach(function (v) { %>
+      <tr>
+        <td><a href="/product/<%= v.slug %>" target="_blank" rel="noopener"><%= v.name %></a></td>
+        <td><%= v.label %></td>
+        <td class="small"><%= v.sku %></td>
+        <td><%= inr(v.price_paise + v.extra_paise) %></td>
+        <td><%= v.stock %></td>
+        <td>
+          <form method="post" action="/admin/inventory/<%= v.id %>" class="flex" style="gap:.4rem;align-items:center;">
+            <input type="hidden" name="_csrf" value="<%= csrf %>">
+            <label class="sr-only" for="stock-<%= v.id %>">Stock for <%= v.name %> <%= v.label %></label>
+            <input id="stock-<%= v.id %>" name="stock" type="number" min="0" value="<%= v.stock %>" style="width:90px;">
+            <button class="btn btn--ghost btn--small" type="submit">Save</button>
+          </form>
+        </td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+<%- include('_layout-end') %>

@@ -1,0 +1,48 @@
+/* ======================================
+   RESPONSIVE DESIGN
+====================================== */
+
+/* ---------------------------- narrow viewports ---------------------------- */
+/* Measured failure: at 320px the header utility cluster forced 446px of
+   scrollWidth. Tighten the header instead of allowing horizontal scroll. */
+@media (max-width: 400px) {
+  :root { --gutter: 0.85rem; }
+  .header-inner { gap: 0.25rem; }
+  .header-inner { grid-template-columns: 40px 1fr auto; }
+  .header-utils { min-width: 0; }
+  .brand { font-size: 0.9rem; letter-spacing: 0.14em; }
+  .header-utils { gap: 0; }
+  .icon-btn { min-width: 40px; min-height: 44px; padding: 0.25rem; }
+  .header-wish { display: none; } /* still in the mobile menu */
+  .topbar { font-size: 0.625rem; letter-spacing: 0.1em; padding-inline: 0.75rem; }
+  .consent-banner { padding: 0.9rem var(--gutter) 1rem; max-height: 56vh; }
+  .consent-copy h2 { font-size: 0.75rem; margin-bottom: 0.35rem; }
+  .consent-copy p { font-size: 0.8125rem; line-height: 1.55; }
+  /* Three full-width 46px buttons stacked is a wall. Pair them: the two equal
+     choices side by side, customisation on its own line below. */
+  .consent-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+  .consent-actions .btn { flex: none; width: 100%; min-height: 44px; padding: 0.6rem 0.5rem; font-size: 0.625rem; letter-spacing: 0.08em; }
+  /* Accept and Reject share the top row at identical width — neither is
+     visually favoured. Customise preferences sits beneath as the third path. */
+  .consent-actions .btn:nth-child(2n) { grid-column: auto; }
+  .consent-actions .btn:nth-child(3) { grid-column: 1 / -1; }
+  .pdp-actions .btn { flex: 1 1 100%; }
+  .summary { padding: 1rem; }
+  .line-item { grid-template-columns: 64px 1fr; }
+  .line-item img { width: 64px; }
+  .variant { min-width: 54px; padding: 0.5rem 0.7rem; }
+}
+@media (max-width: 560px) {
+  .header-wish { display: none; }
+  .mobile-nav[data-open='true'] { max-height: 70vh; overflow-y: auto; }
+}
+
+
+/* Long unbroken tokens (URLs, order references, SKUs) must not force overflow. */
+.prose, .summary, .admin-table, .kv { overflow-wrap: anywhere; }
+.admin-table { display: block; overflow-x: auto; white-space: normal; }
+@media (max-width: 520px) {
+  .two-col, .checkout-grid, .cart-wrap, .auth-grid, .pdp, .legal-layout, .footer-grid { grid-template-columns: minmax(0, 1fr); }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+

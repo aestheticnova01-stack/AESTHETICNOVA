@@ -1,0 +1,173 @@
+<%- include('_legal-open', { legalTitle: 'Cookie Policy', legalLede: 'Every cookie and technology this site actually uses — listed from the live register, not copied from a template.' }) %>
+        <nav class="legal-toc" aria-labelledby="toc-title">
+          <h2 id="toc-title">On this page</h2>
+          <ol>
+            <li><a href="#what">What cookies are</a></li>
+            <li><a href="#used">What we actually use</a></li>
+            <li><a href="#not-used">What we do not use</a></li>
+            <li><a href="#register">Full register</a></li>
+            <li><a href="#settings">Change your choices</a></li>
+            <li><a href="#gpc">Global Privacy Control</a></li>
+          </ol>
+        </nav>
+
+        <div class="prose">
+          <% if (typeof saved !== 'undefined' && saved === '1') { %>
+            <div class="alert alert--success" role="status">Your cookie preferences were saved.</div>
+          <% } %>
+          <% if (typeof withdrawn !== 'undefined' && withdrawn === '1') { %>
+            <div class="alert alert--success" role="status">
+              Optional consent withdrawn. Analytics and marketing are now off. Your bag and checkout are unaffected.
+            </div>
+          <% } %>
+
+          <h2 id="what">1. What cookies are</h2>
+          <p>
+            A cookie is a small file a website stores in your browser. We use them for two kinds of things: keeping the
+            shop working (your bag, your sign-in), and remembering the choice you made about everything else.
+          </p>
+
+          <h2 id="used">2. What we actually use — three cookies, all first party</h2>
+          <table>
+            <thead><tr><th scope="col">Cookie</th><th scope="col">Category</th><th scope="col">Purpose</th><th scope="col">Lifetime</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><code>an_sid</code></td><td>Strictly necessary</td>
+                <td>Your session: the bag, your sign-in, checkout state and the CSRF token that protects forms.
+                  HttpOnly and SameSite=Lax so scripts and other sites cannot read it.</td>
+                <td>30 days or until you sign out</td>
+              </tr>
+              <tr>
+                <td><code>an_consent</code></td><td>Strictly necessary</td>
+                <td>Remembers your cookie choices so the banner does not reappear and your settings are honoured.
+                  HttpOnly and SameSite=Lax.</td>
+                <td>180 days</td>
+              </tr>
+              <tr>
+                <td><em>none</em></td><td>Analytics</td>
+                <td>Counting happens on our own server, so no cookie is needed and no identifier is created.</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            That is the complete list. There is no third-party analytics cookie, no advertising cookie, no session
+            replay, no heatmap tool and no social embed.
+          </p>
+
+          <h2 id="not-used">3. What we deliberately do not use</h2>
+          <ul>
+            <li><strong>No Google Analytics or Google Tag Manager.</strong> No snippet, no SDK, no network request.</li>
+            <li><strong>No Meta Pixel, TikTok pixel, LinkedIn Insight or any advertising tag.</strong></li>
+            <li><strong>No third-party fonts.</strong> Space Grotesk and Inter are self-hosted from this domain, so your
+              browser never talks to Google’s font servers.</li>
+            <li><strong>No chat widget, no review plugin, no embedded video.</strong></li>
+            <li><strong>No fingerprinting, no cross-site identifiers, no data brokers.</strong></li>
+          </ul>
+          <p>
+            We removed these on purpose. Every external script is a company that learns something about your visit, so
+            the default here is none. If we ever add one, it must first appear in the register below and stay blocked
+            until you consent.
+          </p>
+
+          <h2 id="register">4. Full technology register (live from our database)</h2>
+          <p class="small">
+            This table is generated from the same register the engineering and privacy reviewers use, so it cannot
+            drift out of date quietly.
+          </p>
+          <table>
+            <caption class="sr-only">Cookie and third-party technology register</caption>
+            <thead>
+              <tr><th scope="col">Name</th><th scope="col">Provider</th><th scope="col">Category</th><th scope="col">Purpose</th><th scope="col">Data</th><th scope="col">Retention</th><th scope="col">Status</th></tr>
+            </thead>
+            <tbody>
+              <% trackers.forEach(function (t) { %>
+                <tr>
+                  <td><strong><%= t.name %></strong></td>
+                  <td><%= t.provider %></td>
+                  <td><%= t.category %></td>
+                  <td><%= t.purpose %></td>
+                  <td><%= t.data_collected %><br><span class="small">Cookies: <%= t.cookies %></span></td>
+                  <td><%= t.retention %></td>
+                  <td>
+                    <%= t.status %>
+                    <% if (t.status === 'disabled' || t.status === 'removed') { %><br><span class="small muted">Not loaded</span><% } %>
+                    <% if (t.status === 'not_configured') { %><br><span class="small muted">Not connected</span><% } %>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+
+          <h2 id="settings">5. Change your choices</h2>
+          <p>
+            Accepting and rejecting are designed to be equally easy: one click each, the same size, on the same screen.
+            There is no “confirm rejection” extra step and no pre-ticked optional category.
+          </p>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin:1.25rem 0;">
+            <form method="post" action="/consent/accept-all">
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <button class="btn btn--small" type="submit">Accept all</button>
+            </form>
+            <form method="post" action="/consent/reject">
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <button class="btn btn--ghost btn--small" type="submit">Reject non-essential</button>
+            </form>
+            <form method="post" action="/consent/withdraw">
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <button class="btn btn--ghost btn--small" type="submit">Withdraw all optional consent</button>
+            </form>
+            <button class="btn btn--ghost btn--small" type="button" data-consent-open="cookies-page">Open preferences</button>
+          </div>
+
+          <h2 id="settings-form">Detailed preferences</h2>
+          <form id="cookie-settings-form" method="post" action="/consent">
+            <input type="hidden" name="_csrf" value="<%= csrf %>">
+            <input type="hidden" name="source" value="settings-page">
+            <% ['necessary','functional','analytics','marketing'].forEach(function (key) {
+                 var meta = consentCategories[key]; %>
+              <div class="pref-row">
+                <div>
+                  <h3 id="cs-<%= key %>-label"><%= meta.label %><%= meta.always ? ' (always on)' : '' %></h3>
+                  <p><%= meta.description %></p>
+                </div>
+                <div>
+                  <div class="switch">
+                    <input type="checkbox" id="cs-<%= key %>" name="<%= key %>" value="1"
+                           <%= key === 'necessary' || consent[key] ? 'checked' : '' %>
+                           <%= meta.always ? 'disabled' : '' %>
+                           aria-labelledby="cs-<%= key %>-label"
+                           aria-describedby="cs-<%= key %>-desc">
+                    <span class="track" aria-hidden="true"></span><span class="thumb" aria-hidden="true"></span>
+                  </div>
+                  <span class="pref-state" id="cs-<%= key %>-desc">
+                    <%= key === 'necessary' || consent[key] ? 'On' : 'Off' %>
+                  </span>
+                </div>
+              </div>
+            <% }); %>
+            <button class="btn mt-2" type="submit">Save preferences</button>
+          </form>
+
+          <h2 id="gpc">6. Global Privacy Control</h2>
+          <p>
+            If your browser sends a Global Privacy Control (GPC) or Do Not Track signal, we treat it as an opt-out of
+            analytics and marketing, and we record that in the consent receipt. If a GPC signal is active and you press
+            “Accept all”, analytics and marketing are still kept off, and the site tells you that this happened rather
+            than quietly overriding your browser.
+          </p>
+
+          <h2 id="retention">7. Consent records</h2>
+          <p>
+            Each time you save a preference we store a receipt: your choices, the time, the policy version, and a
+            one-way hash of your IP address and browser string so we can demonstrate consent without keeping your IP
+            address itself. Receipts are retained for 180 days on a rolling basis.
+          </p>
+
+          <p class="small">
+            Related: <a href="/privacy">Privacy Policy</a> ·
+            <a href="/transparency">Transparency and tracker audit</a> ·
+            <a href="/privacy-requests">Privacy &amp; Data Requests</a>
+          </p>
+        </div>
+<%- include('_legal-close') %>

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="t d">
+  <title id="t">Illustration of the AESTHETICNOVA Studio Tote</title>
+  <desc id="d">Line illustration of a heavy canvas tote bag with two long handles and a rectangular body, drawn in graphite grey on an off-white background. This is an illustration, not a photograph of the product.</desc>
+  <rect width="800" height="1000" fill="#F2F2EF"/>
+  <g fill="none" stroke="#2A2A2A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="248" y="470" width="304" height="316" rx="4"/>
+    <path d="M316 470v-38c0-42 30-72 84-72s84 30 84 72v38"/>
+    <path d="M248 470h304"/>
+    <path d="M300 520v214"/>
+    <path d="M500 520v214"/>
+    <path d="M270 620h60v54h-60z"/>
+  </g>
+  <text x="400" y="860" font-family="Helvetica,Arial,sans-serif" font-size="15" letter-spacing="4" fill="#6B6B68" text-anchor="middle">STUDIO TOTE — ILLUSTRATION</text>
+  <text x="400" y="888" font-family="Helvetica,Arial,sans-serif" font-size="12" letter-spacing="2" fill="#8A8A86" text-anchor="middle">PRODUCT PHOTOGRAPHY PENDING</text>
+</svg>

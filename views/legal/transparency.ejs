@@ -1,0 +1,118 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath }) %>
+<%- include('../partials/header') %>
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <h1>Transparency</h1>
+      <p class="lede mt-1">Every third-party service we use and do not use, how our search results are ranked, and our dark-pattern self-audit.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="two-col" style="align-items:start;">
+        <div class="prose">
+          <h2>Search and ranking</h2>
+          <p>
+            Product listings are ranked by our own merchandising order: pieces we are currently featuring first, then
+            the rest of the catalogue. The sort control also offers newest, price low-to-high, price high-to-low and
+            name A–Z, which are exactly what they say.
+          </p>
+          <p>
+            <strong>We take no payment for placement.</strong> No seller can pay to rank higher because there are no
+            third-party sellers on this site — we own and ship all inventory. If sponsored placements are ever
+            introduced, they will be labelled “Sponsored” in the result itself, in line with the Consumer Protection
+            (E-Commerce) (Amendment) Rules, 2026 effective 1 January 2027.
+          </p>
+
+          <h2>Pricing honesty</h2>
+          <ul>
+            <li>We do not display crossed-out “was” prices at present, because we are not currently running
+              reductions. When we do, the comparison price will be the lowest price offered in the previous 30 days.</li>
+            <li>No countdown timers. No “only 2 left!” unless the inventory figure is genuinely 2 or fewer, in which
+              case it is stated as a plain stock count.</li>
+            <li>No member-only price that appears after you enter an email. No fee that appears at the last step.</li>
+          </ul>
+
+          <h2>Reviews</h2>
+          <p>
+            Reviews are accepted only from signed-in customers with an order for that product. There is no import,
+            seed or manual “add review” function, so fabricated reviews cannot enter the system. Products without
+            reviews show an empty state that says so.
+          </p>
+
+          <h2>Dark-pattern self-audit</h2>
+          <p>
+            The Consumer Protection (E-Commerce) (Amendment) Rules, 2026 require a yearly dark-pattern self-audit and
+            a displayed compliance certificate from 1 January 2027. We run the audit now rather than retrofitting it.
+          </p>
+          <% if (!audits.length) { %>
+            <div class="empty-state">
+              <p class="mb-0"><strong>No self-audit recorded yet on this deployment.</strong>
+                The audit form is in the admin console. Until an audit has actually been recorded, this page will not
+                claim one exists.</p>
+            </div>
+          <% } else { %>
+            <ul>
+              <% audits.forEach(function (a) { %>
+                <li><strong><%= fmtDateTime(a.at) %></strong> — <%= a.detail %></li>
+              <% }); %>
+            </ul>
+          <% } %>
+          <p class="small muted">
+            What the audit checks: false urgency, false scarcity, confirmshaming, pre-ticked paid add-ons, bundled
+            consent, misleading button labels, hidden fees, difficult cancellation, hard-to-dismiss overlays, and
+            asymmetric “accept” versus “reject” design.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="eyebrow">Third-party inventory</h2>
+          <p class="small muted">Live from the same register that powers the cookie policy.</p>
+          <table class="admin-table" style="background:#fff;">
+            <caption class="sr-only">Third-party services and their status</caption>
+            <thead><tr><th scope="col">Service</th><th scope="col">Category</th><th scope="col">Status</th></tr></thead>
+            <tbody>
+              <% trackers.forEach(function (t) { %>
+                <tr>
+                  <td><%= t.name %><br><span class="small muted"><%= t.provider %></span></td>
+                  <td><%= t.category %></td>
+                  <td>
+                    <% if (t.status === 'active') { %><span class="badge">active</span>
+                    <% } else if (t.status === 'removed') { %><span class="badge badge--neutral">removed</span>
+                    <% } else if (t.status === 'not_configured') { %><span class="badge badge--pend">not configured</span>
+                    <% } else { %><span class="badge badge--neutral"><%= t.status %></span><% } %>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+
+          <h2 class="eyebrow mt-3">What the browser can verify</h2>
+          <p class="small">
+            Our Content-Security-Policy has no external origins in <code>script-src</code>, <code>style-src</code>,
+            <code>font-src</code>, <code>img-src</code> or <code>connect-src</code>. You can confirm this in the
+            developer tools network tab: the only external request this site can make is the payment gateway script,
+            and only on the payment page after you choose to pay.
+          </p>
+
+          <h2 class="eyebrow mt-3">Disclosure of what is not finished</h2>
+          <ul class="small">
+            <li>Payment is running in <strong>simulator mode</strong> — no money moves.</li>
+            <li>Email and SMS delivery are <strong>not connected</strong>; messages are logged for manual sending.</li>
+            <li>No courier integration exists, so no live tracking numbers are shown.</li>
+            <li>Product photography is illustrative, not photographs of the physical stock.</li>
+          </ul>
+          <p class="small">
+            Full detail and status per requirement:
+            <a href="/launch-readiness">launch-readiness report</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <nav aria-label="Breadcrumb">
+        <ol class="breadcrumb">
+          <li><a href="/">Home</a></li>
+          <li aria-current="page"><%= filters.q ? 'Search' : filters.category ? filters.category[0].toUpperCase() + filters.category.slice(1) : 'Shop all' %></li>
+        </ol>
+      </nav>
+      <h1><%= filters.q ? 'Search results' : filters.category ? filters.category[0].toUpperCase() + filters.category.slice(1) : 'Shop all' %></h1>
+      <p class="lede mt-1">
+        <%= filters.q ? `Results for “${filters.q}”` : 'Solid stainless steel, honest measurements, real stock counts.' %>
+        <span class="muted">(<%= products.length %> piece<%= products.length === 1 ? '' : 's' %>)</span>
+      </p>
+    </div>
+  </div>
+
+  <form class="filter-bar" method="get" action="/shop" role="search">
+    <div class="wrap">
+      <div class="filter-row">
+        <div class="filter-group">
+          <label for="f-q">Search</label>
+          <input id="f-q" type="search" name="q" value="<%= filters.q %>" placeholder="Search pieces" style="max-width:220px;">
+        </div>
+        <div class="filter-group">
+          <label for="f-cat">Category</label>
+          <select id="f-cat" name="category" style="max-width:190px;">
+            <option value="">All categories</option>
+            <% categories.forEach(function (c) { %>
+              <option value="<%= c.slug %>" <%= filters.category === c.slug ? 'selected' : '' %>><%= c.name %></option>
+            <% }); %>
+          </select>
+
+          <label for="f-price">Price</label>
+          <select id="f-price" name="price" style="max-width:170px;">
+            <option value="all" <%= filters.price === 'all' ? 'selected' : '' %>>Any price</option>
+            <option value="under1000" <%= filters.price === 'under1000' ? 'selected' : '' %>>Under ₹1,000</option>
+            <option value="1000-2000" <%= filters.price === '1000-2000' ? 'selected' : '' %>>₹1,000 – ₹2,000</option>
+            <option value="over2000" <%= filters.price === 'over2000' ? 'selected' : '' %>>₹2,000 and above</option>
+          </select>
+
+          <label for="f-avail">Availability</label>
+          <select id="f-avail" name="availability" style="max-width:170px;">
+            <option value="all" <%= filters.availability === 'all' ? 'selected' : '' %>>All items</option>
+            <option value="in" <%= filters.availability === 'in' ? 'selected' : '' %>>In stock only</option>
+            <option value="out" <%= filters.availability === 'out' ? 'selected' : '' %>>Sold out</option>
+          </select>
+
+          <label for="f-sort">Sort by</label>
+          <select id="f-sort" name="sort" style="max-width:200px;">
+            <option value="featured" <%= filters.sort === 'featured' ? 'selected' : '' %>>Our selection</option>
+            <option value="new" <%= filters.sort === 'new' ? 'selected' : '' %>>Newest first</option>
+            <option value="price-asc" <%= filters.sort === 'price-asc' ? 'selected' : '' %>>Price: low to high</option>
+            <option value="price-desc" <%= filters.sort === 'price-desc' ? 'selected' : '' %>>Price: high to low</option>
+            <option value="name" <%= filters.sort === 'name' ? 'selected' : '' %>>Name A–Z</option>
+          </select>
+
+          <button class="btn btn--small" type="submit">Apply filters</button>
+          <% if (filters.q || filters.category || filters.price !== 'all' || filters.availability !== 'all' || filters.sort !== 'featured') { %>
+            <a class="link-quiet" href="/shop">Clear all</a>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <section class="section section--tight" aria-labelledby="results-title">
+    <div class="wrap">
+      <h2 id="results-title" class="sr-only">Product results</h2>
+
+      <% if (!products.length) { %>
+        <div class="empty-state">
+          <h3>No pieces match those filters</h3>
+          <p>
+            Nothing in the catalogue fits this combination right now. Try removing a filter, or
+            <a href="/shop">browse everything</a>. We will not pad the results with items that do not
+            match your search.
+          </p>
+        </div>
+      <% } else { %>
+        <div class="product-grid">
+          <% products.forEach(function (p) { %>
+            <%- include('../partials/product-card', { p, wishlistIds }) %>
+          <% }); %>
+        </div>
+      <% } %>
+
+      <p class="small muted mt-3 measure">
+        <strong>How results are ranked.</strong> <%= rankNote %>
+        Every price shown is the price you pay — GST is included and shipping is calculated before you pay.
+        <a href="/transparency">Read our pricing and ranking disclosures</a>.
+      </p>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

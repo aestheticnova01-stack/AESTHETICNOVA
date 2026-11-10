@@ -1,0 +1,32 @@
+/* ======================================
+   SHOPPING CART & BAG DRAWER
+====================================== */
+
+/* --------------------------------- cart --------------------------------- */
+.cart-wrap { display: grid; grid-template-columns: 1.6fr 0.9fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: start; }
+@media (max-width: 900px) { .cart-wrap { grid-template-columns: 1fr; } }
+.line-item { display: grid; grid-template-columns: 108px 1fr auto; gap: 1rem; padding: 1.15rem 0; border-bottom: 1px solid var(--line); align-items: start; }
+.line-item img { width: 108px; aspect-ratio: 4 / 5; object-fit: cover; background: #EDEDEA; }
+.line-item h3 { font-size: 0.875rem; text-transform: none; letter-spacing: 0.01em; margin-bottom: 0.2rem; font-family: var(--display); }
+.line-item .variant-note { font-size: 0.8125rem; color: var(--muted); }
+.line-item .li-price { text-align: right; font-family: var(--display); font-variant-numeric: tabular-nums; }
+.line-item .li-actions { display: flex; gap: 0.75rem; margin-top: 0.6rem; flex-wrap: wrap; align-items: center; }
+.remove-btn { background: none; border: 0; padding: 0; color: var(--muted); text-decoration: underline; cursor: pointer; font-size: 0.8125rem; min-height: 32px; }
+.remove-btn:hover { color: var(--danger); }
+@media (max-width: 560px) {
+  .line-item { grid-template-columns: 80px 1fr; }
+  .line-item img { width: 80px; }
+  .line-item .li-price { grid-column: 2; text-align: left; margin-top: 0.4rem; }
+}
+
+.summary { background: var(--surface); border: 1px solid var(--line); padding: clamp(1.15rem, 3vw, 1.75rem); position: sticky; top: 88px; }
+@media (max-width: 900px) { .summary { position: static; } }
+.summary h2 { font-family: var(--display); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 1.1rem; }
+.summary-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0; font-size: 0.9rem; }
+.summary-row span:last-child { font-variant-numeric: tabular-nums; font-family: var(--display); }
+.summary-row--total { border-top: 1px solid var(--ink); margin-top: 0.65rem; padding-top: 0.85rem; font-size: 1rem; }
+.summary-row--total span:first-child { font-family: var(--display); letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.75rem; }
+.summary-row--total span:last-child { font-size: 1.15rem; }
+.summary .tax-note { font-size: 0.75rem; color: var(--muted); margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px dashed var(--line); }
+.free-ship-note { background: var(--info-bg); border: 1px solid #B6C8E2; padding: 0.6rem 0.75rem; font-size: 0.8125rem; color: var(--info); margin-bottom: 1rem; }
+

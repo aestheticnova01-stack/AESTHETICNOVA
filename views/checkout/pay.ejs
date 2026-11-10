@@ -1,0 +1,110 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="wrap section">
+    <div style="max-width:640px;">
+      <p class="eyebrow">Order <%= order.ref %></p>
+      <h1 class="display-m" style="margin-bottom:1rem;">Complete your payment</h1>
+
+      <% if (paymentFailed) { %>
+        <div class="alert alert--error" role="alert">
+          <h2>Payment was not completed</h2>
+          <p>Nothing was charged to you. Your order is still held; you can try again below or choose a different method by returning to checkout.</p>
+        </div>
+      <% } %>
+
+      <% if (!live) { %>
+        <div class="alert alert--warn">
+          <h2>Test mode — no money will move</h2>
+          <p>
+            This deployment is running with <code>PAYMENT_MODE=demo</code> because no live payment gateway
+            merchant account is connected. The screen below simulates what a real
+            <%= methodLabel %> confirmation looks like, so the flow can be reviewed end to end.
+            A real launch requires live gateway credentials, and until then this build must not take real orders.
+          </p>
+          <p class="small mt-1">
+            <strong>We will not present this as a working payment integration.</strong>
+            See <a href="/transparency">Transparency</a> for the current status.
+          </p>
+        </div>
+
+        <div class="summary mb-2">
+          <div class="summary-row"><span>Amount payable</span><span><%= inr(order.total_paise) %></span></div>
+          <div class="summary-row"><span>Method</span><span><%= methodLabel %></span></div>
+          <p class="tax-note">GST 18% included (<%= inr(order.gst_paise) %> tax). No additional fees will be added.</p>
+        </div>
+
+        <form method="post" action="/order/<%= order.ref %>/pay/simulate?key=<%= order.access_key %>" class="stack">
+          <input type="hidden" name="_csrf" value="<%= csrf %>">
+          <button class="btn btn--block" type="submit" name="outcome" value="success">
+            Simulate a successful <%= methodLabel %> payment of <%= inr(order.total_paise) %>
+          </button>
+          <button class="btn btn--ghost btn--block" type="submit" name="outcome" value="fail">
+            Simulate a declined payment
+          </button>
+          <p class="small muted">
+            Both buttons exist so the failure path can be tested too. A declined payment leaves the order unpaid
+            and changes nothing about your account.
+          </p>
+        </form>
+
+      <% } else { %>
+        <div class="summary mb-2">
+          <div class="summary-row"><span>Amount payable</span><span><%= inr(order.total_paise) %></span></div>
+          <div class="summary-row"><span>Method</span><span><%= methodLabel %></span></div>
+          <p class="tax-note">GST 18% included (<%= inr(order.gst_paise) %> tax).</p>
+        </div>
+
+        <button class="btn btn--block" type="button" id="rzp-button">Pay <%= inr(order.total_paise) %> securely</button>
+        <p class="small muted mt-1">
+          You will be redirected to Razorpay’s secure checkout. AESTHETICNOVA never receives your card number
+          or UPI PIN.
+        </p>
+        <form method="post" action="/order/<%= order.ref %>/pay/verify" id="verify-form">
+          <input type="hidden" name="_csrf" value="<%= csrf %>">
+          <input type="hidden" name="razorpay_payment_id" id="rzp_payment_id">
+          <input type="hidden" name="razorpay_order_id" id="rzp_order_id">
+          <input type="hidden" name="razorpay_signature" id="rzp_signature">
+        </form>
+        <!-- Razorpay's script is loaded only on this page and only after the
+             buyer has explicitly chosen to pay. It is disclosed in the tracker
+             register and required for the purchase to happen. -->
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+          var options = {
+            key: '<%= keyId %>',
+            amount: <%= order.total_paise %>,
+            currency: 'INR',
+            name: 'AESTHETICNOVA',
+            description: 'Order <%= order.ref %>',
+            prefill: { email: <%- JSON.stringify(order.email) %>, contact: <%- JSON.stringify(order.phone) %> },
+            theme: { color: '#111111' },
+            handler: function (response) {
+              document.getElementById('rzp_payment_id').value = response.razorpay_payment_id;
+              document.getElementById('rzp_order_id').value = response.razorpay_order_id || '';
+              document.getElementById('rzp_signature').value = response.razorpay_signature || '';
+              document.getElementById('verify-form').submit();
+            },
+            modal: { ondismiss: function () { document.getElementById('rzp-button').disabled = false; } }
+          };
+          var rzp = new Razorpay(options);
+          document.getElementById('rzp-button').addEventListener('click', function () {
+            this.disabled = true;
+            rzp.open();
+          });
+        </script>
+      <% } %>
+
+      <p class="mt-3 small">
+        <a href="/order/<%= order.ref %>?key=<%= order.access_key %>">View order summary instead</a>
+        · <a href="/contact">Need help with payment?</a>
+      </p>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

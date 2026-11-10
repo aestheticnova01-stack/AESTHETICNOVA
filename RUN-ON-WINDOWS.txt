@@ -1,0 +1,47 @@
+AESTHETICNOVA — RUN LOCALLY ON WINDOWS
+
+Requirements
+- Windows 10/11
+- Node.js 20 or newer (includes npm)
+- Internet connection for first dependency installation
+
+Install Node.js from https://nodejs.org/ and restart your terminal.
+
+Start the website
+1. Extract the folder (for example C:\AestheticNova).
+2. Open that folder.
+3. Double-click start-windows.bat (or batch\start.bat).
+4. On first run, wait while npm installs dependencies.
+5. Open http://localhost:3000 in Chrome or Edge.
+Keep the command window open while browsing.
+
+Available Windows Batch Scripts (in batch\ folder):
+- batch\start.bat    : Starts the website in demo mode.
+- batch\dev.bat      : Starts development server with live watch (auto-reload on save).
+- batch\install.bat  : Installs project dependencies via npm.
+- batch\build.bat    : Runs verification build (syntax check, contrast audit, db check).
+- batch\backup.bat   : Creates a timestamped backup of the database and configs.
+
+Local admin access
+URL: http://localhost:3000/admin/login
+Email: owner@aestheticnova.local
+Password: LocalDemo-Only-Change-This-7391!
+These credentials are for local demonstration only. Change them before deployment.
+Payments run in DEMO mode; no real money is charged.
+
+Reorganized Codebase Map
+- server.js         : Root application server entry point.
+- config/           : Central configuration (site, payments, database).
+- controllers/      : Modular MVC controllers.
+- services/         : Core business services (pricing, cart, orders, payment, security).
+- middleware/       : Express security, session, csrf, and error middlewares.
+- routes/           : Modular route files (index, product, cart, checkout, order, etc.).
+- views/pages/      : High-level page templates (EJS).
+- views/partials/   : Modular view partials (head, header, navbar, footer, scripts).
+- views/components/ : Reusable components (product-card, cart-drawer, search-panel).
+- public/css/       : Modular stylesheets (variables, header, footer, products, cart, etc.).
+- public/js/        : Modular progressive-enhancement JavaScript.
+- batch/            : Windows automation batch scripts.
+- documentation/    : In-depth guides for structure, JS, EJS, CSS, batch, and payments.
+
+Read README.md and CODE_DIRECTORY.md for full details on where to find and edit any feature.

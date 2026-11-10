@@ -1,0 +1,85 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath }) %>
+<%- include('../partials/header') %>
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <h1>Accessibility statement</h1>
+      <p class="lede mt-1">We target WCAG 2.2 Level AA. This page says what we tested, what passed, and what is still open.</p>
+    </div>
+  </div>
+  <section class="section">
+    <div class="wrap wrap--narrow">
+      <div class="prose">
+        <div class="callout">
+          <strong>Current status: partially conformant, pending a manual audit.</strong>
+          Automated checks and a keyboard/screen-reader review have run against the core journeys. We are not claiming
+          full conformance until an independent audit of every template has been completed, and that has not happened yet.
+        </div>
+
+        <h2>What we have implemented</h2>
+        <ul>
+          <li>A “Skip to main content” link on every page, plus a single <code>main</code> landmark.</li>
+          <li>Consistent, logical heading order and landmark structure (<code>header</code>, <code>nav</code>,
+            <code>main</code>, <code>footer</code>), each labelled navigation region distinguished.</li>
+          <li>Visible focus indicators at 3:1 or better against both light and dark surfaces, with a dedicated focus
+            colour that is not the same as the text colour.</li>
+          <li>All interactive controls reachable and operable by keyboard, including the bag drawer
+            (native <code>&lt;dialog&gt;</code>), the search panel, the cookie banner and preferences.</li>
+          <li>Escape-to-close on the cookie preferences and search panel; the bag drawer restores focus to the button
+            that opened it.</li>
+          <li>Form fields with real <code>&lt;label&gt;</code> associations, required-field markers, and error text tied
+            to inputs with <code>aria-describedby</code> and <code>aria-invalid</code>.</li>
+          <li>Status messages announced through a live region — adding to the bag, saving preferences, wishlist changes.</li>
+          <li>Contrast checked programmatically: body text is 7.0:1 on white and 6.2:1 on the off-white background,
+            and every button, link, price label and consent control meets or exceeds 4.5:1.</li>
+          <li><code>prefers-reduced-motion</code> respected: reveal animations, the ticker and smooth scrolling are all
+            disabled, and no content depends on motion to be understood.</li>
+          <li>Descriptive alt text on product and editorial images; empty <code>alt</code> on decorative images; no
+            keyword stuffing.</li>
+          <li>Touch targets at 44×44 CSS pixels or larger on primary controls.</li>
+          <li>Page works with 200% zoom and at a 320-pixel-wide viewport without horizontal scrolling of content.</li>
+        </ul>
+
+        <h2>Known limitations</h2>
+        <ul>
+          <li>The product image zoom is a visual enhancement; the same information is available as text in the
+            details panel, so nothing is lost without it.</li>
+          <li>Some illustrative chart-like presentation in reviews uses star glyphs; the rating is also given as text.</li>
+          <li>We have not yet tested with every screen reader and browser combination. Our tested set is listed in the
+            <a href="/launch-readiness">launch-readiness report</a>.</li>
+          <li>Third-party payment checkout (Razorpay) is outside our control; its accessibility statement is the
+            provider’s responsibility.</li>
+        </ul>
+
+        <h2>Tell us about a barrier</h2>
+        <p>
+          If something here blocks you — a control you cannot reach, text you cannot read, a flow that breaks with a
+          screen reader — please tell us and we will treat it as a bug, not a feature request.
+        </p>
+        <p>
+          <a href="/contact?kind=support">Report an accessibility issue</a> or email
+          <strong><%= biz.email || 'the support address on the business details page' %></strong>.
+          We aim to acknowledge within 2 working days and to fix genuine barriers as a priority.
+        </p>
+
+        <h2>How this was checked</h2>
+        <ul>
+          <li>Automated static analysis of templates and rendered HTML: heading order, landmark presence, form labels,
+            alt attributes, language attribute, and duplicate IDs.</li>
+          <li>Programmatic contrast calculation for every colour pair used in the design system.</li>
+          <li>Keyboard-only walkthroughs of: browse → filter → product → add to bag → checkout → pay (test mode),
+            plus the cookie banner, account creation and the privacy-request flow.</li>
+          <li>Reduced-motion emulation.</li>
+        </ul>
+        <p class="small muted">
+          The results, including anything that failed, are published in the
+          <a href="/launch-readiness">launch-readiness report</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

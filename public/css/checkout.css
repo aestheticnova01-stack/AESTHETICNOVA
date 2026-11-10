@@ -1,0 +1,27 @@
+/* ======================================
+   CHECKOUT
+====================================== */
+
+/* ------------------------------- checkout ------------------------------- */
+.checkout-grid { display: grid; grid-template-columns: 1.25fr 0.85fr; gap: clamp(1.5rem, 5vw, 4rem); align-items: start; }
+@media (max-width: 940px) { .checkout-grid { grid-template-columns: 1fr; } }
+.fieldset { border: 0; padding: 0; margin: 0 0 2rem; }
+.fieldset > legend {
+  font-family: var(--display); font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 0; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; width: 100%;
+  border-bottom: 1px solid var(--line); padding-bottom: 0.6rem;
+}
+.step-num {
+  width: 22px; height: 22px; border: 1px solid var(--ink); display: inline-flex;
+  align-items: center; justify-content: center; font-size: 0.625rem; flex: none;
+}
+.pay-option { display: grid; grid-template-columns: 22px 1fr; gap: 0.8rem; border: 1px solid var(--line); padding: 0.95rem; background: #fff; margin-bottom: 0.6rem; cursor: pointer; align-items: start; }
+.pay-option:has(input:checked) { border-color: var(--ink); border-width: 2px; }
+.pay-option input { appearance: none; width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #595959; margin: 0; position: relative; cursor: pointer; }
+.pay-option input:checked { border-color: var(--ink); background: var(--ink); }
+.pay-option input:checked::after { content: ''; position: absolute; inset: 5px; background: #fff; border-radius: 50%; }
+.pay-option strong { display: block; font-family: var(--display); font-size: 0.8125rem; letter-spacing: 0.06em; }
+.pay-option .small { color: var(--muted); display: block; margin-top: 0.15rem; }
+.pay-option[data-live='false'] .pay-tag { color: var(--warn); }
+.pay-tag { font-family: var(--display); font-size: 0.5625rem; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid currentColor; padding: 0.15rem 0.4rem; display: inline-block; margin-top: 0.4rem; }
+

@@ -1,0 +1,32 @@
+/* ==========================================================================
+   AESTHETICNOVA — MASTER STYLESHEET
+   Clean modular architecture combining design tokens, layouts, and components.
+   All pairings conform strictly to WCAG 2.2 AA.
+   ========================================================================== */
+
+/* 1. Design Tokens & Custom Properties */
+@import 'variables.css';
+
+/* 2. Reusable UI Components, Resets & Base Elements */
+@import 'components.css';
+
+/* 3. Header, Topbar & Navigation */
+@import 'header.css';
+
+/* 4. Homepage, Editorial & Categories */
+@import 'homepage.css';
+
+/* 5. Product Cards, Grids & Product Details */
+@import 'products.css';
+
+/* 6. Shopping Cart & Drawer */
+@import 'cart.css';
+
+/* 7. Checkout & Payment */
+@import 'checkout.css';
+
+/* 8. Footer & Badges */
+@import 'footer.css';
+
+/* 9. Responsive Breakpoints */
+@import 'responsive.css';

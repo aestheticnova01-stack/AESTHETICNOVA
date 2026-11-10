@@ -1,0 +1,100 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath }) %>
+<%- include('../partials/header') %>
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <h1>Font &amp; image licences</h1>
+      <p class="lede mt-1">Every creative asset on this site, where it came from, and what we are allowed to do with it.</p>
+    </div>
+  </div>
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="alert alert--info" style="max-width:1000px;">
+        <h2>How this register works</h2>
+        <p>
+          The register is a data file committed with the code, and the automated test suite fails if an image or font
+          exists in <code>/public</code> without an entry here. That means an unlicensed file cannot be added quietly.
+        </p>
+        <p class="small">
+          <strong>Important note on photography.</strong> The images in this build were generated for AESTHETICNOVA for
+          this project. They are <em>not</em> photographs of the physical products being sold. They are illustrative,
+          and they are labelled as illustrative on the product pages. Before launch, the business should replace the
+          product images with original photography of the actual items — a real customer must see the real piece.
+          The launch-readiness report records this as <strong>NEEDS HUMAN REVIEW</strong>.
+        </p>
+      </div>
+
+      <h2 class="eyebrow mt-3">Asset register</h2>
+      <table class="admin-table" style="background:#fff;">
+        <caption class="sr-only">Licensing record for every image and font used on the site</caption>
+        <thead>
+          <tr>
+            <th scope="col">Asset</th><th scope="col">Type</th><th scope="col">Description</th>
+            <th scope="col">Source</th><th scope="col">Licence</th><th scope="col">Rights / attribution</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% assets.forEach(function (a) { %>
+            <tr>
+              <td><code><%= a.path %></code><% if (a.notes) { %><br><span class="small muted"><%= a.notes %></span><% } %></td>
+              <td><%= a.type %></td>
+              <td><%= a.description %></td>
+              <td><%= a.source %></td>
+              <td><%= a.licence %></td>
+              <td><%= a.rights %><br><span class="small muted">Attribution: <%= a.attribution %></span></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+
+      <h2 class="eyebrow mt-3">Fonts in detail</h2>
+      <div class="prose">
+        <p>
+          <strong>Space Grotesk</strong> by Florian Karsten and <strong>Inter</strong> by Rasmus Andersson are both
+          licensed under the <strong>SIL Open Font License, Version 1.1</strong>, which permits commercial use,
+          modification and web embedding. Both are self-hosted from this domain — no request is made to Google’s
+          servers, so no visitor IP is disclosed to a third party for typography.
+        </p>
+        <p>
+          The OFL requires the licence text to accompany the font files when they are redistributed, so the full
+          licence is served from this domain alongside the fonts themselves:
+        </p>
+        <ul>
+          <li><a href="/fonts/LICENSE-space-grotesk.txt">SIL Open Font License 1.1 — Space Grotesk</a></li>
+          <li><a href="/fonts/LICENSE-inter.txt">SIL Open Font License 1.1 — Inter</a></li>
+        </ul>
+        <p class="small muted">
+          Both files are plain text, are not minified, and carry the copyright line for each project. Neither font has
+          been modified: the woff2 files are the upstream releases, subset only by weight, so no Reserved Font Name
+          issue arises.
+        </p>
+
+        <h2>Icons and interface graphics</h2>
+        <p>
+          All interface icons are inline SVG drawn for this project. There are no icon-font dependencies and no icon
+          sets licensed from third parties, so there is nothing to attribute and nothing to leak through a CDN.
+        </p>
+
+        <h2>What is deliberately absent</h2>
+        <ul>
+          <li>No competitor product photographs.</li>
+          <li>No celebrity or influencer images.</li>
+          <li>No fashion campaign images.</li>
+          <li>No third-party brand logos, and no implied association with any other brand.</li>
+          <li>No stock photography of models presented as AESTHETICNOVA customers.</li>
+        </ul>
+
+        <h2>Rights holder contact</h2>
+        <p>
+          If you believe an asset on this site infringes your rights, contact
+          <strong><%= biz.email || 'support' %></strong> with the URL and the basis of your claim and we will respond
+          promptly, including removing the asset while we investigate if the claim looks credible.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= typeof pageTitle !== 'undefined' ? pageTitle : 'AESTHETICNOVA' %></title>
+<meta name="description" content="<%= typeof metaDescription !== 'undefined' ? metaDescription : 'AESTHETICNOVA — stainless steel rings, chains, pendants, bracelets and earrings. Everyday essentials. Unordinary details.' %>">
+<meta name="theme-color" content="#F7F7F5">
+<meta name="robots" content="<%= typeof noindex !== 'undefined' && noindex ? 'noindex,nofollow' : 'index,follow' %>">
+<link rel="canonical" href="/<%= typeof canonicalPath !== 'undefined' ? canonicalPath : '' %>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23111111'/%3E%3Ctext x='16' y='23' font-family='Helvetica,Arial' font-size='17' font-weight='700' fill='%23fff' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/css/app.css">
+<%- include('scripts') %>
+<% if (typeof structuredData !== 'undefined' && structuredData) { %>
+<script type="application/ld+json"><%- JSON.stringify(structuredData) %></script>
+<% } %>
+</head>
+<body class="<%= typeof bodyClass !== 'undefined' ? bodyClass : '' %>" data-consent-recorded="<%= typeof consentRecorded !== 'undefined' ? consentRecorded : false %>">
+<a class="skip-link" href="#main">Skip to main content</a>
+<div hidden id="js-live" aria-live="polite" role="status"></div>

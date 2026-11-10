@@ -1,0 +1,159 @@
+<%- include('_legal-open', { legalTitle: 'Refund and Return Policy', legalLede: 'What you can return, for how long, who pays the shipping, and exactly when your money comes back.' }) %>
+        <nav class="legal-toc" aria-labelledby="toc-title">
+          <h2 id="toc-title">On this page</h2>
+          <ol>
+            <li><a href="#summary">Summary</a></li>
+            <li><a href="#window">Return window</a></li>
+            <li><a href="#eligibility">What can be returned</a></li>
+            <li><a href="#not-returnable">What cannot be returned</a></li>
+            <li><a href="#damaged">Damaged or incorrect items</a></li>
+            <li><a href="#exchange">Exchanges</a></li>
+            <li><a href="#shipping">Who pays return shipping</a></li>
+            <li><a href="#refunds">Refund method and timelines</a></li>
+            <li><a href="#process">How to start a return</a></li>
+            <li><a href="#rights">Your statutory rights</a></li>
+          </ol>
+        </nav>
+
+        <div class="prose">
+          <h2 id="summary">1. Summary</h2>
+          <ul>
+            <li><strong><%= returnWindow %> days from delivery</strong> to request a return on unused items.</li>
+            <li><strong>We pay</strong> return shipping if the item is damaged, defective or not what you ordered.</li>
+            <li><strong>You pay</strong> return shipping for change-of-mind returns, unless a pickup is available at
+              your PIN code.</li>
+            <li>Refunds go back to the original payment method, typically <strong>5–7 working days</strong> after we
+              receive and inspect the item.</li>
+            <li>Nothing here reduces your rights under the Consumer Protection Act, 2019.</li>
+          </ul>
+
+          <h2 id="window">2. Return window</h2>
+          <p>
+            You have <strong><%= returnWindow %> days from the date of delivery</strong> to request a return. The
+            request must be raised through <a href="/contact?kind=returns">the returns form</a> or by email before the
+            window closes. We use the courier’s recorded delivery date.
+          </p>
+          <p>
+            If your order arrives late, the window still runs from actual delivery, not from the expected date.
+          </p>
+
+          <h2 id="eligibility">3. What can be returned</h2>
+          <p>An item is eligible for return when all of these are true:</p>
+          <ul>
+            <li>the return request is inside the <%= returnWindow %>-day window;</li>
+            <li>the item is unused and unworn, with no signs of wear, scratches, sizing marks or perfume;</li>
+            <li>original packaging, pouch, care card and any tags are included;</li>
+            <li>the item is not in the exclusions list below.</li>
+          </ul>
+
+          <h2 id="not-returnable">4. What cannot be returned</h2>
+          <p>For hygiene and legal reasons, we cannot accept returns of:</p>
+          <ul>
+            <li><strong>Earrings where the sealed hygiene packaging has been opened.</strong> This is a lawful hygiene
+              exclusion. If the seal is intact, earrings can be returned like any other item.</li>
+            <li><strong>Customised or personalised items</strong> (for example an engraved piece), unless they are
+              faulty or not what you ordered.</li>
+            <li><strong>Items returned after the window</strong>, unless the delay was our fault.</li>
+            <li><strong>Items damaged by misuse</strong> — for example a cuff repeatedly bent until the metal fatigues,
+              or a chain broken by force.</li>
+          </ul>
+          <p>
+            We will tell you at the point of refusal exactly which exclusion applies and, where relevant, offer an
+            alternative remedy. A lawful exclusion is not a way to refuse a genuine defect claim.
+          </p>
+
+          <h2 id="damaged">5. Damaged, defective or incorrect items</h2>
+          <p>
+            If your order arrives damaged, faulty, or is not what you ordered:
+          </p>
+          <ol>
+            <li>Report it within <strong>48 hours of delivery</strong> using
+              <a href="/contact?kind=returns">the returns form</a>, with your order reference and photographs of the
+              item and packaging.</li>
+            <li>Do not send the item back until we confirm — we will arrange a pickup or send a prepaid label.</li>
+            <li>We replace the item, or refund it in full including any shipping you paid, at your choice.</li>
+            <li>We cover return shipping and we do not charge a restocking fee.</li>
+          </ol>
+          <p>
+            If the fault appears later and is a manufacturing defect rather than wear, contact us anyway — we will look
+            at it on its facts rather than pointing at a calendar.
+          </p>
+
+          <h2 id="exchange">6. Exchanges</h2>
+          <ul>
+            <li>We exchange for a different <strong>size or length</strong> of the same product when stock is available.</li>
+            <li>If the replacement costs more, we send a payment link for the difference only after you agree to it.</li>
+            <li>If it costs less, we refund the difference to the original payment method.</li>
+            <li>Exchanges follow the same <%= returnWindow %>-day window and the same eligibility rules as returns.</li>
+            <li>If the size you need is out of stock, we will say so honestly and offer a refund rather than leaving
+              you waiting indefinitely.</li>
+          </ul>
+
+          <h2 id="shipping">7. Who pays return shipping</h2>
+          <table>
+            <thead><tr><th scope="col">Reason for return</th><th scope="col">Return shipping</th><th scope="col">Original shipping fee</th></tr></thead>
+            <tbody>
+              <tr><td>Damaged, defective or wrong item</td><td><strong>We pay</strong>, with a pickup or prepaid label</td><td>Refunded</td></tr>
+              <tr><td>Change of mind / ordered the wrong size</td><td><strong>You pay</strong> — typically ₹79–₹150 depending on courier and PIN code</td><td>Not refunded</td></tr>
+              <tr><td>Our error in the address (extremely rare — we do not correct addresses silently)</td><td><strong>We pay</strong></td><td>Refunded</td></tr>
+            </tbody>
+          </table>
+          <p>
+            Return shipping for change-of-mind is charged at cost. We do not add a handling margin to it, and we tell
+            you the exact amount before you commit to the return.
+          </p>
+
+          <h2 id="refunds">8. Refund method and timelines</h2>
+          <table>
+            <thead><tr><th scope="col">Payment method used</th><th scope="col">Refund goes to</th><th scope="col">Typical time after inspection</th></tr></thead>
+            <tbody>
+              <tr><td>UPI</td><td>The same UPI handle used for payment</td><td>3–5 working days</td></tr>
+              <tr><td>Card</td><td>The same card</td><td>5–7 working days</td></tr>
+              <tr><td>Net banking</td><td>The same bank account</td><td>5–7 working days</td></tr>
+              <tr><td>Cash on delivery</td><td>Bank transfer (we ask for account details securely, once)</td><td>5–7 working days after we receive those details</td></tr>
+            </tbody>
+          </table>
+          <p>
+            Bank processing times are outside our control; the timeline above is the point at which we release the
+            refund, not when your bank posts it. For a cancelled order that has not shipped, we release the refund
+            within 2 working days of cancellation.
+          </p>
+          <p>
+            <strong>We do not offer store credit instead of a refund unless you choose it.</strong> We do not charge a
+            restocking fee, and we do not deduct the original shipping cost when the return is due to our error.
+          </p>
+
+          <h2 id="process">9. How to start a return</h2>
+          <ol>
+            <li>Open <a href="/contact?kind=returns">the returns form</a> and choose “Return, refund or exchange”.
+              Include your order reference — it looks like AN-261103-A1B2C3.</li>
+            <li>You get a reference number and a status page straight away.</li>
+            <li>We reply within 1 working day with the collection arrangement or a prepaid label, and the exact return
+              shipping cost if it applies to you.</li>
+            <li>Once the item reaches us, we inspect it within 2 working days and tell you the outcome in writing.</li>
+            <li>Approved refunds are released as per the table above.</li>
+          </ol>
+          <p>
+            You can track the whole thing from the status page, and you can escalate to the
+            <a href="/grievance">grievance officer</a> if the process stalls.
+          </p>
+
+          <h2 id="rights">10. Your statutory rights</h2>
+          <p>
+            This policy is our process, not a cap on your rights. Under the Consumer Protection Act, 2019 and the
+            E-Commerce Rules made under it, you have rights in relation to defective goods, deficient services and
+            unfair trade practices — including the right to a replacement, a refund or compensation, as applicable.
+          </p>
+          <p>
+            If you believe an exclusion in this policy is not lawful in your case, tell us. We would rather resolve it
+            than have you escalate it.
+          </p>
+          <div class="callout callout--warn">
+            <strong>Owner confirmation required.</strong> The specific values in this policy — the
+            <%= returnWindow %>-day window, the shipping amounts and the refund timelines — are set in the store
+            configuration. They must be confirmed as the actual policies the business will honour at the volume it can
+            handle. We have not invented a longer window than the business can support, and the launch-readiness report
+            marks this <strong>NEEDS HUMAN REVIEW</strong> until the owner signs off.
+          </div>
+        </div>
+<%- include('_legal-close') %>

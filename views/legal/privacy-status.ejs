@@ -1,0 +1,118 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="wrap section">
+    <div style="max-width:780px;">
+      <% if (!request) { %>
+        <p class="eyebrow">Privacy requests</p>
+        <h1 class="display-m mb-2">Check a request</h1>
+        <p class="lede mb-3">Enter the reference and the private key from your confirmation link.</p>
+        <form method="get" action="/privacy-requests/status" class="mb-2">
+          <div class="field">
+            <label for="sr-ref">Reference</label>
+            <input id="sr-ref" name="ref" type="text" required placeholder="PR-261103-A1B2C3">
+          </div>
+          <div class="field">
+            <label for="sr-key">Private key</label>
+            <input id="sr-key" name="key" type="text" required>
+          </div>
+          <button class="btn" type="submit">Check status</button>
+        </form>
+        <% if (notFound) { %>
+          <div class="alert alert--error" role="alert">No request matches that reference and key. Check both, or <a href="/privacy-requests">start a new request</a>.</div>
+        <% } %>
+        <p class="small muted"><a href="/privacy-requests">Make a new privacy request</a></p>
+      <% } else { %>
+        <% if (isNew) { %>
+          <div class="alert alert--success" role="status">
+            <h2>Request received</h2>
+            <p>
+              Your reference is <strong><%= request.ref %></strong>. Keep this page saved —
+              the link contains a private key and is the only way back in without signing in.
+              <% if (request.request_type === 'withdrawal') { %>
+                Your optional consent has already been switched off as of now.
+              <% } %>
+            </p>
+          </div>
+        <% } %>
+        <% if (typeof verified !== 'undefined' && verified === '1') { %>
+          <div class="alert alert--success" role="status">Identity check recorded. Your request is now in progress.</div>
+        <% } %>
+
+        <p class="eyebrow">Privacy request</p>
+        <h1 class="display-m" style="margin-bottom:.75rem;"><%= request.ref %></h1>
+        <p class="lede"><%= TYPES[request.request_type] || request.request_type %></p>
+
+        <div class="summary" style="position:static;margin-top:1.5rem;">
+          <div class="flex-between mb-2">
+            <span class="status-pill" data-s="<%= request.status %>"><%= request.status.replace(/_/g, ' ') %></span>
+            <span class="small muted">Raised <%= fmtDate(request.created_at) %> · due <%= fmtDate(request.due_by) %></span>
+          </div>
+          <dl class="kv">
+            <dt>Request type</dt><dd><%= TYPES[request.request_type] || request.request_type %></dd>
+            <dt>Identity</dt>
+            <dd>
+              <%= request.verification_state %>
+              <% if (request.verification_method) { %> — <%= request.verification_method %><% } %>
+            </dd>
+            <dt>What you asked</dt><dd><%= request.details %></dd>
+            <% if (request.status_note) { %><dt>Update</dt><dd><%= request.status_note %></dd><% } %>
+            <% if (request.lawful_hold_note) { %><dt>Lawful retention</dt><dd><%= request.lawful_hold_note %></dd><% } %>
+            <% if (request.completed_at) { %><dt>Completed</dt><dd><%= fmtDate(request.completed_at) %></dd><% } %>
+          </dl>
+        </div>
+
+        <% if (request.verification_state !== 'verified' && request.status !== 'completed') { %>
+          <div class="mt-3">
+            <h2 class="eyebrow">Step 2 — confirm it is you</h2>
+            <p class="small">
+              <% if (request.user_id) { %>
+                Sign in to the account this request relates to and the request will verify itself.
+              <% } else { %>
+                Enter the order reference included with this request, if there is one. If there is none,
+                support will contact you at the email above before releasing anything.
+              <% } %>
+            </p>
+            <form method="post" action="/privacy-requests/<%= request.ref %>/verify" novalidate>
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <input type="hidden" name="key" value="<%= request.access_key %>">
+              <input type="hidden" name="confirm_email" value="<%= request.email %>">
+              <% if (request.order_ref) { %>
+                <div class="field">
+                  <label for="v-order">Order reference (AN-…)</label>
+                  <input id="v-order" name="order_ref" type="text" placeholder="AN-261103-A1B2C3">
+                </div>
+              <% } %>
+              <button class="btn btn--small" type="submit">Confirm identity</button>
+            </form>
+            <p class="small muted mt-1">
+              We record exactly which method was used, and we will not mark a request as verified when it was not.
+            </p>
+          </div>
+        <% } %>
+
+        <h2 class="eyebrow mt-3">Progress</h2>
+        <ol class="small" style="padding-left:1.2rem;line-height:1.9;">
+          <% events.forEach(function (e) { %>
+            <li>
+              <strong><%= e.event.replace(/_/g, ' ') %></strong> — <%= fmtDateTime(e.at) %>
+              <% if (e.detail) { %><br><span class="muted"><%= e.detail %></span><% } %>
+            </li>
+          <% }); %>
+        </ol>
+
+        <p class="small muted mt-3">
+          <strong>We only mark “completed” after the deletion or export has actually run and been checked.</strong>
+          If any part of your data must be retained by law, that appears above with the legal basis and the
+          date it will be deleted.
+        </p>
+      <% } %>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

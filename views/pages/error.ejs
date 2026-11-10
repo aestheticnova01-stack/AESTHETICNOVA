@@ -1,0 +1,35 @@
+<%- include('partials/head', {
+  pageTitle: (typeof title !== 'undefined' ? title : 'Error') + ' — AESTHETICNOVA',
+  metaDescription: 'AESTHETICNOVA',
+  canonicalPath: '',
+  noindex: true
+}) %>
+<%- include('partials/header') %>
+<main id="main" tabindex="-1">
+  <div class="wrap section">
+    <p class="eyebrow">Error <%= status %></p>
+    <h1 class="display-m" style="margin-bottom:1rem;"><%= title %></h1>
+    <p class="lede"><%= message %></p>
+    <p class="mt-3">
+      <a class="btn" href="/">Back to home</a>
+      <a class="btn btn--ghost" href="/contact" style="margin-left:.5rem;">Contact support</a>
+    </p>
+    <% if (status === 404) { %>
+      <div class="mt-3">
+        <h2 class="eyebrow">Popular destinations</h2>
+        <ul>
+          <li><a href="/shop">Shop all pieces</a></li>
+          <li><a href="/track-order">Track an order</a></li>
+          <li><a href="/returns">Returns and refunds</a></li>
+          <li><a href="/privacy-requests">Privacy and data requests</a></li>
+        </ul>
+      </div>
+    <% } %>
+  </div>
+</main>
+<% if (typeof biz !== 'undefined') { %>
+<%- include('partials/footer') %>
+<%- include('partials/consent-banner') %>
+<% } %>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="wrap section">
+    <div style="max-width:560px;">
+      <p class="eyebrow">Account</p>
+      <h1 class="display-m" style="margin-bottom:1.25rem;">Create an account</h1>
+
+      <% if (errors.form) { %>
+        <div class="alert alert--error" role="alert"><%= errors.form %></div>
+      <% } %>
+
+      <p class="form-note">
+        <strong>What we collect here and why.</strong> Your name so orders are addressed correctly, your email as
+        your sign-in and order contact, and a password. The phone number is optional at this stage — we only need it
+        when you place an order so the courier can reach you.
+        <a href="/privacy#minimisation">Full detail</a>.
+      </p>
+
+      <form method="post" action="/account/register" novalidate>
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <input type="hidden" name="next" value="<%= next %>">
+        <input type="hidden" name="form_ts" value="<%= Date.now() %>">
+        <div class="hp-field" aria-hidden="true">
+          <label for="reg-company">Company</label>
+          <input id="reg-company" type="text" name="company_website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="field <%= errors.full_name ? 'has-error' : '' %>">
+          <label for="reg-name">Full name</label>
+          <input id="reg-name" name="full_name" type="text" autocomplete="name" required value="<%= values.full_name || '' %>"
+                 <%= errors.full_name ? 'aria-invalid="true" aria-describedby="reg-name-error"' : '' %>>
+          <% if (errors.full_name) { %><p class="error-text" id="reg-name-error"><%= errors.full_name %></p><% } %>
+        </div>
+
+        <div class="field <%= errors.email ? 'has-error' : '' %>">
+          <label for="reg-email">Email address</label>
+          <input id="reg-email" name="email" type="email" autocomplete="email" required value="<%= values.email || '' %>"
+                 <%= errors.email ? 'aria-invalid="true" aria-describedby="reg-email-error"' : '' %>>
+          <% if (errors.email) { %><p class="error-text" id="reg-email-error"><%= errors.email %></p><% } %>
+        </div>
+
+        <div class="field <%= errors.phone ? 'has-error' : '' %>">
+          <label for="reg-phone">Mobile number <span class="muted">(optional)</span></label>
+          <input id="reg-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national"
+                 value="<%= values.phone || '' %>">
+          <% if (errors.phone) { %><p class="error-text"><%= errors.phone %></p><% } %>
+        </div>
+
+        <div class="field <%= errors.password ? 'has-error' : '' %>">
+          <label for="reg-pass">Password</label>
+          <input id="reg-pass" name="password" type="password" autocomplete="new-password" required minlength="10"
+                 aria-describedby="reg-pass-hint">
+          <p class="hint" id="reg-pass-hint">At least 10 characters. A short phrase is easier to remember than a scramble and just as strong.</p>
+          <% if (errors.password) { %><p class="error-text"><%= errors.password %></p><% } %>
+        </div>
+
+        <div class="field <%= errors.password_confirm ? 'has-error' : '' %>">
+          <label for="reg-pass2">Confirm password</label>
+          <input id="reg-pass2" name="password_confirm" type="password" autocomplete="new-password" required>
+          <% if (errors.password_confirm) { %><p class="error-text"><%= errors.password_confirm %></p><% } %>
+        </div>
+
+        <label class="check">
+          <input type="checkbox" name="accept_terms" value="1" required <%- errors.accept_terms ? 'aria-invalid="true"' : '' %>>
+          <span class="check-text">
+            <strong>Terms and privacy <span class="req" aria-hidden="true">*</span></strong>
+            I accept the <a href="/terms">Terms of Service</a> and have read the <a href="/privacy">Privacy Policy</a>.
+            <span class="small">Required to create an account.</span>
+          </span>
+        </label>
+        <% if (errors.accept_terms) { %><p class="error-text" role="alert"><%= errors.accept_terms %></p><% } %>
+
+        <label class="check">
+          <input type="checkbox" name="marketing_consent" value="1">
+          <span class="check-text">
+            <strong>Email me about new drops</strong>
+            <span class="small">Optional, unticked by default, and not required to create an account. You can change it any time.</span>
+          </span>
+        </label>
+
+        <button class="btn btn--block" type="submit">Create account</button>
+      </form>
+
+      <p class="small mt-2">Already have an account? <a href="/account/login">Sign in</a>.</p>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

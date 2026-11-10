@@ -1,0 +1,48 @@
+<%- include('_layout') %>
+<p class="eyebrow">Governance</p>
+<h1 class="display-m mb-2">Audit &amp; security log</h1>
+
+<section class="mb-3">
+  <h2 class="eyebrow">Annual dark-pattern self-audit</h2>
+  <p class="small measure">
+    The Consumer Protection (E-Commerce) (Amendment) Rules, 2026 require a yearly dark-pattern self-audit and a
+    displayed compliance certificate once in force (1 January 2027). This build implements the audit trail now so
+    the practice is real rather than retrofitted. Record the findings below; the transparency page links to the
+    latest entry.
+  </p>
+  <form method="post" action="/admin/audit-log/dark-pattern" style="max-width:640px;">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <div class="field">
+      <label for="dp-findings">Audit findings</label>
+      <textarea id="dp-findings" name="findings" placeholder="What was reviewed, what was found, what changed."></textarea>
+    </div>
+    <button class="btn btn--small" type="submit">Record self-audit</button>
+  </form>
+</section>
+
+<div class="two-col">
+  <section>
+    <h2 class="eyebrow">Application audit log</h2>
+    <table class="admin-table">
+      <thead><tr><th>At</th><th>Actor</th><th>Action</th><th>Entity</th></tr></thead>
+      <tbody>
+        <% rows.forEach(function (r) { %>
+          <tr><td class="small"><%= fmtDateTime(r.at) %></td><td class="small"><%= r.actor %></td>
+              <td class="small"><%= r.action %></td><td class="small"><%= r.entity %><%= r.entity_id ? ' #' + r.entity_id : '' %></td></tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </section>
+  <section>
+    <h2 class="eyebrow">Security events</h2>
+    <table class="admin-table">
+      <thead><tr><th>At</th><th>Kind</th><th>Detail</th></tr></thead>
+      <tbody>
+        <% security.forEach(function (s) { %>
+          <tr><td class="small"><%= fmtDateTime(s.at) %></td><td class="small"><%= s.kind %></td><td class="small"><%= s.detail || '' %></td></tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </section>
+</div>
+<%- include('_layout-end') %>

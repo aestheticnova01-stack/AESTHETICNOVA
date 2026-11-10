@@ -1,0 +1,70 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="wrap section">
+    <div style="max-width:760px;">
+      <p class="eyebrow">Order lookup</p>
+      <h1 class="display-m" style="margin-bottom:1rem;">Track your order</h1>
+      <p class="lede mb-3">
+        Enter the order reference from your confirmation message and the email address you used.
+        We ask for both so that an order reference alone cannot reveal someone’s address.
+      </p>
+
+      <% if (errors.form) { %>
+        <div class="alert alert--error" role="alert"><%= errors.form %></div>
+      <% } %>
+
+      <form method="post" action="/track-order" novalidate class="mb-3">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <input type="hidden" name="form_ts" value="<%= Date.now() %>">
+        <div class="field <%= errors.ref ? 'has-error' : '' %>">
+          <label for="t-ref">Order reference</label>
+          <input id="t-ref" name="ref" type="text" required value="<%= values.ref || '' %>"
+                 placeholder="AN-261103-A1B2C3" <%= errors.ref ? 'aria-invalid="true" aria-describedby="t-ref-error"' : '' %>>
+          <% if (errors.ref) { %><p class="error-text" id="t-ref-error"><%= errors.ref %></p><% } %>
+        </div>
+        <div class="field <%= errors.email ? 'has-error' : '' %>">
+          <label for="t-email">Email used for the order</label>
+          <input id="t-email" name="email" type="email" required value="<%= values.email || '' %>"
+                 <%= errors.email ? 'aria-invalid="true" aria-describedby="t-email-error"' : '' %>>
+          <% if (errors.email) { %><p class="error-text" id="t-email-error"><%= errors.email %></p><% } %>
+        </div>
+        <button class="btn" type="submit">Find my order</button>
+      </form>
+
+      <% if (order) { %>
+        <div class="summary" style="position:static;">
+          <div class="flex-between">
+            <strong><%= order.ref %></strong>
+            <span class="status-pill" data-s="<%= order.order_status %>"><%= order.order_status %></span>
+          </div>
+          <p class="small muted mt-1">Placed <%= fmtDateTime(order.created_at) %> · <%= items.length %> item<%= items.length === 1 ? '' : 's' %> · <%= inr(order.total_paise) %></p>
+          <ul class="small mt-1">
+            <li>Delivery to <%= order.city %>, <%= order.state %> <%= order.pincode %></li>
+            <li>Payment: <%= order.payment_method === 'cod' ? 'Cash on delivery' : order.payment_method.toUpperCase() %> — <%= order.payment_status.replace('_', ' ') %></li>
+            <li>
+              Cancellation:
+              <%= ['placed', 'processing'].includes(order.order_status)
+                ? 'You can still cancel this order free of charge — sign in or contact support with this reference.'
+                : 'This order has moved past the cancellation stage. See the returns policy.' %>
+            </li>
+          </ul>
+          <p class="small mt-1">
+            Need to change something? <a href="/contact?order=<%= order.ref %>">Message support with this reference</a>.
+          </p>
+        </div>
+      <% } %>
+
+      <p class="small muted mt-3">
+        Courier tracking links appear here once a shipment is created. This build has no courier API connected,
+        so we do not display a tracking number that does not exist.
+      </p>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

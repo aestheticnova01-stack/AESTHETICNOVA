@@ -1,0 +1,98 @@
+<%- include('_layout') %>
+<p class="eyebrow"><a href="/admin/data-requests">Privacy requests</a> / <%= request.ref %></p>
+<h1 class="display-m mb-1"><%= request.ref %></h1>
+<p class="lede mb-3"><%= request.request_type.replace(/_/g, ' ') %> · raised <%= fmtDateTime(request.created_at) %> · due <%= fmtDate(request.due_by) %></p>
+
+<div class="two-col">
+  <div>
+    <h2 class="eyebrow">Request</h2>
+    <dl class="kv">
+      <dt>Name</dt><dd><%= request.name %></dd>
+      <dt>Email</dt><dd><%= request.email %></dd>
+      <dt>Order ref</dt><dd><%= request.order_ref || '—' %></dd>
+      <dt>Account linked</dt><dd><%= request.user_id ? 'Yes (user ' + request.user_id + ')' : 'No' %></dd>
+      <dt>Requested</dt><dd><%= request.details %></dd>
+      <dt>Identity</dt><dd><%= request.verification_state %><%= request.verification_method ? ' — ' + request.verification_method : '' %></dd>
+      <dt>Status</dt><dd><%= request.status.replace(/_/g, ' ') %></dd>
+      <% if (request.status_note) { %><dt>Outcome note</dt><dd><%= request.status_note %></dd><% } %>
+      <% if (request.lawful_hold_note) { %><dt>Lawful retention</dt><dd><%= request.lawful_hold_note %></dd><% } %>
+    </dl>
+
+    <h2 class="eyebrow mt-3">Data held for this person (live query)</h2>
+    <p class="small muted">Assembled at page load. An access export is generated from this, never from a cached copy.</p>
+    <h3 class="label">Account</h3>
+    <pre class="small" style="background:#fff;border:1px solid var(--line);padding:.75rem;overflow:auto;"><%= JSON.stringify(exportData.account, null, 2) %></pre>
+    <h3 class="label">Orders (<%= exportData.orders.length %>)</h3>
+    <pre class="small" style="background:#fff;border:1px solid var(--line);padding:.75rem;overflow:auto;max-height:220px;"><%= JSON.stringify(exportData.orders, null, 2) %></pre>
+    <h3 class="label">Support (<%= exportData.support.length %>)</h3>
+    <pre class="small" style="background:#fff;border:1px solid var(--line);padding:.75rem;overflow:auto;max-height:180px;"><%= JSON.stringify(exportData.support, null, 2) %></pre>
+    <h3 class="label">Reviews (<%= exportData.reviews.length %>)</h3>
+    <pre class="small" style="background:#fff;border:1px solid var(--line);padding:.75rem;overflow:auto;max-height:160px;"><%= JSON.stringify(exportData.reviews, null, 2) %></pre>
+  </div>
+
+  <div>
+    <% if (request.verification_state !== 'verified') { %>
+      <h2 class="eyebrow">1. Record verification</h2>
+      <form method="post" action="/admin/data-requests/<%= request.ref %>/verify" class="mb-3">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <div class="field">
+          <label for="v-method">How was identity confirmed?</label>
+          <input id="v-method" name="method" type="text" placeholder="e.g. replied from the order email address + confirmed order reference" required>
+        </div>
+        <button class="btn btn--small" type="submit">Mark verified</button>
+      </form>
+    <% } else { %>
+      <p class="badge mb-2">Identity verified</p>
+    <% } %>
+
+    <h2 class="eyebrow">2. Set outcome</h2>
+    <form method="post" action="/admin/data-requests/<%= request.ref %>/resolve" class="mb-3">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <div class="field">
+        <label for="r-status">Status</label>
+        <select id="r-status" name="status">
+          <option value="in_progress">in progress</option>
+          <option value="completed">completed</option>
+          <option value="partially_completed">partially completed</option>
+          <option value="rejected">rejected (with reasons)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="r-note">Outcome note (required for completion)</label>
+        <textarea id="r-note" name="status_note" placeholder="What was actually done, and what was not."></textarea>
+      </div>
+      <div class="field">
+        <label for="r-hold">Lawful retention explanation (if anything was kept)</label>
+        <textarea id="r-hold" name="lawful_hold_note"></textarea>
+      </div>
+      <button class="btn btn--small" type="submit">Save outcome</button>
+    </form>
+
+    <% if (request.request_type === 'deletion' || request.request_type === 'account_deletion') { %>
+      <h2 class="eyebrow">3. Execute deletion</h2>
+      <p class="small">
+        This erases eligible profile and contact data, revokes sessions, deletes closed support tickets, anonymises
+        reviews and redacts delivery addresses on completed orders. Invoice records are retained for 8 years and the
+        requester is told so. It cannot run until identity is verified.
+      </p>
+      <form method="post" action="/admin/data-requests/<%= request.ref %>/execute-deletion"
+            data-confirm="Execute deletion for <%= request.ref %>? This cannot be undone.">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <button class="btn btn--danger btn--small" type="submit" <%= request.verification_state === 'verified' ? '' : 'disabled' %>
+                aria-describedby="del-help">
+          Execute deletion now
+        </button>
+        <p class="small muted" id="del-help"><%= request.verification_state === 'verified' ? '' : 'Disabled until identity is verified.' %></p>
+      </form>
+    <% } %>
+
+    <h2 class="eyebrow mt-3">History</h2>
+    <ol class="small" style="padding-left:1.1rem;line-height:1.8;">
+      <% events.forEach(function (e) { %>
+        <li><strong><%= e.event.replace(/_/g, ' ') %></strong> — <%= fmtDateTime(e.at) %> <span class="muted">(<%= e.actor %>)</span>
+          <% if (e.detail) { %><br><span class="muted"><%= e.detail %></span><% } %></li>
+      <% }); %>
+    </ol>
+  </div>
+</div>
+<%- include('_layout-end') %>

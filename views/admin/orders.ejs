@@ -1,0 +1,26 @@
+<%- include('_layout') %>
+<p class="eyebrow">Operations</p>
+<h1 class="display-m mb-3">Orders</h1>
+<% if (!orders.length) { %>
+  <p class="small muted">No orders yet.</p>
+<% } else { %>
+<table class="admin-table">
+  <thead><tr><th>Ref</th><th>Customer</th><th>Placed</th><th>Total</th><th>Payment</th><th>Status</th><th>Flags</th></tr></thead>
+  <tbody>
+    <% orders.forEach(function (o) { %>
+      <tr>
+        <td><a href="/admin/orders/<%= o.ref %>"><%= o.ref %></a></td>
+        <td><%= o.full_name %><br><span class="muted small"><%= o.email %></span></td>
+        <td><%= fmtDateTime(o.created_at) %></td>
+        <td><%= inr(o.total_paise) %></td>
+        <td><%= o.payment_method %> · <%= o.payment_status %></td>
+        <td><span class="status-pill" data-s="<%= o.order_status %>"><%= o.order_status %></span></td>
+        <td class="small">
+          <% if (o.marketing_consent) { %><span class="badge badge--neutral">mkt opt-in</span><% } %>
+        </td>
+      </tr>
+    <% }); %>
+  </tbody>
+</table>
+<% } %>
+<%- include('_layout-end') %>

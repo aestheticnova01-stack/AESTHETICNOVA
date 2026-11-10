@@ -1,0 +1,60 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="wrap section">
+    <div class="auth-grid">
+      <div>
+        <p class="eyebrow">Account</p>
+        <h1 class="display-m" style="margin-bottom:1.25rem;">Sign in</h1>
+
+        <% if (errors.form) { %>
+          <div class="alert alert--error" role="alert"><%= errors.form %></div>
+        <% } %>
+
+        <form method="post" action="/account/login" novalidate>
+          <input type="hidden" name="_csrf" value="<%= csrf %>">
+          <input type="hidden" name="next" value="<%= next %>">
+          <div class="field">
+            <label for="li-email">Email address</label>
+            <input id="li-email" name="email" type="email" autocomplete="username" required value="<%= values.email || '' %>">
+          </div>
+          <div class="field">
+            <label for="li-pass">Password</label>
+            <input id="li-pass" name="password" type="password" autocomplete="current-password" required>
+          </div>
+          <button class="btn btn--block" type="submit" style="max-width:340px;">Sign in</button>
+        </form>
+
+        <p class="small mt-2">
+          No account? <a href="/account/register">Create one</a> — or
+          <a href="/track-order">track a guest order</a> without signing up.
+        </p>
+        <p class="small muted">
+          Forgotten your password? Contact <a href="/contact">support</a> and we will help you
+          re-establish access after verifying the request.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="eyebrow">Why create an account</h2>
+        <ul class="measure">
+          <li>See your order history and cancel before dispatch in one click.</li>
+          <li>Save pieces to a wishlist that stays on your account.</li>
+          <li>Review pieces you have actually received, with a verified-purchase label.</li>
+          <li>Manage your marketing preference in one switch.</li>
+        </ul>
+        <p class="form-note mt-2">
+          We ask for your name, email and a password to create an account, and nothing else.
+          No date of birth, no gender, no location tracking.
+          <a href="/privacy#minimisation">Read what we collect and why</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

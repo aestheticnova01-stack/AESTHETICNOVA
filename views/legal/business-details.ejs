@@ -1,0 +1,120 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath }) %>
+<%- include('../partials/header') %>
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <nav aria-label="Breadcrumb"><ol class="breadcrumb"><li><a href="/">Home</a></li><li aria-current="page">Business details</li></ol></nav>
+      <h1>Business &amp; seller details</h1>
+      <p class="lede mt-1">Who you are buying from, how to reach a human, and how a complaint is tracked.</p>
+    </div>
+  </div>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <% if (!businessConfigured) { %>
+        <div class="alert alert--error" role="alert" style="max-width:1000px;">
+          <h2>These details are not complete on this deployment</h2>
+          <p>
+            Business identity is supplied through configuration, never typed into a template. Anything missing below is
+            shown as <strong>not configured</strong> instead of being filled with a placeholder that looks real.
+            A store showing this banner must not be presented as ready to trade.
+          </p>
+          <p class="small">Required environment values: <code>BIZ_LEGAL_ENTITY</code>, <code>BIZ_ADDRESS</code>,
+            <code>BIZ_SUPPORT_EMAIL</code>, <code>BIZ_SUPPORT_PHONE</code>, <code>BIZ_GSTIN</code>,
+            <code>BIZ_GRIEVANCE_OFFICER</code>, <code>BIZ_GRIEVANCE_EMAIL</code>, <code>BIZ_COUNTRY_OF_ORIGIN</code>,
+            <code>BIZ_SELLER_NAME</code>.</p>
+        </div>
+      <% } %>
+
+      <div class="two-col" style="align-items:start;gap:clamp(1.5rem,5vw,4rem);">
+        <div>
+          <h2 class="eyebrow">Identity</h2>
+          <dl class="kv">
+            <dt>Trading name</dt><dd><%= biz.tradingName %></dd>
+            <dt>Registered legal entity</dt>
+            <dd><%= biz.legalEntity || '<span class="env-flag">Not configured</span>' %></dd>
+            <dt>Business address</dt>
+            <dd><%= biz.address || '<span class="env-flag">Not configured</span>' %></dd>
+            <dt>GSTIN</dt>
+            <dd>
+              <% if (biz.gstin) { %><%= biz.gstin %><% } else { %><span class="env-flag">Not configured</span><% } %>
+            </dd>
+            <dt>Seller named on invoice</dt>
+            <dd><%= biz.sellerName || biz.tradingName %></dd>
+            <dt>Country of origin (products)</dt>
+            <dd><%= biz.countryOfOrigin || 'India (stated per product)' %></dd>
+            <dt>Nature of business</dt>
+            <dd>Direct-to-consumer e-commerce (own inventory). Not a marketplace; there are no third-party sellers on this site.</dd>
+          </dl>
+
+          <h2 class="eyebrow mt-3">Customer support</h2>
+          <dl class="kv">
+            <dt>Support email</dt>
+            <dd><%= biz.email ? '<a href="mailto:' + biz.email + '">' + biz.email + '</a>' : '<span class="env-flag">Not configured</span>' %></dd>
+            <dt>Support phone</dt>
+            <dd><%= biz.phone ? '<a href="tel:' + biz.phone.replace(/[^\d+]/g, '') + '">' + biz.phone + '</a>' : '<span class="env-flag">Not configured</span>' %></dd>
+            <dt>Support hours</dt>
+            <dd><%= biz.supportHours || '<span class="env-flag">Not stated</span>' %></dd>
+            <dt>Contact form</dt>
+            <dd><a href="/contact">/contact</a> — issues a tracked reference</dd>
+          </dl>
+        </div>
+
+        <div>
+          <h2 class="eyebrow">Grievance officer</h2>
+          <p class="small muted" style="max-width:60ch;">
+            Consumer-protection and data-protection rules in India require a named grievance contact and a defined
+            escalation route. This is that route.
+          </p>
+          <dl class="kv">
+            <dt>Officer</dt>
+            <dd><%= biz.grievanceOfficer || '<span class="env-flag">Not appointed</span>' %></dd>
+            <dt>Email</dt>
+            <dd><%= biz.grievanceEmail ? '<a href="mailto:' + biz.grievanceEmail + '">' + biz.grievanceEmail + '</a>' : '<span class="env-flag">Not configured</span>' %></dd>
+            <dt>Acknowledgement</dt><dd>Within 48 hours</dd>
+            <dt>Resolution target</dt><dd>Within 15 days</dd>
+          </dl>
+
+          <h3 class="label mt-2">How a complaint is submitted and tracked</h3>
+          <ol class="small" style="line-height:1.85;">
+            <li>Use the <a href="/grievance">grievance form</a> or email the officer. You receive a reference like
+              <code>GV-261103-A1B2C3</code> immediately.</li>
+            <li>The complaint enters the grievance queue with a written acknowledgement timestamp.</li>
+            <li>Track it any time at <a href="/support/status">/support/status</a> with your reference and private key.</li>
+            <li>Every status change is written to the ticket history with the actor and time.</li>
+            <li>You get a copy of the recorded complaint on request — the ticket record is the official copy.</li>
+            <li>If it is unresolved after 15 days, tell us; the next step is a written escalation and, if still
+              unresolved, the consumer commission route described in the <a href="/terms#disputes">Terms</a>.</li>
+          </ol>
+
+          <h3 class="label mt-2">Product information the law expects before purchase</h3>
+          <ul class="small" style="line-height:1.8;">
+            <li>Country of origin — on every product page.</li>
+            <li>Material, finish and measurements — in the “Details &amp; measurements” panel.</li>
+            <li>Return, refund and exchange terms — <a href="/returns">policy page</a>, linked from every product page.</li>
+            <li>Delivery timelines and charges — <a href="/shipping">shipping page</a> and the bag.</li>
+            <li>Payment modes available — checkout, and the footer badges.</li>
+            <li>Seller identity — this page and the product page panel.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="alert alert--info mt-3" style="max-width:1000px;">
+        <h2>Why some fields are empty</h2>
+        <p>
+          We will not generate a company registration number, a GSTIN, an address or a phone number. Those come from
+          the business owner and are injected at deployment. When a value is missing, this page says so — a real
+          customer must be able to tell the difference between “we have not filled this in” and “here is our legal
+          identity”.
+        </p>
+        <p class="small">
+          See the <a href="/launch-readiness">launch-readiness report</a> for the current status of each field.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

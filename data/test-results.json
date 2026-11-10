@@ -1,0 +1,730 @@
+{
+  "ranAt": "2026-11-03T14:48:12.028Z",
+  "node": "v20.20.2",
+  "suites": {
+    "contrast": {
+      "total": 48,
+      "pass": 48,
+      "fail": 0
+    },
+    "a11y": {
+      "total": 15,
+      "pass": 15,
+      "fail": 0
+    },
+    "e2e": {
+      "total": 54,
+      "pass": 54,
+      "fail": 0
+    }
+  },
+  "totals": {
+    "checks": 117,
+    "pass": 117,
+    "fail": 0
+  },
+  "results": [
+    {
+      "requirement": "R14",
+      "name": "Primary text on page background",
+      "status": "PASS",
+      "detail": "17.6:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Primary text on white surface",
+      "status": "PASS",
+      "detail": "18.88:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Secondary body text on page background",
+      "status": "PASS",
+      "detail": "6.53:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Secondary body text on white surface",
+      "status": "PASS",
+      "detail": "7:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Muted small text on page background",
+      "status": "PASS",
+      "detail": "6.53:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Placeholder text on white",
+      "status": "PASS",
+      "detail": "5.33:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Disabled/outline variant text",
+      "status": "PASS",
+      "detail": "4.54:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Text on dark sections",
+      "status": "PASS",
+      "detail": "17.58:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Secondary text on dark sections",
+      "status": "PASS",
+      "detail": "10.59:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Eyebrow text on dark",
+      "status": "PASS",
+      "detail": "10.59:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Dark section link white",
+      "status": "PASS",
+      "detail": "17.58:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Footer legal note on dark",
+      "status": "PASS",
+      "detail": "10.59:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Button label on ink button",
+      "status": "PASS",
+      "detail": "18.88:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Ghost button label",
+      "status": "PASS",
+      "detail": "17.6:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Light button label on dark",
+      "status": "PASS",
+      "detail": "18.88:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Price label on white",
+      "status": "PASS",
+      "detail": "18.88:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Price label on page background",
+      "status": "PASS",
+      "detail": "17.6:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Error text",
+      "status": "PASS",
+      "detail": "7.54:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Error text on error background",
+      "status": "PASS",
+      "detail": "11.89:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Success text on success background",
+      "status": "PASS",
+      "detail": "10.68:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Info text on info background",
+      "status": "PASS",
+      "detail": "10.31:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Warning text on warn background",
+      "status": "PASS",
+      "detail": "10.54:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "In-stock dot (non-text UI, 3:1)",
+      "status": "PASS",
+      "detail": "8.09:1 (needs 3:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Out-of-stock text",
+      "status": "PASS",
+      "detail": "7.54:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Consent banner body text",
+      "status": "PASS",
+      "detail": "7:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Consent banner link",
+      "status": "PASS",
+      "detail": "18.88:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Switch track border (UI, 3:1)",
+      "status": "PASS",
+      "detail": "4.54:1 (needs 3:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Form input border (UI, 3:1)",
+      "status": "PASS",
+      "detail": "4.54:1 (needs 3:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Focus ring on light background",
+      "status": "PASS",
+      "detail": "5.58:1 (needs 3:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Focus ring on white",
+      "status": "PASS",
+      "detail": "5.99:1 (needs 3:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Focus ring on dark background",
+      "status": "PASS",
+      "detail": "9.41:1 (needs 3:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Cat card label on gradient overlay",
+      "status": "PASS",
+      "detail": "18.88:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Flag text on white",
+      "status": "PASS",
+      "detail": "18.88:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Sold-out flag text",
+      "status": "PASS",
+      "detail": "7.54:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Card subtitle on page background",
+      "status": "PASS",
+      "detail": "6.53:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Category tagline on dark overlay",
+      "status": "PASS",
+      "detail": "12.93:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Verified badge text",
+      "status": "PASS",
+      "detail": "8.09:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Neutral badge text",
+      "status": "PASS",
+      "detail": "7:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Pending badge text",
+      "status": "PASS",
+      "detail": "7.87:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Pay tag text",
+      "status": "PASS",
+      "detail": "7.87:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Table header text on #F0F0ED",
+      "status": "PASS",
+      "detail": "16.54:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Table cell body on white",
+      "status": "PASS",
+      "detail": "7:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Status pill on white",
+      "status": "PASS",
+      "detail": "18.88:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Ticker text on white",
+      "status": "PASS",
+      "detail": "7:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Free shipping note text",
+      "status": "PASS",
+      "detail": "7.84:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Topbar text on ink",
+      "status": "PASS",
+      "detail": "18.88:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Large display heading on background",
+      "status": "PASS",
+      "detail": "17.6:1 (needs 3:1)"
+    },
+    {
+      "requirement": "R14",
+      "name": "Hero subheadline",
+      "status": "PASS",
+      "detail": "6.53:1 (needs 4.5:1)"
+    },
+    {
+      "requirement": "R15",
+      "name": "Skip link is first tab stop and visible on focus",
+      "status": "PASS",
+      "detail": "\"Skip to main content\" at #main"
+    },
+    {
+      "requirement": "R15",
+      "name": "Skip link moves focus to <main>",
+      "status": "PASS",
+      "detail": "activeElement#main"
+    },
+    {
+      "requirement": "R15",
+      "name": "Visible focus indicator on interactive elements",
+      "status": "PASS",
+      "detail": "outline 3px rgb(11, 92, 213)"
+    },
+    {
+      "requirement": "R15",
+      "name": "Product variant radios keyboard-reachable",
+      "status": "PASS",
+      "detail": "4 enabled options, all tabbable"
+    },
+    {
+      "requirement": "R15",
+      "name": "Bag drawer: keyboard opening, focus move, Escape close, focus restore",
+      "status": "PASS",
+      "detail": "native <dialog>, focus managed"
+    },
+    {
+      "requirement": "R5/R15",
+      "name": "Banner has Accept / Reject / Customise, all tabbable, equal prominence",
+      "status": "PASS",
+      "detail": "accept 216x46, reject 216x46, same font size"
+    },
+    {
+      "requirement": "R15",
+      "name": "Consent preferences: focus moved in, Escape closes",
+      "status": "PASS",
+      "detail": "focus → first optional toggle, restored to trigger"
+    },
+    {
+      "requirement": "R15",
+      "name": "Every page declares lang=\"en-IN\"",
+      "status": "PASS",
+      "detail": "12 pages checked"
+    },
+    {
+      "requirement": "R13",
+      "name": "No missing or misused alt attributes",
+      "status": "PASS",
+      "detail": "12 pages, all <img> accounted for"
+    },
+    {
+      "requirement": "R15",
+      "name": "Every form control has a programmatic label",
+      "status": "PASS",
+      "detail": "labels, wrapping labels or aria-label"
+    },
+    {
+      "requirement": "R15",
+      "name": "Heading order has no skipped levels and exactly one h1",
+      "status": "PASS",
+      "detail": "12 pages"
+    },
+    {
+      "requirement": "R15",
+      "name": "Landmarks present and navigations uniquely labelled",
+      "status": "PASS",
+      "detail": "main/header/footer + labelled nav"
+    },
+    {
+      "requirement": "R14",
+      "name": "Rendered text contrast meets AA on all sampled pages",
+      "status": "PASS",
+      "detail": "12 pages, every visible text node measured"
+    },
+    {
+      "requirement": "R15",
+      "name": "prefers-reduced-motion disables animation and never hides content",
+      "status": "PASS",
+      "detail": "ticker animation: none, 0 reveals all visible"
+    },
+    {
+      "requirement": "R15",
+      "name": "No horizontal overflow at 320px width",
+      "status": "PASS",
+      "detail": "reflow holds on 4 key pages"
+    },
+    {
+      "requirement": "Health",
+      "name": "All 38 public routes return their expected status",
+      "status": "PASS",
+      "detail": "no 500s anywhere in the route table"
+    },
+    {
+      "requirement": "Health",
+      "name": "Every internal link on 13 core pages resolves",
+      "status": "PASS",
+      "detail": "43 distinct internal targets checked"
+    },
+    {
+      "requirement": "Security",
+      "name": "Exactly one administrator account exists",
+      "status": "PASS",
+      "detail": "resolved by users.is_admin, not by matching a configured email"
+    },
+    {
+      "requirement": "Security",
+      "name": "The admin row carries a resolved, non-empty email",
+      "status": "PASS",
+      "detail": "admin@localhost"
+    },
+    {
+      "requirement": "R5",
+      "name": "Consent banner appears for a new visitor",
+      "status": "PASS",
+      "detail": "no choice recorded yet"
+    },
+    {
+      "requirement": "R5",
+      "name": "Accept and Reject are identically sized",
+      "status": "PASS",
+      "detail": "216x46px each — neither is visually favoured"
+    },
+    {
+      "requirement": "R5",
+      "name": "Reject completes in the browser without a CSRF failure",
+      "status": "PASS",
+      "detail": "POST /consent/reject → 200"
+    },
+    {
+      "requirement": "R5",
+      "name": "Banner closes after a recorded choice",
+      "status": "PASS",
+      "detail": "success path actually ran, not just a hidden error"
+    },
+    {
+      "requirement": "R5",
+      "name": "Decision persists across page loads",
+      "status": "PASS",
+      "detail": "banner stays closed after reload"
+    },
+    {
+      "requirement": "R5",
+      "name": "Footer “Cookie settings” reopens the banner",
+      "status": "PASS",
+      "detail": "withdraw or change a choice at any time"
+    },
+    {
+      "requirement": "R5",
+      "name": "Only first-party cookies are set",
+      "status": "PASS",
+      "detail": "an_consent, an_sid"
+    },
+    {
+      "requirement": "R5",
+      "name": "Non-essential categories default to OFF before any choice",
+      "status": "PASS",
+      "detail": "analytics=false, marketing=false, functional=false, no receipt yet"
+    },
+    {
+      "requirement": "R5/R8",
+      "name": "Analytics writes nothing before consent",
+      "status": "PASS",
+      "detail": "rows unchanged (0)"
+    },
+    {
+      "requirement": "R5/R8",
+      "name": "Reject non-essential records an auditable receipt",
+      "status": "PASS",
+      "detail": "receipt CR-A7599E463F15F61148 (banner-reject)"
+    },
+    {
+      "requirement": "R5",
+      "name": "Rejecting actually blocks first-party analytics",
+      "status": "PASS",
+      "detail": "still 0 rows"
+    },
+    {
+      "requirement": "R5",
+      "name": "Accept all enables and records analytics + marketing consent",
+      "status": "PASS",
+      "detail": "receipt CR-860BA6D134598EA5AC"
+    },
+    {
+      "requirement": "R5",
+      "name": "Withdrawal stops analytics immediately",
+      "status": "PASS",
+      "detail": "0 → 1 → withdrawn → stayed 1"
+    },
+    {
+      "requirement": "R8",
+      "name": "Withdrawal creates its own receipt",
+      "status": "PASS",
+      "detail": "CR-E8A963515D8628A810"
+    },
+    {
+      "requirement": "R5",
+      "name": "Cart and checkout work with all non-essential consent rejected",
+      "status": "PASS",
+      "detail": "1 item in bag"
+    },
+    {
+      "requirement": "R8",
+      "name": "Zero third-party network requests on all core pages",
+      "status": "PASS",
+      "detail": "9 pages crawled; no GA, no Meta Pixel, no GTM, no CDN, no font request"
+    },
+    {
+      "requirement": "Security",
+      "name": "CSP locks scripts/style/font/img/connect to same origin; security headers set",
+      "status": "PASS",
+      "detail": "X-CTO=nosniff, X-Frame=DENY, Referrer-Policy=strict-origin-when-cross-origin"
+    },
+    {
+      "requirement": "Security",
+      "name": "Session cookie is HttpOnly + SameSite=Lax",
+      "status": "PASS",
+      "detail": "secure=false (http in test env)"
+    },
+    {
+      "requirement": "R6/R7",
+      "name": "Registration: marketing consent optional + unchecked, no DOB/gender/address, notice present",
+      "status": "PASS",
+      "detail": "18 inputs total"
+    },
+    {
+      "requirement": "R6",
+      "name": "Checkout: separate unchecked marketing consent + required terms and privacy acknowledgement",
+      "status": "PASS",
+      "detail": "marketing_consent is not required and not pre-ticked"
+    },
+    {
+      "requirement": "R9",
+      "name": "No urgency/scarcity/social-proof dark patterns in rendered copy",
+      "status": "PASS",
+      "detail": "7 patterns scanned across 4 pages"
+    },
+    {
+      "requirement": "R9",
+      "name": "No pre-ticked optional add-ons and no countdown UI in checkout",
+      "status": "PASS",
+      "detail": "structural check"
+    },
+    {
+      "requirement": "R10",
+      "name": "Itemised totals reconcile; no fee appears after the presented total",
+      "status": "PASS",
+      "detail": "subtotal ₹1490 + shipping ₹79 = ₹1569, GST ₹239.34 included"
+    },
+    {
+      "requirement": "R10",
+      "name": "GST component computed and shown before payment",
+      "status": "PASS",
+      "detail": "₹239.34 of ₹1569"
+    },
+    {
+      "requirement": "R2",
+      "name": "Checkout completes end to end in labelled simulator mode",
+      "status": "PASS",
+      "detail": "order AN-261103-9711D5 marked paid via demo-simulator (no card data collected: true)"
+    },
+    {
+      "requirement": "R2",
+      "name": "Stock decremented by exactly one on a real order",
+      "status": "PASS",
+      "detail": "variant 1 now 5"
+    },
+    {
+      "requirement": "R11",
+      "name": "Zero seeded reviews and an explicit empty state",
+      "status": "PASS",
+      "detail": "no fabricated ratings or counts"
+    },
+    {
+      "requirement": "R11",
+      "name": "Anonymous review submission is rejected",
+      "status": "PASS",
+      "detail": "no row written, redirected to sign-in"
+    },
+    {
+      "requirement": "R16",
+      "name": "Business details render configured values only (injected via env in this test)",
+      "status": "PASS",
+      "detail": "grievance officer + address + GSTIN present from configuration"
+    },
+    {
+      "requirement": "R16",
+      "name": "Configured state correctly suppresses the \"not configured\" warning",
+      "status": "PASS",
+      "detail": "warning only shown when values are missing"
+    },
+    {
+      "requirement": "R18",
+      "name": "Data request creates a reference + due date + audit trail",
+      "status": "PASS",
+      "detail": "PR-261103-298762, due 2026-12-03"
+    },
+    {
+      "requirement": "R18",
+      "name": "Request history is recorded",
+      "status": "PASS",
+      "detail": "1 event(s)"
+    },
+    {
+      "requirement": "R18",
+      "name": "Wrong verification factor does not mark the request verified",
+      "status": "PASS",
+      "detail": "state=pending"
+    },
+    {
+      "requirement": "R18",
+      "name": "Admin console authenticates with configured credentials",
+      "status": "PASS",
+      "detail": "environment password honoured"
+    },
+    {
+      "requirement": "R18",
+      "name": "Deletion is refused until identity is verified",
+      "status": "PASS",
+      "detail": "HTTP 409, status stayed \"received\""
+    },
+    {
+      "requirement": "R18",
+      "name": "Deletion executed: eligible data erased, open order keeps delivery details, invoice retained",
+      "status": "PASS",
+      "detail": "status note lists actions; hold note states the 8-year invoice rule; total ₹1569 intact"
+    },
+    {
+      "requirement": "R18",
+      "name": "Requester is told in writing why the open order was kept",
+      "status": "PASS",
+      "detail": "status note names the exception"
+    },
+    {
+      "requirement": "R18",
+      "name": "Retention job completes redaction once the order closes; invoice figures preserved",
+      "status": "PASS",
+      "detail": "phone/address redacted, total ₹1569 and invoice number intact"
+    },
+    {
+      "requirement": "R18",
+      "name": "Completion requires a written outcome note",
+      "status": "PASS",
+      "detail": "HTTP 422"
+    },
+    {
+      "requirement": "Security",
+      "name": "POST without CSRF token is rejected",
+      "status": "PASS",
+      "detail": "HTTP 403"
+    },
+    {
+      "requirement": "Security",
+      "name": "Order details require the private access key or the owning account",
+      "status": "PASS",
+      "detail": "HTTP 403 without key"
+    },
+    {
+      "requirement": "Security",
+      "name": "Admin routes redirect unauthenticated visitors",
+      "status": "PASS",
+      "detail": "HTTP 302"
+    },
+    {
+      "requirement": "Security",
+      "name": "Database schema has no column for card/PIN data",
+      "status": "PASS",
+      "detail": "orders + payments tables checked"
+    },
+    {
+      "requirement": "Security",
+      "name": "Payment verification uses HMAC signature comparison (timing-safe)",
+      "status": "PASS",
+      "detail": "verifyRazorpaySignature wired to user route"
+    },
+    {
+      "requirement": "R17",
+      "name": "Licence text served for LICENSE-space-grotesk.txt",
+      "status": "PASS",
+      "detail": "OFL 1.1 text with copyright line, fetched over HTTP"
+    },
+    {
+      "requirement": "R17",
+      "name": "Licence text served for LICENSE-inter.txt",
+      "status": "PASS",
+      "detail": "OFL 1.1 text with copyright line, fetched over HTTP"
+    },
+    {
+      "requirement": "R17",
+      "name": "Every image and font file appears in the asset licence register",
+      "status": "PASS",
+      "detail": "16 files, all registered"
+    },
+    {
+      "requirement": "R17",
+      "name": "Every catalogue image reference is licensed",
+      "status": "PASS",
+      "detail": "10 distinct images in use"
+    },
+    {
+      "requirement": "R12",
+      "name": "No unsubstantiated product claims in descriptions",
+      "status": "PASS",
+      "detail": "checked: hypoallergenic, waterproof, tarnish-proof, 316L, nickel-free, lifetime guarantee, certified"
+    },
+    {
+      "requirement": "R7",
+      "name": "User schema collects no DOB, gender, photo, ID numbers or location",
+      "status": "PASS",
+      "detail": "14 columns audited"
+    }
+  ]
+}

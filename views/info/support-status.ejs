@@ -1,0 +1,69 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="wrap section">
+    <div style="max-width:760px;">
+      <% if (!ticket) { %>
+        <p class="eyebrow">Support</p>
+        <h1 class="display-m mb-2">Check a message</h1>
+        <form method="get" action="/support/status" class="mb-3">
+          <div class="field">
+            <label for="s-ref">Reference number</label>
+            <input id="s-ref" name="ref" type="text" required placeholder="SU-261103-A1B2C3">
+          </div>
+          <div class="field">
+            <label for="s-key">Private key from your link</label>
+            <input id="s-key" name="key" type="text" required>
+          </div>
+          <button class="btn" type="submit">Check status</button>
+        </form>
+        <% if (notFound) { %>
+          <div class="alert alert--error" role="alert">That reference and key do not match any message. Check both, or contact support.</div>
+        <% } %>
+        <p class="small muted">Prefer email? <a href="/contact">Send a new message</a>.</p>
+      <% } else { %>
+        <% if (isNew) { %>
+          <div class="alert alert--success" role="status">
+            <h2>Recorded</h2>
+            <p>Your message is logged with reference <strong><%= ticket.ref %></strong>.
+               <% if (ticket.kind === 'grievance') { %>It has been routed to the grievance officer queue.<% } %></p>
+          </div>
+        <% } %>
+        <p class="eyebrow"><%= KINDS[ticket.kind] ? KINDS[ticket.kind].label : ticket.kind %></p>
+        <h1 class="display-m" style="margin-bottom:.75rem;"><%= ticket.ref %></h1>
+        <div class="summary" style="position:static;">
+          <div class="flex-between mb-2">
+            <span class="status-pill" data-s="<%= ticket.status %>"><%= ticket.status.replace('_', ' ') %></span>
+            <span class="small muted">Raised <%= fmtDateTime(ticket.created_at) %></span>
+          </div>
+          <dl class="kv">
+            <dt>Subject</dt><dd><%= ticket.subject %></dd>
+            <dt>Your message</dt><dd><%= ticket.message %></dd>
+            <dt>Reference</dt><dd><%= ticket.ref %></dd>
+            <% if (ticket.order_ref) { %><dt>Order</dt><dd><%= ticket.order_ref %></dd><% } %>
+            <dt>Response target</dt><dd><%= KINDS[ticket.kind] ? KINDS[ticket.kind].target : '2 working days' %></dd>
+          </dl>
+        </div>
+
+        <h2 class="eyebrow mt-3">History</h2>
+        <ol class="small" style="padding-left:1.2rem;line-height:1.9;">
+          <% events.forEach(function (e) { %>
+            <li>
+              <strong><%= e.event.replace(/_/g, ' ') %></strong> — <%= fmtDateTime(e.at) %>
+              <% if (e.detail) { %><br><span class="muted"><%= e.detail %></span><% } %>
+            </li>
+          <% }); %>
+        </ol>
+        <p class="small muted mt-2">
+          We update this record as the message moves. Nothing is marked resolved until we have replied to you.
+        </p>
+      <% } %>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

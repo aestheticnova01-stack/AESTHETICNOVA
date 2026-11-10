@@ -1,0 +1,9 @@
+<div class="search-panel" id="search-panel" hidden>
+  <div class="wrap">
+    <form action="/shop" method="get" role="search">
+      <label class="sr-only" for="site-search">Search products</label>
+      <input id="site-search" type="search" name="q" placeholder="Search rings, chains, pendants…" value="<%= typeof query !== 'undefined' && query.q ? query.q : '' %>" autocomplete="off">
+      <button class="btn btn--small" type="submit">Search</button>
+    </form>
+  </div>
+</div>

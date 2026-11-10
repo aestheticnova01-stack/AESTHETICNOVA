@@ -1,0 +1,76 @@
+<%- include('_layout') %>
+<p class="eyebrow"><a href="/admin/orders">Orders</a> / <%= order.ref %></p>
+<h1 class="display-m mb-2"><%= order.ref %></h1>
+
+<div class="two-col">
+  <div>
+    <h2 class="eyebrow">Items</h2>
+    <table class="admin-table">
+      <thead><tr><th>Product</th><th>Variant</th><th>Qty</th><th>Line total</th></tr></thead>
+      <tbody>
+        <% items.forEach(function (i) { %>
+          <tr><td><%= i.product_name %></td><td><%= i.variant_label %><br><span class="small muted"><%= i.sku %></span></td>
+              <td><%= i.qty %></td><td><%= inr(i.line_total_paise) %></td></tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <h2 class="eyebrow mt-3">Money</h2>
+    <dl class="kv">
+      <dt>Subtotal</dt><dd><%= inr(order.subtotal_paise) %></dd>
+      <dt>Shipping</dt><dd><%= inr(order.shipping_paise) %></dd>
+      <dt>COD fee</dt><dd><%= inr(order.cod_fee_paise) %></dd>
+      <dt>GST component</dt><dd><%= inr(order.gst_paise) %></dd>
+      <dt>Total</dt><dd><strong><%= inr(order.total_paise) %></strong></dd>
+      <dt>Invoice</dt><dd><%= order.invoice_number || '—' %></dd>
+    </dl>
+
+    <h2 class="eyebrow mt-3">Payments</h2>
+    <% if (!payments.length) { %><p class="small muted">No payment rows.</p><% } else { %>
+      <table class="admin-table">
+        <thead><tr><th>Provider</th><th>Ref</th><th>Amount</th><th>Status</th><th>Mode</th></tr></thead>
+        <tbody>
+          <% payments.forEach(function (p) { %>
+            <tr><td><%= p.provider %></td><td><%= p.provider_ref || '—' %></td><td><%= inr(p.amount_paise) %></td>
+                <td><%= p.status %></td>
+                <td><%= p.mode === 'simulated' ? '<span class="env-flag">simulated</span>' : p.mode %></td></tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } %>
+    <p class="small muted mt-1">No card number, CVV, UPI PIN or bank credential is stored anywhere in this system.</p>
+  </div>
+
+  <div>
+    <h2 class="eyebrow">Fulfilment</h2>
+    <form method="post" action="/admin/orders/<%= order.ref %>/status" class="mb-2">
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <div class="field">
+        <label for="o-status">Order status</label>
+        <select id="o-status" name="order_status">
+          <% statuses.forEach(function (s) { %><option value="<%= s %>" <%= order.order_status === s ? 'selected' : '' %>><%= s %></option><% }); %>
+        </select>
+      </div>
+      <button class="btn btn--small" type="submit">Update status</button>
+    </form>
+
+    <h2 class="eyebrow">Customer</h2>
+    <dl class="kv">
+      <dt>Name</dt><dd><%= order.full_name %></dd>
+      <dt>Email</dt><dd><%= order.email %></dd>
+      <dt>Phone</dt><dd><%= order.phone %></dd>
+      <dt>Address</dt><dd><%= order.address_line1 %><%= order.address_line2 ? ', ' + order.address_line2 : '' %><br><%= order.city %>, <%= order.state %> <%= order.pincode %></dd>
+      <dt>Notes</dt><dd><%= order.notes || '—' %></dd>
+      <dt>Marketing opt-in</dt><dd><%= order.marketing_consent ? 'Yes' : 'No' %></dd>
+      <dt>Terms accepted</dt><dd><%= fmtDateTime(order.terms_accepted_at) %> (policy <%= order.privacy_notice_version %>)</dd>
+    </dl>
+
+    <h2 class="eyebrow mt-3">Audit trail</h2>
+    <ul class="small" style="padding-left:1.1rem;line-height:1.8;">
+      <% events.forEach(function (e) { %>
+        <li><%= e.action.replace(/_/g, ' ') %> — <%= fmtDateTime(e.at) %> <span class="muted">(<%= e.actor %>)</span></li>
+      <% }); %>
+    </ul>
+  </div>
+</div>
+<%- include('_layout-end') %>

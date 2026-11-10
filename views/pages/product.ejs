@@ -1,0 +1,288 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex: false, structuredData }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="wrap">
+    <nav aria-label="Breadcrumb" style="padding-top:1.5rem;">
+      <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="/shop">Shop</a></li>
+        <li><a href="/shop?category=<%= product.category %>"><%= product.category[0].toUpperCase() + product.category.slice(1) %></a></li>
+        <li aria-current="page"><%= product.name %></li>
+      </ol>
+    </nav>
+
+    <div class="pdp" style="padding-bottom:clamp(2.5rem,6vw,5rem);">
+      <!-- Gallery -->
+      <div class="pdp-gallery">
+        <div class="pdp-main" id="pdp-main" data-zoom="false" role="img"
+             aria-label="<%= product.image_alt %> Additional zoom available with the button below."
+             tabindex="0">
+          <img src="<%= product.image %>" alt="<%= product.image_alt %>" width="900" height="1125" decoding="async">
+          <span class="zoom-hint">Click or press Enter to zoom</span>
+        </div>
+        <p class="small muted mt-1">
+          Product photography is an illustrative render. Exact colour perception depends on your screen,
+          and the piece you receive is the metal described below.
+        </p>
+      </div>
+
+      <!-- Buy box -->
+      <div>
+        <% if (product.new_arrival) { %><p class="eyebrow">New drop</p><% } %>
+        <h1 class="pdp-title"><%= product.name %></h1>
+        <p class="small muted mb-0"><%= product.material %> · <%= product.finish %> · Made in <%= product.made_in %></p>
+
+        <div class="pdp-price">
+          <span class="price" id="pdp-price"><%= inr(product.price_paise) %></span>
+        </div>
+        <p class="pdp-tax">
+          Inclusive of all taxes (GST 18%). Shipping is calculated in your bag before payment.
+          <% if (freeShipping) { %><strong>This item ships free.</strong><% } %>
+        </p>
+
+        <% if (reviewSummary.count === 0) { %>
+          <p class="rating-line mt-1"><span>No customer reviews yet — be the first after you receive it.</span></p>
+        <% } else { %>
+          <p class="rating-line mt-1">
+            <span class="stars" aria-hidden="true"><%= '★'.repeat(Math.round(reviewSummary.average)) %><%= '☆'.repeat(5 - Math.round(reviewSummary.average)) %></span>
+            <span><%= reviewSummary.average.toFixed(1) %> out of 5 · <%= reviewSummary.count %> verified purchase review<%= reviewSummary.count === 1 ? '' : 's' %></span>
+          </p>
+        <% } %>
+
+        <form method="post" action="/cart/add" id="pdp-form" novalidate>
+          <input type="hidden" name="_csrf" value="<%= csrf %>">
+          <input type="hidden" name="product_id" value="<%= product.id %>">
+
+          <% if (product.variant_type !== 'none') { %>
+            <fieldset class="fieldset" style="margin-bottom:1rem;">
+              <legend style="border:0;padding:0;margin-bottom:.5rem;width:auto;">
+                <span class="label" style="margin:0;"><%= product.variant_type === 'size' ? 'Ring size (Indian)' : 'Chain / bracelet length' %> <span class="req" aria-hidden="true">*</span></span>
+              </legend>
+              <div class="variant-list" role="radiogroup" aria-required="true" aria-describedby="variant-help">
+                <% variants.forEach(function (v, i) { %>
+                  <label class="variant">
+                    <input type="radio" name="variant_id" value="<%= v.id %>"
+                           <%= v.stock === 0 ? 'disabled' : '' %>
+                           <%= i === firstAvailableIndex ? 'checked' : '' %> required>
+                    <span><%= v.label %><%= v.extra_paise ? ' (+' + inr(v.extra_paise) + ')' : '' %><%= v.stock === 0 ? ' — sold out' : '' %></span>
+                  </label>
+                <% }); %>
+              </div>
+              <p class="hint" id="variant-help">
+                <%= product.variant_type === 'size'
+                  ? 'Not sure of your size? The size guide explains how to measure at home. Sizes follow Indian ring sizing.'
+                  : 'Measurements are end-to-end, clasp included.' %>
+                <a href="/size-guide">Open the size guide</a>.
+              </p>
+              <% if (variants.every(function (v) { return v.stock === 0; })) { %>
+                <p class="stock-line" data-state="out"><span class="stock-dot" aria-hidden="true"></span><span>Sold out in every size</span></p>
+              <% } %>
+            </fieldset>
+          <% } else { %>
+            <input type="hidden" name="variant_id" value="<%= variants[0].id %>">
+          <% } %>
+
+          <div class="qty-row">
+            <label class="label" for="qty" style="margin:0;">Quantity</label>
+            <div class="qty">
+              <button type="button" data-qty="-" aria-label="Decrease quantity">−</button>
+              <input id="qty" name="qty" type="number" value="1" min="1" max="<%= Math.max(1, maxQty) %>" inputmode="numeric">
+              <button type="button" data-qty="+" aria-label="Increase quantity">+</button>
+            </div>
+            <span class="small muted">Max <%= maxQty %> per order</span>
+          </div>
+
+          <p class="stock-line" data-state="<%= totalStock === 0 ? 'out' : (totalStock <= 3 ? 'low' : 'in') %>" id="stock-status">
+            <span class="stock-dot" aria-hidden="true"></span>
+            <span>
+              <%= totalStock === 0 ? 'Currently sold out' : totalStock <= 3 ? `Only ${totalStock} left in total` : `In stock — ${totalStock} available` %>
+            </span>
+          </p>
+
+          <div class="pdp-actions">
+            <button class="btn" type="submit" <%= totalStock === 0 ? 'disabled' : '' %>>Add to bag</button>
+            <button class="btn btn--ghost" type="button" data-wishlist="<%= product.id %>"
+                    aria-pressed="<%= wishlisted ? 'true' : 'false' %>">
+              <svg width="15" height="15" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 17s-7-4.35-7-9a4 4 0 017-2.6A4 4 0 0117 8c0 4.65-7 9-7 9z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+              <span data-wish-label><%= wishlisted ? 'Saved' : 'Save' %></span>
+            </button>
+          </div>
+
+          <p class="small muted mt-2">
+            Not sure yet? Save it to your wishlist — we will not email you about it unless you ask us to.
+          </p>
+        </form>
+
+        <div class="accordion">
+          <details open>
+            <summary>Description <span class="plus" aria-hidden="true"></span></summary>
+            <div class="acc-body"><%= product.description %></div>
+          </details>
+          <details>
+            <summary>Details &amp; measurements <span class="plus" aria-hidden="true"></span></summary>
+            <div class="acc-body">
+              <table class="spec-table">
+                <caption class="sr-only">Product specifications</caption>
+                <tbody>
+                  <tr><th scope="row">Material</th><td><%= product.material %></td></tr>
+                  <tr><th scope="row">Finish</th><td><%= product.finish %></td></tr>
+                  <tr><th scope="row">Made in</th><td><%= product.made_in %></td></tr>
+                  <% JSON.parse(product.details).forEach(function (d) { %>
+                    <tr><th scope="row">Spec</th><td><%= d %></td></tr>
+                  <% }); %>
+                </tbody>
+              </table>
+              <% if (product.claim_note) { %>
+                <p class="mt-2"><strong>What we do not claim:</strong> <%= product.claim_note %></p>
+              <% } else { %>
+                <p class="mt-2"><strong>What we do not claim:</strong> This piece is not represented as hypoallergenic,
+                waterproof, tarnish-proof, nickel-free or lifetime guaranteed. It is stainless steel, and we say only that.</p>
+              <% } %>
+            </div>
+          </details>
+          <details>
+            <summary>Care &amp; wear <span class="plus" aria-hidden="true"></span></summary>
+            <div class="acc-body"><%= product.care %></div>
+          </details>
+          <details>
+            <summary>Shipping, returns &amp; GST <span class="plus" aria-hidden="true"></span></summary>
+            <div class="acc-body">
+              <ul>
+                <li>Dispatched within 2 working days. Metro delivery 2–4 working days after dispatch; other serviceable PIN codes 4–7 days.</li>
+                <li>Free shipping on orders over ₹1,499; otherwise ₹79 flat, shown in your bag before you pay.</li>
+                <li><%= returnWindow %>-day return window from delivery on unused items in original packaging.</li>
+                <li>GST invoice included in every order at 18%, with the tax component shown on your order summary.</li>
+              </ul>
+              <p class="mt-1"><a href="/returns">Read the full refund and return policy</a>.</p>
+            </div>
+          </details>
+          <details>
+            <summary>Country of origin &amp; seller <span class="plus" aria-hidden="true"></span></summary>
+            <div class="acc-body">
+              <table class="spec-table">
+                <tbody>
+                  <tr><th scope="row">Country of origin</th><td><%= product.made_in %></td></tr>
+                  <tr><th scope="row">Marketed by</th><td><%= biz.tradingName %><%= biz.legalEntity ? ' (' + biz.legalEntity + ')' : '' %></td></tr>
+                  <tr><th scope="row">Seller</th><td><%= biz.sellerName || biz.tradingName %></td></tr>
+                  <tr><th scope="row">Customer care</th><td><%= biz.email || 'Not configured — see business details' %></td></tr>
+                </tbody>
+              </table>
+              <p class="mt-1 small">Imported goods: this item is not imported. See the <a href="/business-details">business details page</a> for seller and grievance information.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews: honest empty state -->
+    <section class="reviews" aria-labelledby="reviews-title">
+      <div class="section-head" style="margin-bottom:1.25rem;">
+        <div>
+          <h2 id="reviews-title" style="font-size:1.25rem;text-transform:uppercase;">Customer reviews</h2>
+        </div>
+      </div>
+
+      <% if (reviewSummary.count === 0) { %>
+        <div class="empty-state">
+          <h3>No reviews yet</h3>
+          <p>
+            This piece has not been reviewed by anyone. We do not invent reviews, star ratings or
+            customer photos to fill this space. Reviews appear here only after a verified purchase and
+            moderation — check back once people start wearing theirs.
+          </p>
+        </div>
+      <% } else { %>
+        <p class="small muted">
+          <%= reviewSummary.average.toFixed(1) %> out of 5 from <%= reviewSummary.count %> review<%= reviewSummary.count === 1 ? '' : 's' %>.
+          Every review below is linked to a verified order.
+        </p>
+        <% reviews.forEach(function (r) { %>
+          <article class="review">
+            <div class="review-head">
+              <strong><%= r.author_name %></strong>
+              <span class="stars" aria-label="<%= r.rating %> out of 5 stars"><%= '★'.repeat(r.rating) %><%= '☆'.repeat(5 - r.rating) %></span>
+              <% if (r.verified_purchase) { %>
+                <span class="badge">Verified purchase</span>
+              <% } %>
+              <span class="small muted"><%= fmtDate(r.created_at) %></span>
+            </div>
+            <% if (r.title) { %><p class="mb-1"><strong><%= r.title %></strong></p><% } %>
+            <p class="review-body mb-0"><%= r.body %></p>
+          </article>
+        <% }); %>
+      <% } %>
+
+      <% if (user) { %>
+        <div class="mt-3" style="max-width:640px;">
+          <h3 style="font-size:1rem;text-transform:none;letter-spacing:0;">Write a review</h3>
+          <% if (userReviewed) { %>
+            <p class="small muted">You have already reviewed this piece. Contact support if you need to amend it.</p>
+          <% } else if (!hasPurchased) { %>
+            <p class="small muted">
+              Reviews are only accepted from verified buyers, so we can label them honestly.
+              Once your order for this piece is delivered, you can review it from your account.
+            </p>
+          <% } else { %>
+            <form method="post" action="/reviews" novalidate>
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <input type="hidden" name="product_id" value="<%= product.id %>">
+              <input type="hidden" name="slug" value="<%= product.slug %>">
+              <div class="field">
+                <label for="r-rating">Rating</label>
+                <select id="r-rating" name="rating" required>
+                  <option value="5">5 — Excellent</option>
+                  <option value="4">4 — Good</option>
+                  <option value="3">3 — Okay</option>
+                  <option value="2">2 — Poor</option>
+                  <option value="1">1 — Bad</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="r-title">Short title (optional)</label>
+                <input id="r-title" name="title" type="text" maxlength="100">
+              </div>
+              <div class="field">
+                <label for="r-body">Your review</label>
+                <textarea id="r-body" name="body" required minlength="10" maxlength="2000"
+                          aria-describedby="r-body-hint"></textarea>
+                <p class="hint" id="r-body-hint">
+                  Published with your first name and month. Reviews are moderated for spam and offensive
+                  content, but we do not suppress genuine criticism.
+                </p>
+              </div>
+              <p class="form-note">
+                By submitting, you agree that your review can be published on this product page.
+                We store your account link so the “verified purchase” label stays accurate. See the
+                <a href="/privacy">privacy notice</a>.
+              </p>
+              <button class="btn btn--small" type="submit">Submit review</button>
+            </form>
+          <% } %>
+        </div>
+      <% } else { %>
+        <p class="small mt-2"><a href="/account/login?next=/product/<%= product.slug %>">Sign in</a> to review a purchase you have received.</p>
+      <% } %>
+    </section>
+
+    <% if (related.length) { %>
+      <section class="section" style="padding-top:2rem;">
+        <div class="section-head">
+          <h2 style="font-size:1.25rem;">You may also like</h2>
+          <a class="section-link" href="/shop?category=<%= product.category %>">All <%= product.category %></a>
+        </div>
+        <div class="product-grid">
+          <% related.forEach(function (p) { %>
+            <%- include('../partials/product-card', { p, wishlistIds }) %>
+          <% }); %>
+        </div>
+      </section>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+<script src="/js/product.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, structuredData }) %>
+<%- include('../partials/header') %>
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <h1>FAQ</h1>
+      <p class="lede mt-1">Shipping, returns, sizing, payments and what we will not claim.</p>
+    </div>
+  </div>
+  <section class="section">
+    <div class="wrap wrap--narrow">
+      <div class="prose">
+        <h2>Shipping</h2>
+        <h3>How long does delivery take?</h3>
+        <p>
+          Orders are dispatched within two working days. Metro addresses usually arrive 2–4 working days after
+          dispatch; other serviceable PIN codes in 4–7 working days. These are ranges, not guarantees — courier
+          delays happen and we will not pretend otherwise.
+        </p>
+        <h3>What does shipping cost?</h3>
+        <p>₹79 flat, free on orders above ₹1,499. It is shown in your bag and again at checkout before you pay.</p>
+        <h3>Do you ship outside India?</h3>
+        <p>Not right now. We ship within India only, so customs duties and duty surprises are not part of this store.</p>
+
+        <h2>Pricing and payment</h2>
+        <h3>Are taxes included?</h3>
+        <p>Yes. Every price includes GST at 18%, and the tax component is itemised on your order summary and invoice.</p>
+        <h3>Which payment methods work?</h3>
+        <p>
+          UPI, debit and credit cards, and net banking. Cash on delivery is shown only when it is actually enabled for
+          your address — we do not advertise a method that will fail at checkout.
+        </p>
+        <h3>Can I get an invoice?</h3>
+        <p>Every paid order gets a GST invoice number on the order page.</p>
+
+        <h2>Returns and exchanges</h2>
+        <h3>What is the return window?</h3>
+        <p>
+          <strong><%= returnWindow %> days from delivery</strong> for unused items with tags and original packaging
+          intact. Earrings are returnable only if the sealed hygiene packaging is unopened.
+        </p>
+        <h3>Who pays return shipping?</h3>
+        <p>
+          We do, when the item is damaged, incorrect or not what you ordered. You do, for change-of-mind returns,
+          unless a pickup is available at your PIN code and we offer it.
+          <a href="/returns">Full refund policy</a>.
+        </p>
+
+        <h2>Sizing and materials</h2>
+        <h3>How do I size a ring?</h3>
+        <p><a href="/size-guide">The size guide</a> has measurement tables in Indian sizing.</p>
+        <h3>Is your jewellery hypoallergenic or waterproof?</h3>
+        <p>
+          We do not make those claims. Our pieces are stainless steel, and we publish the material, finish and care
+          instructions. If you have a metal sensitivity, ask us first — we will tell you exactly what our supplier
+          documentation says rather than reassure you without evidence.
+        </p>
+        <h3>Will it tarnish?</h3>
+        <p>
+          Stainless steel is resistant to everyday discolouration, but we will not promise “never”. Follow the care
+          guidance on the product page and dry the piece after wear.
+        </p>
+
+        <h2>Privacy and your data</h2>
+        <h3>Do you sell my data?</h3>
+        <p>No. We share delivery details with the courier and payment data with the payment provider, nothing else.</p>
+        <h3>How do I stop marketing email?</h3>
+        <p>
+          Untick the marketing box in <a href="/account/profile">your account</a>, or use the unsubscribe link in any
+          message, or file a withdrawal at <a href="/privacy-requests">Privacy &amp; Data Requests</a> — it takes
+          effect immediately.
+        </p>
+        <h3>Can you delete my account?</h3>
+        <p>
+          Yes. Invoice records are retained for eight years because tax law requires it, and we will tell you that
+          plainly rather than claiming a total erase.
+          <a href="/privacy-requests">Start a request</a>.
+        </p>
+
+        <h2>Still stuck?</h2>
+        <p>
+          <a href="/contact">Contact support</a> or
+          <a href="/grievance">file a formal grievance</a> if you are not satisfied with the response.
+        </p>
+      </div>
+    </div>
+  </section>
+</main>
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

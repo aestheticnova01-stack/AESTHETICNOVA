@@ -1,0 +1,142 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <nav aria-label="Breadcrumb">
+        <ol class="breadcrumb"><li><a href="/">Home</a></li><li aria-current="page">Privacy &amp; Data Requests</li></ol>
+      </nav>
+      <h1>Privacy &amp; Data Requests</h1>
+      <p class="lede mt-1">
+        Ask for a copy of what we hold, correct it, delete it, or withdraw an optional consent.
+        You get a reference number and a status page you can return to.
+      </p>
+    </div>
+  </div>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="two-col" style="align-items:start;">
+        <div>
+          <% if (errors.form) { %><div class="alert alert--error" role="alert"><%= errors.form %></div><% } %>
+
+          <form method="post" action="/privacy-requests" novalidate>
+            <input type="hidden" name="_csrf" value="<%= csrf %>">
+            <input type="hidden" name="form_ts" value="<%= Date.now() %>">
+
+            <fieldset class="fieldset">
+              <legend>1. What are you asking for?</legend>
+              <% Object.keys(types).forEach(function (k) { %>
+                <label class="check">
+                  <input type="radio" name="request_type" value="<%= k %>" required
+                         <%= values.request_type === k ? 'checked' : '' %>>
+                  <span class="check-text">
+                    <strong><%= types[k] %></strong>
+                    <span class="small">
+                      <% if (k === 'access') { %>A copy of the data we hold about you, in a readable format, with what it is used for and who it is shared with.<% } %>
+                      <% if (k === 'correction') { %>Fix something inaccurate — a wrong name, outdated phone number or an address on a past order note.<% } %>
+                      <% if (k === 'deletion') { %>Delete data we are not legally required to keep. Invoice and tax records stay for 8 years, and we explain that in the outcome.<% } %>
+                      <% if (k === 'account_deletion') { %>Close the account and delete eligible data. Orders stay as financial records but are disconnected from a live profile.<% } %>
+                      <% if (k === 'withdrawal') { %>Stop marketing email, analytics or marketing cookies. This one takes effect immediately.<% } %>
+                    </span>
+                  </span>
+                </label>
+              <% }); %>
+              <% if (errors.request_type) { %><p class="error-text" role="alert"><%= errors.request_type %></p><% } %>
+            </fieldset>
+
+            <fieldset class="fieldset">
+              <legend>2. How we find your records</legend>
+              <div class="field <%= errors.name ? 'has-error' : '' %>">
+                <label for="pr-name">Your name</label>
+                <input id="pr-name" name="name" type="text" required value="<%= values.name || user && user.full_name || '' %>">
+                <% if (errors.name) { %><p class="error-text"><%= errors.name %></p><% } %>
+              </div>
+              <div class="field <%= errors.email ? 'has-error' : '' %>">
+                <label for="pr-email">Email address we would hold</label>
+                <input id="pr-email" name="email" type="email" required value="<%= values.email || user && user.email || '' %>">
+                <% if (errors.email) { %><p class="error-text"><%= errors.email %></p><% } %>
+              </div>
+              <div class="field <%= errors.order_ref ? 'has-error' : '' %>">
+                <label for="pr-order">Order reference <span class="muted">(optional, speeds up verification)</span></label>
+                <input id="pr-order" name="order_ref" type="text" value="<%= values.order_ref || '' %>" placeholder="AN-261103-A1B2C3">
+                <% if (errors.order_ref) { %><p class="error-text"><%= errors.order_ref %></p><% } %>
+              </div>
+              <div class="field <%= errors.details ? 'has-error' : '' %>">
+                <label for="pr-details">What exactly should we do?</label>
+                <textarea id="pr-details" name="details" required minlength="10" maxlength="1500"><%= values.details || '' %></textarea>
+                <% if (errors.details) { %><p class="error-text"><%= errors.details %></p><% } %>
+              </div>
+            </fieldset>
+
+            <fieldset class="fieldset">
+              <legend>3. Confirmation</legend>
+              <label class="check">
+                <input type="checkbox" name="identity_confirm" value="1" required <%= values.identity_confirm ? 'checked' : '' %>>
+                <span class="check-text">
+                  <strong>I am the person this data relates to <span class="req" aria-hidden="true">*</span></strong>
+                  <span class="small">
+                    Or an authorised representative. We verify before we act, so someone cannot request your data
+                    using your email address alone. We may ask for one more factor before releasing anything.
+                  </span>
+                </span>
+              </label>
+              <% if (errors.identity_confirm) { %><p class="error-text" role="alert"><%= errors.identity_confirm %></p><% } %>
+            </fieldset>
+
+            <button class="btn" type="submit">Submit request</button>
+            <p class="small muted mt-1">
+              We aim to respond within 30 days and will tell you if we need longer. Requests are free.
+            </p>
+          </form>
+        </div>
+
+        <aside>
+          <h2 class="eyebrow">Your requests from this device</h2>
+          <% if (!mine || !mine.length) { %>
+            <p class="small muted">None yet. Your request will appear here and on a private status page.</p>
+          <% } else { %>
+            <ul class="small" style="padding-left:1.1rem;line-height:1.8;">
+              <% mine.forEach(function (m) { %>
+                <li>
+                  <strong><%= m.ref %></strong> — <%= types[m.request_type] || m.request_type %><br>
+                  <span class="muted">Status: <%= m.status.replace(/_/g, ' ') %> · verification: <%= m.verification_state %></span>
+                </li>
+              <% }); %>
+            </ul>
+          <% } %>
+
+          <h2 class="eyebrow mt-3">How the workflow runs</h2>
+          <ol class="small" style="padding-left:1.15rem;line-height:1.8;">
+            <li><strong>Submitted.</strong> You get a reference and a private link immediately.</li>
+            <li><strong>Identity checked.</strong> We match your order reference or signed-in session. If neither is
+              available, a human checks before anything is released.</li>
+            <li><strong>In progress.</strong> The request is worked across account, order, support and marketing systems.</li>
+            <li><strong>Outcome.</strong> We tell you what was done, what was deleted, and what we were required to keep.</li>
+          </ol>
+
+          <h2 class="eyebrow mt-3">What we cannot delete</h2>
+          <p class="small">
+            Invoice and transaction records are kept for eight years under Indian tax law. Order records tied to an
+            open dispute or return are held until it closes. When a lawful retention applies, we say so in writing
+            instead of pretending the deletion was total.
+          </p>
+
+          <h2 class="eyebrow mt-3">Prefer email?</h2>
+          <p class="small">
+            You can also write to the grievance officer at
+            <strong><%= biz.grievanceEmail || biz.email || 'the address on the business details page' %></strong>.
+            The form above is faster because it is tracked.
+          </p>
+          <p class="small"><a href="/privacy">Read the full Privacy Policy</a></p>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

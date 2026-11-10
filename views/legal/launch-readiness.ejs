@@ -1,0 +1,182 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath }) %>
+<%- include('../partials/header') %>
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <nav aria-label="Breadcrumb"><ol class="breadcrumb"><li><a href="/">Home</a></li><li aria-current="page">Launch readiness</li></ol></nav>
+      <h1>Launch-readiness report</h1>
+      <p class="lede mt-1" style="max-width:74ch;">
+        Every status below is derived at page load from this deployment’s configuration, its database and the last
+        recorded automated test run. Nothing here is asserted by hand, and nothing is marked PASS without a check
+        behind it.
+      </p>
+    </div>
+  </div>
+
+  <section class="section section--tight">
+    <div class="wrap">
+
+      <!-- verdict -->
+      <div class="alert <%= report.verdict === 'READY' ? 'alert--success' : (report.verdict === 'NOT READY FOR LAUNCH' ? 'alert--error' : 'alert--warn') %>"
+           role="status" style="max-width:1100px;">
+        <h2>Verdict: <%= report.verdict %></h2>
+        <p>
+          <% if (report.verdict === 'NOT READY FOR LAUNCH') { %>
+            This deployment must not take real customer orders. <strong><%= report.blockers.length %></strong>
+            blocking item(s) are listed at the end of this page.
+          <% } else { %>
+            No hard blockers detected, but <strong><%= report.summary['NEEDS HUMAN REVIEW'] || 0 %></strong> item(s)
+            still require a human decision. That is not the same as being launch-ready.
+          <% } %>
+        </p>
+      </div>
+
+      <!-- summary -->
+      <dl class="stat-grid" style="max-width:1100px;">
+        <div class="stat"><dt>Checks passed</dt><dd><%= report.tests ? report.tests.totals.pass : '—' %><span class="small muted"> / <%= report.tests ? report.tests.totals.checks : '—' %></span></dd></div>
+        <div class="stat"><dt>Checks failed</dt><dd><%= report.tests ? report.tests.totals.fail : '—' %></dd></div>
+        <div class="stat"><dt>Requirements PASS</dt><dd><%= report.summary.PASS || 0 %></dd></div>
+        <div class="stat"><dt>NEEDS HUMAN REVIEW</dt><dd><%= report.summary['NEEDS HUMAN REVIEW'] || 0 %></dd></div>
+        <div class="stat"><dt>NOT CONFIGURED</dt><dd><%= report.summary['NOT CONFIGURED'] || 0 %></dd></div>
+        <div class="stat"><dt>FAIL</dt><dd><%= report.summary.FAIL || 0 %></dd></div>
+      </dl>
+
+      <p class="small muted" style="max-width:1100px;">
+        <% if (report.tests) { %>
+          Last automated run: <strong><%= fmtDateTime(report.tests.ranAt) %></strong> —
+          contrast <%= report.tests.suites.contrast.pass %>/<%= report.tests.suites.contrast.total %>,
+          accessibility <%= report.tests.suites.a11y.pass %>/<%= report.tests.suites.a11y.total %>,
+          end-to-end <%= report.tests.suites.e2e.pass %>/<%= report.tests.suites.e2e.total %>.
+        <% } else { %>
+          <strong>No automated test run is recorded for this deployment.</strong> Run <code>npm run audit</code>.
+          Until then, requirements that depend on testing fall back to NEEDS HUMAN REVIEW rather than assuming success.
+        <% } %>
+      </p>
+
+      <!-- deployment configuration -->
+      <h2 class="eyebrow mt-3">Deployment configuration (live)</h2>
+      <dl class="kv" style="max-width:760px;">
+        <dt>Environment</dt><dd><%= report.config.env %></dd>
+        <dt>Payment mode</dt>
+        <dd><%= report.config.paymentMode %><%= report.config.paymentsLive ? ' — live keys present' : ' — simulator, no money moves' %></dd>
+        <dt>Email / SMS delivery</dt><dd><%= report.config.emailMode %> — messages go to an outbox for manual sending</dd>
+        <dt>Cash on delivery</dt><dd><%= report.config.codEnabled ? 'Enabled' : 'Disabled' %></dd>
+        <dt>Business identity complete</dt><dd><%= report.config.businessConfigured ? 'Yes' : 'No' %></dd>
+        <dt>Admin password</dt>
+        <dd><%= report.config.adminPasswordIsDefault ? '<span class="env-flag">Default fallback in use — blocker</span>' : 'Set from environment' %></dd>
+        <dt>Analytics</dt><dd>Self-hosted, cookieless, consent-gated. Third-party analytics: <%= report.config.analyticsThirdParty ? 'ENABLED' : 'none' %></dd>
+        <dt>Catalogue</dt><dd><%= report.counts.products %> products, <%= report.counts.variants %> variants, <%= report.counts.reviews %> reviews</dd>
+        <dt>Active trackers</dt><dd><%= report.counts.trackersActive %> (third-party: <%= report.counts.trackersThirdParty %>)</dd>
+        <dt>Consent receipts recorded</dt><dd><%= report.counts.consentReceipts %></dd>
+      </dl>
+
+      <!-- the 18 requirements -->
+      <h2 class="eyebrow mt-3">The 18 mandatory requirements</h2>
+      <div class="req-list">
+        <% report.requirements.forEach(function (r) { %>
+          <article class="req-card">
+            <header class="req-head">
+              <div>
+                <span class="req-num">Requirement <%= r.id %></span>
+                <h3><%= r.title %></h3>
+              </div>
+              <span class="req-status" data-s="<%= r.status %>"><%= r.status %></span>
+            </header>
+            <p class="req-summary"><%= r.summary %></p>
+
+            <h4 class="req-label">What was verified</h4>
+            <ul class="req-evidence">
+              <% r.evidence.forEach(function (e) { %><li><%= e %></li><% }); %>
+            </ul>
+
+            <% if (r.open && r.open.length) { %>
+              <h4 class="req-label">Still open</h4>
+              <ul class="req-open">
+                <% r.open.forEach(function (o) { %><li><%= o %></li><% }); %>
+              </ul>
+            <% } %>
+
+            <% if (r.action) { %>
+              <p class="req-action"><strong>Action required:</strong> <%= r.action %></p>
+            <% } %>
+          </article>
+        <% }); %>
+      </div>
+
+      <!-- cross-cutting -->
+      <% [report.security, report.india, report.infra].forEach(function (block) { %>
+        <h2 class="eyebrow mt-3"><%= block.title %></h2>
+        <table class="admin-table" style="background:#fff;">
+          <caption class="sr-only"><%= block.title %></caption>
+          <thead><tr><th scope="col" style="width:32%;">Item</th><th scope="col" style="width:16%;">Status</th><th scope="col">Detail</th></tr></thead>
+          <tbody>
+            <% block.items.forEach(function (i) { %>
+              <tr>
+                <td><%= i.label %></td>
+                <td><span class="req-status req-status--sm" data-s="<%= i.status %>"><%= i.status %></span></td>
+                <td class="small"><%= i.note %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% }); %>
+
+      <!-- blockers -->
+      <h2 class="eyebrow mt-3">Blocking items before launch</h2>
+      <% if (!report.blockers.length) { %>
+        <p class="small">No hard blockers detected in configuration. Human-review items still apply.</p>
+      <% } else { %>
+        <ol class="small" style="max-width:90ch;line-height:1.8;">
+          <% report.blockers.forEach(function (b) { %><li><%= b %></li><% }); %>
+        </ol>
+      <% } %>
+
+      <div class="alert alert--info mt-3" style="max-width:1100px;">
+        <h2>How to read this report honestly</h2>
+        <ul>
+          <li><strong>PASS</strong> means an automated check or a direct configuration read confirmed the behaviour
+            on this deployment.</li>
+          <li><strong>NEEDS HUMAN REVIEW</strong> means a person must make a judgement — a lawyer, an auditor, an
+            owner — and a machine cannot close it.</li>
+          <li><strong>NOT CONFIGURED</strong> means the capability does not exist here. Nothing pretends otherwise
+            in the storefront.</li>
+          <li><strong>FAIL</strong> means the behaviour is wrong or unsafe right now.</li>
+          <li>Nothing on this page constitutes legal advice or a certification of compliance.</li>
+        </ul>
+      </div>
+
+      <p class="small muted mt-3">
+        Generated <%= fmtDateTime(report.generatedAt) %> · configuration version <%= policyVersion %> ·
+        machine-readable copy at <code>/launch-readiness.json</code> ·
+        <a href="/transparency">Transparency register</a>
+      </p>
+    </div>
+  </section>
+</main>
+
+<style>
+  .req-list { display: grid; gap: 1rem; max-width: 1100px; }
+  .req-card { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--line-strong); padding: clamp(1rem, 2.5vw, 1.6rem); }
+  .req-head { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; margin-bottom: .75rem; flex-wrap: wrap; }
+  .req-num { font-family: var(--display); font-size: .5625rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+  .req-head h3 { font-size: 1.125rem; text-transform: none; letter-spacing: -.01em; margin-top: .2rem; }
+  .req-summary { font-size: .875rem; color: var(--body); max-width: 80ch; }
+  .req-label { font-family: var(--display); font-size: .5625rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin: 1rem 0 .4rem; }
+  .req-evidence, .req-open { font-size: .8125rem; color: var(--body); line-height: 1.7; margin: 0; padding-left: 1.1rem; }
+  .req-open li { color: #6E4B00; }
+  .req-action { font-size: .8125rem; background: var(--info-bg); border-left: 3px solid var(--info); color: #143A66; padding: .6rem .8rem; margin-top: 1rem; }
+  .req-status {
+    font-family: var(--display); font-size: .625rem; letter-spacing: .12em; text-transform: uppercase;
+    padding: .35rem .6rem; border: 1.5px solid; white-space: nowrap; font-weight: 500;
+  }
+  .req-status--sm { font-size: .5625rem; padding: .2rem .4rem; }
+  .req-status[data-s="PASS"] { color: #14532D; border-color: #14532D; background: #EDF6F0; }
+  .req-status[data-s="FAIL"] { color: #7F1818; border-color: #7F1818; background: #FBEDED; }
+  .req-status[data-s="NOT CONFIGURED"] { color: #4E3600; border-color: #6E4B00; background: #FDF6E7; }
+  .req-status[data-s="NEEDS HUMAN REVIEW"] { color: #143A66; border-color: #143A66; background: #EEF3FA; }
+</style>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>

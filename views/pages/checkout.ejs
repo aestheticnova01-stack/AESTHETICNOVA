@@ -1,0 +1,262 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="page-head">
+    <div class="wrap">
+      <nav aria-label="Breadcrumb">
+        <ol class="breadcrumb">
+          <li><a href="/">Home</a></li>
+          <li><a href="/cart">Bag</a></li>
+          <li aria-current="page">Checkout</li>
+        </ol>
+      </nav>
+      <h1>Checkout</h1>
+      <p class="lede mt-1">Every charge is shown before you pay. Nothing is added afterwards.</p>
+    </div>
+  </div>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <% if (errors.form) { %>
+        <div class="alert alert--error" role="alert">
+          <h2>We could not place your order</h2>
+          <p><%= errors.form %></p>
+        </div>
+      <% } else if (Object.keys(errors).length) { %>
+        <div class="alert alert--error" role="alert">
+          <h2>Please check the highlighted fields</h2>
+          <p>Nothing has been charged. Your bag is unchanged.</p>
+        </div>
+      <% } %>
+
+      <form method="post" action="/checkout" class="checkout-grid" novalidate id="checkout-form">
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+        <input type="hidden" name="form_ts" value="<%= Date.now() %>">
+
+        <div>
+          <% if (!user) { %>
+            <p class="form-note">
+              Checking out as a guest. You do not need an account to buy —
+              <a href="/account/login?next=/checkout">sign in</a> only if you want your orders kept in one place.
+              We ask for your email to send one order confirmation and delivery updates, nothing else.
+            </p>
+          <% } else { %>
+            <p class="form-note">
+              Signed in as <strong><%= user.email %></strong>. We have prefilled your details — change anything that is not right.
+            </p>
+          <% } %>
+
+          <fieldset class="fieldset">
+            <legend><span class="step-num" aria-hidden="true">1</span> Contact</legend>
+            <div class="field <%= errors.email ? 'has-error' : '' %>">
+              <label for="email">Email for your order confirmation <span class="req" aria-hidden="true">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" required
+                     value="<%= values.email || '' %>" <%= errors.email ? 'aria-invalid="true" aria-describedby="email-error"' : '' %>>
+              <% if (errors.email) { %><p class="error-text" id="email-error"><%= errors.email %></p><% } %>
+              <p class="hint">Used for your order confirmation and delivery updates only.</p>
+            </div>
+            <div class="field <%= errors.phone ? 'has-error' : '' %>">
+              <label for="phone">Mobile number <span class="req" aria-hidden="true">*</span></label>
+              <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" required
+                     value="<%= values.phone || '' %>" placeholder="10-digit Indian mobile"
+                     <%= errors.phone ? 'aria-invalid="true" aria-describedby="phone-error"' : '' %>>
+              <% if (errors.phone) { %><p class="error-text" id="phone-error"><%= errors.phone %></p><% } %>
+              <p class="hint">The courier uses this to reach you on delivery day. We do not use it for marketing.</p>
+            </div>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend><span class="step-num" aria-hidden="true">2</span> Delivery address</legend>
+            <div class="field <%= errors.full_name ? 'has-error' : '' %>">
+              <label for="full_name">Full name of the person receiving the order <span class="req" aria-hidden="true">*</span></label>
+              <input id="full_name" name="full_name" type="text" autocomplete="name" required
+                     value="<%= values.full_name || '' %>" <%= errors.full_name ? 'aria-invalid="true" aria-describedby="name-error"' : '' %>>
+              <% if (errors.full_name) { %><p class="error-text" id="name-error"><%= errors.full_name %></p><% } %>
+            </div>
+            <div class="field <%= errors.address_line1 ? 'has-error' : '' %>">
+              <label for="address_line1">House / flat number and street <span class="req" aria-hidden="true">*</span></label>
+              <input id="address_line1" name="address_line1" type="text" autocomplete="address-line1" required
+                     value="<%= values.address_line1 || '' %>" <%= errors.address_line1 ? 'aria-invalid="true" aria-describedby="a1-error"' : '' %>>
+              <% if (errors.address_line1) { %><p class="error-text" id="a1-error"><%= errors.address_line1 %></p><% } %>
+            </div>
+            <div class="field">
+              <label for="address_line2">Landmark or area <span class="muted">(optional)</span></label>
+              <input id="address_line2" name="address_line2" type="text" autocomplete="address-line2"
+                     value="<%= values.address_line2 || '' %>">
+            </div>
+            <div class="field-row">
+              <div class="field <%= errors.city ? 'has-error' : '' %>">
+                <label for="city">City <span class="req" aria-hidden="true">*</span></label>
+                <input id="city" name="city" type="text" autocomplete="address-level2" required
+                       value="<%= values.city || '' %>" <%= errors.city ? 'aria-invalid="true" aria-describedby="city-error"' : '' %>>
+                <% if (errors.city) { %><p class="error-text" id="city-error"><%= errors.city %></p><% } %>
+              </div>
+              <div class="field <%= errors.pincode ? 'has-error' : '' %>">
+                <label for="pincode">PIN code <span class="req" aria-hidden="true">*</span></label>
+                <input id="pincode" name="pincode" type="text" inputmode="numeric" autocomplete="postal-code" required
+                       value="<%= values.pincode || '' %>" maxlength="6"
+                       <%= errors.pincode ? 'aria-invalid="true" aria-describedby="pin-error"' : '' %>>
+                <% if (errors.pincode) { %><p class="error-text" id="pin-error"><%= errors.pincode %></p><% } %>
+              </div>
+            </div>
+            <div class="field <%= errors.state ? 'has-error' : '' %>">
+              <label for="state">State or union territory <span class="req" aria-hidden="true">*</span></label>
+              <select id="state" name="state" required <%= errors.state ? 'aria-invalid="true" aria-describedby="state-error"' : '' %>>
+                <option value="">Choose…</option>
+                <% states.forEach(function (s) { %>
+                  <option value="<%= s %>" <%= values.state === s ? 'selected' : '' %>><%= s %></option>
+                <% }); %>
+              </select>
+              <% if (errors.state) { %><p class="error-text" id="state-error"><%= errors.state %></p><% } %>
+            </div>
+            <div class="field">
+              <label for="notes">Delivery instructions <span class="muted">(optional)</span></label>
+              <input id="notes" name="notes" type="text" maxlength="300" value="<%= values.notes || '' %>">
+              <p class="hint">For example a gate code or a preferred time window. Do not include personal ID numbers.</p>
+            </div>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend><span class="step-num" aria-hidden="true">3</span> Payment method</legend>
+            <% methods.forEach(function (m) { %>
+              <label class="pay-option" data-live="<%= m.live %>">
+                <input type="radio" name="payment_method" value="<%= m.id %>"
+                       <%= paymentMethod === m.id ? 'checked' : '' %> required>
+                <span>
+                  <strong><%= m.label %></strong>
+                  <span class="small"><%= m.note %></span>
+                  <% if (m.id === 'cod') { %>
+                    <span class="small"><strong>₹49 COD fee</strong> — shown in the total on the right before you confirm.</span>
+                  <% } %>
+                  <% if (!m.live && m.id !== 'cod') { %>
+                    <span class="pay-tag">Test mode</span>
+                    <span class="small">No money will move. This build is not connected to a live payment gateway.</span>
+                  <% } else if (m.live && m.id !== 'cod') { %>
+                    <span class="pay-tag">Live gateway</span>
+                  <% } %>
+                </span>
+              </label>
+            <% }); %>
+            <% if (errors.payment_method) { %><p class="error-text" role="alert"><%= errors.payment_method %></p><% } %>
+
+            <p class="form-note mt-1">
+              Card numbers, UPI IDs and net-banking credentials are entered on the payment provider’s own
+              secure page. AESTHETICNOVA never sees or stores your card details.
+              We store only the payment reference and its status.
+            </p>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend><span class="step-num" aria-hidden="true">4</span> Consent</legend>
+
+            <label class="check">
+              <input type="checkbox" name="terms_accepted" value="1" required
+                     <%= values.terms_accepted ? 'checked' : '' %>
+                     <%= errors.terms_accepted ? 'aria-invalid="true"' : '' %>>
+              <span class="check-text">
+                <strong>Terms and privacy <span class="req" aria-hidden="true">*</span></strong>
+                I accept the <a href="/terms" target="_blank" rel="noopener">Terms of Service</a> and I have read the
+                <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
+                <span class="small">Required to place an order.</span>
+              </span>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" name="privacy_ack" value="1" required
+                     <%= values.privacy_ack ? 'checked' : '' %>
+                     <%= errors.privacy_ack ? 'aria-invalid="true"' : '' %>>
+              <span class="check-text">
+                <strong>What we do with this order’s data <span class="req" aria-hidden="true">*</span></strong>
+                I understand AESTHETICNOVA will use my name, email, phone and address to process and deliver this
+                order, keep the invoice as required by tax law, and share the delivery details with the courier.
+                <span class="small"><a href="/privacy#retention" target="_blank" rel="noopener">How long we keep each piece of data</a>.</span>
+              </span>
+            </label>
+
+            <label class="check">
+              <input type="checkbox" name="marketing_consent" value="1"
+                     <%= values.marketing_consent ? 'checked' : '' %>>
+              <span class="check-text">
+                <strong>Email me about new drops</strong>
+                <span class="small">
+                  Optional. Not ticked by default and not required to place this order — the price and delivery are
+                  identical either way. Unsubscribe any time from any email or from your account.
+                </span>
+              </span>
+            </label>
+
+            <% if (errors.terms_accepted || errors.privacy_ack) { %>
+              <p class="error-text" role="alert">
+                <%= errors.terms_accepted || '' %> <%= errors.privacy_ack || '' %>
+              </p>
+            <% } %>
+          </fieldset>
+
+          <button class="btn btn--block" type="submit" style="max-width:420px;">
+            Place order — pay <%= inr(totals.totalPaise) %>
+          </button>
+          <p class="small muted mt-1">
+            By placing this order you are asking us to begin fulfilling it. You can cancel it free of charge
+            before it ships, from your account or by contacting support.
+          </p>
+        </div>
+
+        <aside class="summary" aria-labelledby="checkout-summary-title">
+          <h2 id="checkout-summary-title">Order summary</h2>
+          <% lines.forEach(function (l) { %>
+            <div class="summary-row" style="align-items:flex-start;">
+              <span style="flex:1;"><%= l.name %><br><span class="small muted"><%= l.variant_label %> × <%= l.qty %></span></span>
+              <span><%= l.line_total_label %></span>
+            </div>
+          <% }); %>
+          <hr style="margin:.85rem 0;">
+          <div class="summary-row"><span>Subtotal</span><span><%= inr(totals.subtotalPaise) %></span></div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span><%= totals.shippingPaise === 0 ? 'Free' : inr(totals.shippingPaise) %></span>
+          </div>
+          <div class="summary-row" id="cod-row">
+            <span>COD fee</span>
+            <span><%= totals.codFeePaise ? inr(totals.codFeePaise) : '₹0 — not selected' %></span>
+          </div>
+          <div class="summary-row summary-row--total"><span>Final payable</span><span><%= inr(totals.totalPaise) %></span></div>
+          <p class="tax-note">
+            Includes GST 18% (<%= inr(totals.gstPaise) %> tax). Prices are per piece and include all duties —
+            there is no separate handling, packaging or platform fee.
+          </p>
+          <p class="small mt-1">
+            <a href="/returns">Returns</a> · <a href="/shipping">Delivery</a> ·
+            <a href="/privacy-requests">Privacy requests</a>
+          </p>
+        </aside>
+      </form>
+    </div>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+<script>
+  /* Recalculate the COD line live as the visitor changes payment method, so the
+     total on screen always matches what will be charged. */
+  (function () {
+    var codFee = <%= totals.codFeePaise %>;
+    var base = <%= totals.totalPaise - totals.codFeePaise %>;
+    var fmt = function (p) { return '₹' + (p / 100).toLocaleString('en-IN'); };
+    var totalOut = document.querySelector('.summary-row--total span:last-child');
+    var codOut = document.querySelector('#cod-row span:last-child');
+    var payBtn = document.querySelector('#checkout-form > div > button[type="submit"]');
+    document.querySelectorAll('input[name="payment_method"]').forEach(function (r) {
+      r.addEventListener('change', function () {
+        var isCod = document.querySelector('input[name="payment_method"]:checked').value === 'cod';
+        var total = base + (isCod ? codFee : 0);
+        if (totalOut) totalOut.textContent = fmt(total);
+        if (codOut) codOut.textContent = isCod ? fmt(codFee) : '₹0 — not selected';
+        if (payBtn) payBtn.textContent = 'Place order — pay ' + fmt(total);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

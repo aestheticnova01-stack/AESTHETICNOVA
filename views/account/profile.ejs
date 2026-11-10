@@ -1,0 +1,71 @@
+<%- include('../partials/head', { pageTitle, metaDescription, canonicalPath, noindex }) %>
+<%- include('../partials/header') %>
+
+<main id="main" tabindex="-1">
+  <div class="wrap section">
+    <div style="max-width:600px;">
+      <p class="eyebrow">Account</p>
+      <h1 class="display-m" style="margin-bottom:1.25rem;">Your details</h1>
+
+      <% if (saved) { %>
+        <div class="alert alert--success" role="status">Your details were saved.</div>
+      <% } %>
+
+      <form method="post" action="/account/profile" novalidate>
+        <input type="hidden" name="_csrf" value="<%= csrf %>">
+
+        <div class="field <%= errors.full_name ? 'has-error' : '' %>">
+          <label for="p-name">Full name</label>
+          <input id="p-name" name="full_name" type="text" autocomplete="name" required
+                 value="<%= values.full_name || user.full_name %>">
+          <% if (errors.full_name) { %><p class="error-text"><%= errors.full_name %></p><% } %>
+        </div>
+
+        <div class="field">
+          <label for="p-email">Email address</label>
+          <input id="p-email" type="email" value="<%= user.email %>" disabled aria-describedby="p-email-hint">
+          <p class="hint" id="p-email-hint">
+            Your sign-in email is changed through a privacy request after identity verification,
+            so nobody can silently redirect your account.
+            <a href="/privacy-requests">Request a change</a>.
+          </p>
+        </div>
+
+        <div class="field <%= errors.phone ? 'has-error' : '' %>">
+          <label for="p-phone">Mobile number <span class="muted">(optional)</span></label>
+          <input id="p-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national"
+                 value="<%= values.phone || user.phone || '' %>">
+          <% if (errors.phone) { %><p class="error-text"><%= errors.phone %></p><% } %>
+        </div>
+
+        <label class="check">
+          <input type="checkbox" name="marketing_consent" value="1" <%= user.marketing_consent ? 'checked' : '' %>>
+          <span class="check-text">
+            <strong>Email me about new drops</strong>
+            <span class="small">
+              Optional. Untick to stop marketing email immediately. Order confirmations and delivery updates
+              are transactional and are not affected by this switch.
+            </span>
+          </span>
+        </label>
+
+        <button class="btn" type="submit">Save details</button>
+      </form>
+
+      <section class="mt-3" aria-labelledby="data-rights">
+        <h2 id="data-rights" class="eyebrow">Your data rights</h2>
+        <ul class="small measure">
+          <li><a href="/privacy-requests">Download a copy of your data</a> — we verify your identity first.</li>
+          <li><a href="/privacy-requests">Correct something inaccurate</a>.</li>
+          <li><a href="/privacy-requests">Delete your account and eligible data</a> — invoice records are kept as the law requires, and we will tell you exactly what and why.</li>
+          <li><button class="link-quiet" type="button" data-consent-open="profile">Change cookie consent</button></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+<%- include('../partials/consent-banner') %>
+</body>
+</html>
