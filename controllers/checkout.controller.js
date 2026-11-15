@@ -72,9 +72,6 @@ function validateCheckoutInput(req) {
     pincode: sanitizeText(req.body.pincode, 10),
     notes: sanitizeText(req.body.notes, 300),
     payment_method: sanitizeText(req.body.payment_method, 20),
-    marketing_consent: req.body.marketing_consent === '1' ? 1 : 0,
-    terms_accepted: req.body.terms_accepted === '1',
-    privacy_ack: req.body.privacy_ack === '1',
   };
 
   const errors = {};
@@ -94,8 +91,6 @@ function validateCheckoutInput(req) {
   const methods = availableMethods().map((m) => m.id);
   if (!methods.includes(values.payment_method)) errors.payment_method = 'Choose a payment method.';
   if (values.payment_method === 'cod' && !config.COD_ENABLED) errors.payment_method = 'Cash on delivery is not available right now.';
-  if (!values.terms_accepted) errors.terms_accepted = 'Please accept the Terms of Service to place the order.';
-  if (!values.privacy_ack) errors.privacy_ack = 'Please confirm you have read the privacy notice.';
 
   return { values, errors };
 }

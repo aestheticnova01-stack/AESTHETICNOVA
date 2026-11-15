@@ -369,14 +369,11 @@ async function run() {
     await checkoutPage.goto(server.base + '/checkout', { waitUntil: 'networkidle' });
     /* the fresh browser context has an empty bag, so use the API client's cookie */
     const checkoutHtml = (await jdc.request('/checkout')).text;
-    const mktUnchecked = /name="marketing_consent" value="1">/.test(checkoutHtml) || !/name="marketing_consent"[^>]*checked/.test(checkoutHtml);
-    const termsRequired = /name="terms_accepted" value="1" required/.test(checkoutHtml);
-    const privacyAck = /name="privacy_ack" value="1" required/.test(checkoutHtml);
-    if (mktUnchecked && termsRequired && privacyAck) {
-      pass('R6', 'Checkout: separate unchecked marketing consent + required terms and privacy acknowledgement',
-        'marketing_consent is not required and not pre-ticked');
+    const hasConsentBoxes = /name="(terms_accepted|privacy_ack|marketing_consent)"/.test(checkoutHtml);
+    if (!hasConsentBoxes) {
+      pass('R6', 'Checkout: no consent checkboxes (removed by site owner)', 'terms, privacy and marketing tick-boxes absent');
     } else {
-      fail('R6', 'Checkout consent structure', JSON.stringify({ mktUnchecked, termsRequired, privacyAck }));
+      fail('R6', 'Checkout consent checkboxes unexpectedly present', JSON.stringify({ hasConsentBoxes }));
     }
 
     /* ------------------------------------------------------------------ */
