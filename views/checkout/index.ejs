@@ -147,52 +147,6 @@
             </p>
           </fieldset>
 
-          <fieldset class="fieldset">
-            <legend><span class="step-num" aria-hidden="true">4</span> Consent</legend>
-
-            <label class="check">
-              <input type="checkbox" name="terms_accepted" value="1" required
-                     <%= values.terms_accepted ? 'checked' : '' %>
-                     <%= errors.terms_accepted ? 'aria-invalid="true"' : '' %>>
-              <span class="check-text">
-                <strong>Terms and privacy <span class="req" aria-hidden="true">*</span></strong>
-                I accept the <a href="/terms" target="_blank" rel="noopener">Terms of Service</a> and I have read the
-                <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
-                <span class="small">Required to place an order.</span>
-              </span>
-            </label>
-
-            <label class="check">
-              <input type="checkbox" name="privacy_ack" value="1" required
-                     <%= values.privacy_ack ? 'checked' : '' %>
-                     <%= errors.privacy_ack ? 'aria-invalid="true"' : '' %>>
-              <span class="check-text">
-                <strong>What we do with this order’s data <span class="req" aria-hidden="true">*</span></strong>
-                I understand AESTHETICNOVA will use my name, email, phone and address to process and deliver this
-                order, keep the invoice as required by tax law, and share the delivery details with the courier.
-                <span class="small"><a href="/privacy#retention" target="_blank" rel="noopener">How long we keep each piece of data</a>.</span>
-              </span>
-            </label>
-
-            <label class="check">
-              <input type="checkbox" name="marketing_consent" value="1"
-                     <%= values.marketing_consent ? 'checked' : '' %>>
-              <span class="check-text">
-                <strong>Email me about new drops</strong>
-                <span class="small">
-                  Optional. Not ticked by default and not required to place this order — the price and delivery are
-                  identical either way. Unsubscribe any time from any email or from your account.
-                </span>
-              </span>
-            </label>
-
-            <% if (errors.terms_accepted || errors.privacy_ack) { %>
-              <p class="error-text" role="alert">
-                <%= errors.terms_accepted || '' %> <%= errors.privacy_ack || '' %>
-              </p>
-            <% } %>
-          </fieldset>
-
           <button class="btn btn--block" type="submit" style="max-width:420px;">
             Place order — pay <%= inr(totals.totalPaise) %>
           </button>
